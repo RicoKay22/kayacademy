@@ -7,7 +7,7 @@ From frontend engineering to economics, civil engineering to data science — Ka
 ---
 
 ## 🔗 Live Demo
-[kayacademy.vercel.app](https://kayacademy.vercel.app) *(deploy after setup)*
+[kayacademy.vercel.app](https://kayacademy.vercel.app)
 
 ---
 
@@ -126,7 +126,7 @@ Africa has 1.4 billion people and a growing demand for skilled professionals acr
 ## 👨‍💻 Built by
 
 **Rico Kay** — Frontend Engineer  
-[LinkedIn](https://linkedin.com/in/ricokay) · [GitHub](https://github.com/ricokay) · [Portfolio](https://ricokay.dev)
+[LinkedIn](https://linkedin.com/in/ricokay) · [GitHub](https://github.com/ricokay) · [Portfolio](https://digital-business-card-beta-opal.vercel.app/)
 
 ---
 
