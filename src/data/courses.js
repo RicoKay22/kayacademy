@@ -1,0 +1,197 @@
+export const CATEGORIES = [
+  { id: 'technology', label: 'Technology', icon: '💻', color: 'from-blue-500 to-cyan-500' },
+  { id: 'economics', label: 'Economics & Business', icon: '📈', color: 'from-emerald-500 to-teal-500' },
+  { id: 'engineering', label: 'Engineering', icon: '⚙️', color: 'from-orange-500 to-amber-500' },
+  { id: 'data', label: 'Data & Analytics', icon: '📊', color: 'from-violet-500 to-purple-500' },
+  { id: 'teaching', label: 'Education & Teaching', icon: '🎓', color: 'from-pink-500 to-rose-500' },
+  { id: 'creative', label: 'Creative Arts', icon: '🎨', color: 'from-yellow-500 to-orange-500' },
+  { id: 'health', label: 'Health Sciences', icon: '🩺', color: 'from-red-500 to-pink-500' },
+  { id: 'civil', label: 'Civil Engineering', icon: '🏗️', color: 'from-stone-500 to-slate-500' },
+]
+
+export const COURSES = [
+  // ─── TECHNOLOGY ───
+  {
+    id: 'react-fundamentals',
+    title: 'React Fundamentals: Build Real Apps',
+    instructor: 'Traversy Media',
+    category: 'technology',
+    level: 'Beginner',
+    duration: '6h 30m',
+    rating: 4.8,
+    students: 12400,
+    thumbnail: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80',
+    description: 'Master the core concepts of React — components, hooks, state, and routing — by building real-world applications from scratch.',
+    tags: ['React', 'JavaScript', 'Frontend'],
+    lessons: [
+      { id: 'r1', title: 'What is React & Why It Matters', duration: '12:30', videoUrl: 'https://www.youtube.com/embed/w7ejDZ8SWv8', free: true },
+      { id: 'r2', title: 'JSX & Components Deep Dive', duration: '18:45', videoUrl: 'https://www.youtube.com/embed/SqcY0GlETPk', free: true },
+      { id: 'r3', title: 'useState & useEffect Hooks', duration: '22:10', videoUrl: 'https://www.youtube.com/embed/O6P86uwfdR0', free: false },
+      { id: 'r4', title: 'Props, Context & State Lifting', duration: '19:55', videoUrl: 'https://www.youtube.com/embed/35lXWvCuM8o', free: false },
+      { id: 'r5', title: 'React Router v6 Complete Guide', duration: '25:20', videoUrl: 'https://www.youtube.com/embed/Ul3y1LXxzdU', free: false },
+      { id: 'r6', title: 'Fetching Data & Async Patterns', duration: '20:15', videoUrl: 'https://www.youtube.com/embed/T3Px88x_PsA', free: false },
+      { id: 'r7', title: 'Custom Hooks: Write Reusable Logic', duration: '17:40', videoUrl: 'https://www.youtube.com/embed/6ThXsUwLWvc', free: false },
+      { id: 'r8', title: 'Deploying React Apps to Vercel', duration: '14:00', videoUrl: 'https://www.youtube.com/embed/ysEN5RaKOlA', free: false },
+    ],
+  },
+  {
+    id: 'javascript-advanced',
+    title: 'JavaScript: The Advanced Concepts',
+    instructor: 'Andrei Neagoie',
+    category: 'technology',
+    level: 'Advanced',
+    duration: '9h 15m',
+    rating: 4.9,
+    students: 23100,
+    thumbnail: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=600&q=80',
+    description: 'Closures, prototypes, async/await, event loop, and performance optimization. Understand JavaScript at a deep level.',
+    tags: ['JavaScript', 'ES6+', 'Performance'],
+    lessons: [
+      { id: 'js1', title: 'JavaScript Engine & Runtime', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/KM9coMpy5sQ', free: true },
+      { id: 'js2', title: 'Execution Context & Call Stack', duration: '16:30', videoUrl: 'https://www.youtube.com/embed/iLWTnMzWtj4', free: true },
+      { id: 'js3', title: 'Closures & Scope Chain', duration: '22:45', videoUrl: 'https://www.youtube.com/embed/3a0I8ICR1Vg', free: false },
+      { id: 'js4', title: 'Prototypal Inheritance', duration: '19:20', videoUrl: 'https://www.youtube.com/embed/wstwjQ1yqWQ', free: false },
+      { id: 'js5', title: 'Async JS: Promises & Async/Await', duration: '28:10', videoUrl: 'https://www.youtube.com/embed/DHvZLI7Db8E', free: false },
+      { id: 'js6', title: 'The Event Loop Explained', duration: '15:55', videoUrl: 'https://www.youtube.com/embed/8aGhZQkoFbQ', free: false },
+    ],
+  },
+
+  // ─── ECONOMICS ───
+  {
+    id: 'economics-101',
+    title: 'Microeconomics: Principles & Applications',
+    instructor: 'Khan Academy',
+    category: 'economics',
+    level: 'Beginner',
+    duration: '7h 00m',
+    rating: 4.7,
+    students: 8900,
+    thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80',
+    description: 'Learn supply and demand, market structures, consumer theory, and how economic forces shape everyday decisions.',
+    tags: ['Microeconomics', 'Markets', 'Finance'],
+    lessons: [
+      { id: 'eco1', title: 'What is Economics? Scarcity & Choice', duration: '14:00', videoUrl: 'https://www.youtube.com/embed/3ez10ADR_gM', free: true },
+      { id: 'eco2', title: 'Supply, Demand & Equilibrium', duration: '18:30', videoUrl: 'https://www.youtube.com/embed/g9aDizJpd_s', free: true },
+      { id: 'eco3', title: 'Elasticity: How Markets React', duration: '16:20', videoUrl: 'https://www.youtube.com/embed/8h8EJXSSLR8', free: false },
+      { id: 'eco4', title: 'Consumer & Producer Surplus', duration: '15:45', videoUrl: 'https://www.youtube.com/embed/GgzS04HURtg', free: false },
+      { id: 'eco5', title: 'Market Structures: Perfect vs Monopoly', duration: '21:10', videoUrl: 'https://www.youtube.com/embed/7u-TB63GKNY', free: false },
+      { id: 'eco6', title: 'Game Theory & Strategic Thinking', duration: '19:00', videoUrl: 'https://www.youtube.com/embed/MHS-htjGgSY', free: false },
+    ],
+  },
+
+  // ─── DATA ───
+  {
+    id: 'python-data-science',
+    title: 'Python for Data Science & Analysis',
+    instructor: 'Data School',
+    category: 'data',
+    level: 'Intermediate',
+    duration: '8h 45m',
+    rating: 4.8,
+    students: 15300,
+    thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
+    description: 'From pandas to matplotlib — learn to collect, clean, analyze and visualize data using Python and real-world datasets.',
+    tags: ['Python', 'Pandas', 'Data Viz'],
+    lessons: [
+      { id: 'ds1', title: 'Python Basics for Data Work', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/r-uOLxNrNk8', free: true },
+      { id: 'ds2', title: 'NumPy Arrays & Operations', duration: '22:30', videoUrl: 'https://www.youtube.com/embed/QUT1VHiLmmI', free: true },
+      { id: 'ds3', title: 'Pandas DataFrames Deep Dive', duration: '28:00', videoUrl: 'https://www.youtube.com/embed/vmEHCJofslg', free: false },
+      { id: 'ds4', title: 'Data Cleaning & Preprocessing', duration: '24:15', videoUrl: 'https://www.youtube.com/embed/iYie42M1ZyU', free: false },
+      { id: 'ds5', title: 'Visualizing Data with Matplotlib', duration: '19:40', videoUrl: 'https://www.youtube.com/embed/3Xc3CA655Y4', free: false },
+      { id: 'ds6', title: 'Seaborn & Statistical Plots', duration: '17:55', videoUrl: 'https://www.youtube.com/embed/6GUZXDef2U0', free: false },
+    ],
+  },
+
+  // ─── ENGINEERING ───
+  {
+    id: 'electrical-engineering-basics',
+    title: 'Electrical Engineering Fundamentals',
+    instructor: 'The Organic Chemistry Tutor',
+    category: 'engineering',
+    level: 'Beginner',
+    duration: '5h 30m',
+    rating: 4.6,
+    students: 6700,
+    thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80',
+    description: 'Circuits, Ohm\'s Law, AC/DC analysis, and electrical components — everything you need to start your engineering journey.',
+    tags: ['Circuits', 'Electronics', 'Engineering'],
+    lessons: [
+      { id: 'ee1', title: 'Voltage, Current & Resistance', duration: '10:11', videoUrl: 'https://www.youtube.com/embed/mc979OhitAg', free: true },
+      { id: 'ee2', title: 'Ohm\'s Law & Power', duration: '15:40', videoUrl: 'https://www.youtube.com/embed/HsLLq6Rm5tU', free: true },
+      { id: 'ee3', title: 'Series vs Parallel Circuits', duration: '22:00', videoUrl: 'https://www.youtube.com/embed/YVS6cJJQFVo', free: false },
+      { id: 'ee4', title: 'Kirchhoff\'s Laws', duration: '19:15', videoUrl: 'https://www.youtube.com/embed/ysSSO3UcKW0', free: false },
+      { id: 'ee5', title: 'Capacitors & Inductors', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/X4EUwTwZ110', free: false },
+    ],
+  },
+
+  // ─── CIVIL ───
+  {
+    id: 'civil-engineering-intro',
+    title: 'Introduction to Civil Engineering',
+    instructor: 'Engineer4Free',
+    category: 'civil',
+    level: 'Beginner',
+    duration: '6h 00m',
+    rating: 4.5,
+    students: 4200,
+    thumbnail: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80',
+    description: 'Statics, structural analysis, and the fundamentals behind bridges, buildings, and infrastructure design.',
+    tags: ['Statics', 'Structures', 'Construction'],
+    lessons: [
+      { id: 'ce1', title: 'What Civil Engineers Do', duration: '12:00', videoUrl: 'https://www.youtube.com/embed/FKoFBaHbN2U', free: true },
+      { id: 'ce2', title: 'Forces, Vectors & Free Body Diagrams', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/1qfHbyGMh0c', free: true },
+      { id: 'ce3', title: 'Equilibrium & Trusses', duration: '24:00', videoUrl: 'https://www.youtube.com/embed/SdrjUOnCJwY', free: false },
+      { id: 'ce4', title: 'Beams & Bending Moments', duration: '22:45', videoUrl: 'https://www.youtube.com/embed/f08Y39UiC-o', free: false },
+      { id: 'ce5', title: 'Soil Mechanics Basics', duration: '18:00', videoUrl: 'https://www.youtube.com/embed/5IhagLkV-yg', free: false },
+    ],
+  },
+
+  // ─── TEACHING ───
+  {
+    id: 'teaching-essentials',
+    title: 'The Art of Teaching: Modern Pedagogy',
+    instructor: 'Cult of Pedagogy',
+    category: 'teaching',
+    level: 'Beginner',
+    duration: '4h 45m',
+    rating: 4.7,
+    students: 5100,
+    thumbnail: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80',
+    description: 'Learn evidence-based teaching strategies, classroom management, and how to design engaging learning experiences for any audience.',
+    tags: ['Pedagogy', 'Classroom', 'Curriculum'],
+    lessons: [
+      { id: 'te1', title: 'How People Learn: The Science', duration: '16:00', videoUrl: 'https://www.youtube.com/embed/b7IjSMuBWPg', free: true },
+      { id: 'te2', title: 'Designing Effective Lessons', duration: '18:30', videoUrl: 'https://www.youtube.com/embed/e0O2b5v1RJk', free: true },
+      { id: 'te3', title: 'Classroom Management Strategies', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/hEW3S0LRQak', free: false },
+      { id: 'te4', title: 'Differentiated Instruction', duration: '17:45', videoUrl: 'https://www.youtube.com/embed/ORMOelCMBRQ', free: false },
+      { id: 'te5', title: 'Assessment & Feedback That Works', duration: '19:20', videoUrl: 'https://www.youtube.com/embed/OFpHbVLQPaE', free: false },
+    ],
+  },
+
+  // ─── CREATIVE ───
+  {
+    id: 'ui-ux-design',
+    title: 'UI/UX Design: From Zero to Figma',
+    instructor: 'DesignCourse',
+    category: 'creative',
+    level: 'Beginner',
+    duration: '7h 20m',
+    rating: 4.8,
+    students: 9800,
+    thumbnail: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80',
+    description: 'Design principles, typography, color theory, wireframing, and Figma prototyping — everything to start your design career.',
+    tags: ['Figma', 'UX', 'Design'],
+    lessons: [
+      { id: 'ux1', title: 'Design Thinking & Process', duration: '15:00', videoUrl: 'https://www.youtube.com/embed/_r0VX-aU_T8', free: true },
+      { id: 'ux2', title: 'Color Theory for Designers', duration: '18:20', videoUrl: 'https://www.youtube.com/embed/AvgCkHrcj8w', free: true },
+      { id: 'ux3', title: 'Typography That Works', duration: '16:40', videoUrl: 'https://www.youtube.com/embed/QrNi9FmdlxY', free: false },
+      { id: 'ux4', title: 'Figma Basics: Components & Styles', duration: '24:00', videoUrl: 'https://www.youtube.com/embed/FTFaQWZBqQ8', free: false },
+      { id: 'ux5', title: 'Wireframing & Prototyping', duration: '22:30', videoUrl: 'https://www.youtube.com/embed/KdfO_e0yK-g', free: false },
+      { id: 'ux6', title: 'User Research & Testing', duration: '20:10', videoUrl: 'https://www.youtube.com/embed/isAUHhNfLGQ', free: false },
+    ],
+  },
+]
+
+export const getCourseById = (id) => COURSES.find((c) => c.id === id)
+export const getCoursesByCategory = (category) => COURSES.filter((c) => c.category === category)
+export const getCategoryById = (id) => CATEGORIES.find((c) => c.id === id)
