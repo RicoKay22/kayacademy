@@ -151,7 +151,7 @@ export default function HomePage() {
             </div>
             <span className="font-display font-semibold text-white text-sm">Kay<span className="text-gradient">Academy</span></span>
           </div>
-          <p className="text-slate-600 text-xs">© 2025 KayAcademy. Built for African professionals.</p>
+          <p className="text-slate-600 text-xs">© 2026 KayAcademy. Built for African professionals.</p>
           <div className="flex gap-6 text-xs text-slate-600">
             <span className="hover:text-slate-400 cursor-pointer transition-colors">Terms</span>
             <span className="hover:text-slate-400 cursor-pointer transition-colors">Privacy</span>
