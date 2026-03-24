@@ -93,7 +93,7 @@ export const COURSES = [
     description: 'From pandas to matplotlib — learn to collect, clean, analyze and visualize data using Python and real-world datasets.',
     tags: ['Python', 'Pandas', 'Data Viz'],
     lessons: [
-      { id: 'ds1', title: 'Python Basics for Data Work', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/r-uOLxNrNk8', free: true },
+      { id: 'ds1', title: 'Python Basics for Data Work', duration: '4:22:13', videoUrl: 'https://www.youtube.com/embed/r-uOLxNrNk8', free: true },
       { id: 'ds2', title: 'NumPy Arrays & Operations', duration: '22:30', videoUrl: 'https://www.youtube.com/embed/QUT1VHiLmmI', free: true },
       { id: 'ds3', title: 'Pandas DataFrames Deep Dive', duration: '28:00', videoUrl: 'https://www.youtube.com/embed/vmEHCJofslg', free: false },
       { id: 'ds4', title: 'Data Cleaning & Preprocessing', duration: '24:15', videoUrl: 'https://www.youtube.com/embed/iYie42M1ZyU', free: false },
