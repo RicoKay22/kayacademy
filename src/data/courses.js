@@ -138,7 +138,7 @@ export const COURSES = [
     description: 'Statics, structural analysis, and the fundamentals behind bridges, buildings, and infrastructure design.',
     tags: ['Statics', 'Structures', 'Construction'],
     lessons: [
-      { id: 'ce1', title: 'What Civil Engineers Do', duration: '12:00', videoUrl: 'https://www.youtube.com/embed/FKoFBaHbN2U', free: true },
+      { id: 'ce1', title: 'What Civil Engineers Do', duration: '18:46', videoUrl: 'https://www.youtube.com/embed/FssJcjOIB7A', free: true },
       { id: 'ce2', title: 'Forces, Vectors & Free Body Diagrams', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/1qfHbyGMh0c', free: true },
       { id: 'ce3', title: 'Equilibrium & Trusses', duration: '24:00', videoUrl: 'https://www.youtube.com/embed/SdrjUOnCJwY', free: false },
       { id: 'ce4', title: 'Beams & Bending Moments', duration: '22:45', videoUrl: 'https://www.youtube.com/embed/f08Y39UiC-o', free: false },
@@ -182,7 +182,7 @@ export const COURSES = [
     description: 'Design principles, typography, color theory, wireframing, and Figma prototyping — everything to start your design career.',
     tags: ['Figma', 'UX', 'Design'],
     lessons: [
-      { id: 'ux1', title: 'Design Thinking & Process', duration: '15:00', videoUrl: 'https://www.youtube.com/embed/_r0VX-aU_T8', free: true },
+      { id: 'ux1', title: 'Design Thinking & Process', duration: '3:56', videoUrl: 'https://www.youtube.com/embed/_r0VX-aU_T8', free: true },
       { id: 'ux2', title: 'Color Theory for Designers', duration: '18:20', videoUrl: 'https://www.youtube.com/embed/AvgCkHrcj8w', free: true },
       { id: 'ux3', title: 'Typography That Works', duration: '16:40', videoUrl: 'https://www.youtube.com/embed/QrNi9FmdlxY', free: false },
       { id: 'ux4', title: 'Figma Basics: Components & Styles', duration: '24:00', videoUrl: 'https://www.youtube.com/embed/FTFaQWZBqQ8', free: false },
