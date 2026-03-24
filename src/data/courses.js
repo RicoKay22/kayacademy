@@ -70,12 +70,12 @@ export const COURSES = [
     description: 'Learn supply and demand, market structures, consumer theory, and how economic forces shape everyday decisions.',
     tags: ['Microeconomics', 'Markets', 'Finance'],
     lessons: [
-      { id: 'eco1', title: 'What is Economics? Scarcity & Choice', duration: '14:00', videoUrl: 'https://www.youtube.com/embed/3ez10ADR_gM', free: true },
-      { id: 'eco2', title: 'Supply, Demand & Equilibrium', duration: '18:30', videoUrl: 'https://www.youtube.com/embed/g9aDizJpd_s', free: true },
-      { id: 'eco3', title: 'Elasticity: How Markets React', duration: '16:20', videoUrl: 'https://www.youtube.com/embed/8h8EJXSSLR8', free: false },
-      { id: 'eco4', title: 'Consumer & Producer Surplus', duration: '15:45', videoUrl: 'https://www.youtube.com/embed/GgzS04HURtg', free: false },
-      { id: 'eco5', title: 'Market Structures: Perfect vs Monopoly', duration: '21:10', videoUrl: 'https://www.youtube.com/embed/7u-TB63GKNY', free: false },
-      { id: 'eco6', title: 'Game Theory & Strategic Thinking', duration: '19:00', videoUrl: 'https://www.youtube.com/embed/MHS-htjGgSY', free: false },
+      { id: 'eco1', title: 'Intro to Economics? Scarcity & Choice', duration: '12:08', videoUrl: 'https://www.youtube.com/embed/3ez10ADR_gM', free: true },
+      { id: 'eco2', title: 'Supply and Demand', duration: '10:21', videoUrl: 'https://www.youtube.com/embed/g9aDizJpd_s', free: true },
+      { id: 'eco3', title: 'Elasticity: How Markets React', duration: '5:43', videoUrl: 'https://www.youtube.com/embed/1XXhpHJTglg', free: false },
+      { id: 'eco4', title: 'Consumer & Producer Surplus', duration: '56:47', videoUrl: 'https://www.youtube.com/embed/jNpmPY1sHZs', free: false },
+      { id: 'eco5', title: 'Market Structures: Perfect vs Monopoly', duration: '7:51', videoUrl: 'https://www.youtube.com/embed/_3DQuZoYinM', free: false },
+      { id: 'eco6', title: 'Game Theory & Strategic Thinking', duration: '9:49', videoUrl: 'https://www.youtube.com/embed/MHS-htjGgSY', free: false },
     ],
   },
 
