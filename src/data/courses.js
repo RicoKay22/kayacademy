@@ -160,7 +160,7 @@ export const COURSES = [
     description: 'Learn evidence-based teaching strategies, classroom management, and how to design engaging learning experiences for any audience.',
     tags: ['Pedagogy', 'Classroom', 'Curriculum'],
     lessons: [
-      { id: 'te1', title: 'How People Learn: The Science', duration: '16:00', videoUrl: 'https://www.youtube.com/embed/b7IjSMuBWPg', free: true },
+      { id: 'te1', title: 'How People Learn: The Science', duration: '9:23', videoUrl: 'https://www.youtube.com/embed/WsR9ScboqX0', free: true },
       { id: 'te2', title: 'Designing Effective Lessons', duration: '18:30', videoUrl: 'https://www.youtube.com/embed/e0O2b5v1RJk', free: true },
       { id: 'te3', title: 'Classroom Management Strategies', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/hEW3S0LRQak', free: false },
       { id: 'te4', title: 'Differentiated Instruction', duration: '17:45', videoUrl: 'https://www.youtube.com/embed/ORMOelCMBRQ', free: false },
