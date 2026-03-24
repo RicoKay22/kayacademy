@@ -71,7 +71,7 @@ export const COURSES = [
     tags: ['Microeconomics', 'Markets', 'Finance'],
     lessons: [
       { id: 'eco1', title: 'Intro to Economics? Scarcity & Choice', duration: '12:08', videoUrl: 'https://www.youtube.com/embed/3ez10ADR_gM', free: true },
-      { id: 'eco2', title: 'Supply and Demand', duration: '10:21', videoUrl: 'https://www.youtube.com/embed/g9aDizJpd_s', free: true },
+      { id: 'eco2', title: 'Supply and Demand', duration: '10:22', videoUrl: 'https://www.youtube.com/embed/g9aDizJpd_s', free: true },
       { id: 'eco3', title: 'Elasticity: How Markets React', duration: '5:43', videoUrl: 'https://www.youtube.com/embed/1XXhpHJTglg', free: false },
       { id: 'eco4', title: 'Consumer & Producer Surplus', duration: '56:47', videoUrl: 'https://www.youtube.com/embed/jNpmPY1sHZs', free: false },
       { id: 'eco5', title: 'Market Structures: Perfect vs Monopoly', duration: '7:51', videoUrl: 'https://www.youtube.com/embed/_3DQuZoYinM', free: false },
