@@ -47,12 +47,12 @@ export const COURSES = [
     description: 'Closures, prototypes, async/await, event loop, and performance optimization. Understand JavaScript at a deep level.',
     tags: ['JavaScript', 'ES6+', 'Performance'],
     lessons: [
-      { id: 'js1', title: 'JavaScript Engine & Runtime', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/KM9coMpy5sQ', free: true },
-      { id: 'js2', title: 'Execution Context & Call Stack', duration: '16:30', videoUrl: 'https://www.youtube.com/embed/iLWTnMzWtj4', free: true },
-      { id: 'js3', title: 'Closures & Scope Chain', duration: '22:45', videoUrl: 'https://www.youtube.com/embed/3a0I8ICR1Vg', free: false },
-      { id: 'js4', title: 'Prototypal Inheritance', duration: '19:20', videoUrl: 'https://www.youtube.com/embed/wstwjQ1yqWQ', free: false },
-      { id: 'js5', title: 'Async JS: Promises & Async/Await', duration: '28:10', videoUrl: 'https://www.youtube.com/embed/DHvZLI7Db8E', free: false },
-      { id: 'js6', title: 'The Event Loop Explained', duration: '15:55', videoUrl: 'https://www.youtube.com/embed/8aGhZQkoFbQ', free: false },
+      { id: 'js1', title: 'JavaScript Engine & Runtime', duration: '9:20', videoUrl: 'https://www.youtube.com/embed/KM9coMpy5sQ', free: true },
+      { id: 'js2', title: 'Execution Context & Call Stack', duration: '23:41', videoUrl: 'https://www.youtube.com/embed/iLWTnMzWtj4', free: true },
+      { id: 'js3', title: 'Closures & Scope Chain', duration: '6:55', videoUrl: 'https://www.youtube.com/embed/3a0I8ICR1Vg', free: false },
+      { id: 'js4', title: 'Prototypal Inheritance', duration: '20:21', videoUrl: 'https://www.youtube.com/embed/wstwjQ1yqWQ', free: false },
+      { id: 'js5', title: 'Async JS: Promises & Async/Await', duration: '11:30', videoUrl: 'https://www.youtube.com/embed/DHvZLI7Db8E', free: false },
+      { id: 'js6', title: 'The Event Loop Explained', duration: '26:52', videoUrl: 'https://www.youtube.com/embed/8aGhZQkoFbQ', free: false },
     ],
   },
 
