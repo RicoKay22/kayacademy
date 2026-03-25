@@ -117,7 +117,7 @@ export const COURSES = [
     tags: ['Circuits', 'Electronics', 'Engineering'],
     lessons: [
       { id: 'ee1', title: 'Voltage, Current & Resistance', duration: '10:11', videoUrl: 'https://www.youtube.com/embed/mc979OhitAg', free: true },
-      { id: 'ee2', title: 'Ohm\'s Law & Power', duration: '15:40', videoUrl: 'https://www.youtube.com/embed/HsLLq6Rm5tU', free: true },
+      { id: 'ee2', title: 'Ohm\'s Law & Power', duration: '9:59', videoUrl: 'https://www.youtube.com/embed/HsLLq6Rm5tU', free: true },
       { id: 'ee3', title: 'Series vs Parallel Circuits', duration: '22:00', videoUrl: 'https://www.youtube.com/embed/YVS6cJJQFVo', free: false },
       { id: 'ee4', title: 'Kirchhoff\'s Laws', duration: '19:15', videoUrl: 'https://www.youtube.com/embed/ysSSO3UcKW0', free: false },
       { id: 'ee5', title: 'Capacitors & Inductors', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/X4EUwTwZ110', free: false },

@@ -20,6 +20,19 @@ export default function CertificatePage() {
   const completionDate = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
   const certId = `KA-${(courseId ?? '').toUpperCase().replace(/-/g, '').slice(0, 8)}-${(user?.id ?? '').slice(0, 8).toUpperCase()}`
 
+  // Calculate real cumulative duration from actual lesson durations
+  function calcCourseDuration(lessons = []) {
+    const totalSeconds = lessons.reduce((acc, l) => {
+      if (!l.duration) return acc
+      const parts = l.duration.split(':').map(Number)
+      return acc + (parts.length === 2 ? parts[0] * 60 + parts[1] : parts[0] * 3600 + parts[1] * 60 + (parts[2] || 0))
+    }, 0)
+    const h = Math.floor(totalSeconds / 3600)
+    const m = Math.floor((totalSeconds % 3600) / 60)
+    return h > 0 ? `${h}h ${m}m` : `${m}m`
+  }
+  const courseDuration = calcCourseDuration(course?.lessons)
+
   if (!course || !enrolled || !isComplete) {
     return (
       <div className="min-h-screen bg-navy-950 flex items-center justify-center px-4 pt-24">
@@ -124,7 +137,7 @@ export default function CertificatePage() {
               </div>
               <div style={{ textAlign: 'center' }}>
                 <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>Duration</p>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#0a1628' }}>{course.duration}</p>
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#0a1628' }}>{courseDuration}</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>Issued</p>

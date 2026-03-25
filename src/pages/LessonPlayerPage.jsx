@@ -6,15 +6,10 @@ import { useAppContext } from '../store/AppContext'
 import { useProgress } from '../hooks/useProgress'
 import { ProgressBar } from '../components/ui/ProgressBar'
 
-function parseDuration(str) {
-  if (!str) return 300
-  const parts = str.split(':').map(Number)
-  if (parts.length === 2) return parts[0] * 60 + parts[1]
-  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2]
-  return 300
-}
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function formatTime(seconds) {
+  if (!seconds || isNaN(seconds)) return '0:00'
   const m = Math.floor(seconds / 60)
   const s = Math.floor(seconds % 60)
   return `${m}:${s.toString().padStart(2, '0')}`
@@ -25,6 +20,7 @@ function getYouTubeId(url) {
   return match ? match[1] : null
 }
 
+// Load YouTube IFrame API once globally — safe to call multiple times
 let ytApiLoaded = false
 let ytApiCallbacks = []
 
@@ -43,6 +39,8 @@ function loadYouTubeAPI(callback) {
   }
 }
 
+// ─── COMPONENT ───
+
 export default function LessonPlayerPage() {
   const { courseId, lessonId } = useParams()
   const navigate = useNavigate()
@@ -53,27 +51,25 @@ export default function LessonPlayerPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [watchedSeconds, setWatchedSeconds] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [actualDuration, setActualDuration] = useState(0) // real YouTube duration in seconds
 
   // Refs — never cause re-renders
-  const playerRef = useRef(null)
+  const playerInstanceRef = useRef(null)
   const watchIntervalRef = useRef(null)
   const watchedRef = useRef(0)
-  const isMountedRef = useRef(true) // KEY FIX: track if component is still mounted
+  const isMountedRef = useRef(true)
 
-  // Mark mounted/unmounted
+  // ── Lifecycle: track mount state, cleanup on unmount ──────────────────────
   useEffect(() => {
     isMountedRef.current = true
     return () => {
       isMountedRef.current = false
       clearInterval(watchIntervalRef.current)
-      if (playerRef.current) {
-        try { playerRef.current.destroy() } catch (e) {}
-        playerRef.current = null
-      }
+      destroyPlayer()
     }
   }, [])
 
-  // Derive values — safely with optional chaining
+  // ── Derived values ────────────────────────────────────────────────────────
   const enrolled = isEnrolled(course?.id ?? '')
   const lessonIndex = course?.lessons.findIndex(l => l.id === lessonId) ?? -1
   const lesson = course?.lessons[lessonIndex]
@@ -83,50 +79,81 @@ export default function LessonPlayerPage() {
   const prevLessonDone = lessonIndex === 0 || isLessonComplete(courseId, course?.lessons[lessonIndex - 1]?.id ?? '')
   const isSequentialLocked = !prevLessonDone && !isComplete
   const isEnrollLocked = !enrolled && !lesson?.free
-  const totalSeconds = parseDuration(lesson?.duration)
-  const requiredSeconds = Math.floor(totalSeconds * 0.7)
-  const watchTimerDone = watchedSeconds >= requiredSeconds || isComplete
-  const watchProgress = Math.min((watchedSeconds / requiredSeconds) * 100, 100)
-  const timeRemaining = Math.max(requiredSeconds - watchedSeconds, 0)
   const videoId = getYouTubeId(lesson?.videoUrl)
+
+  // Use real YouTube duration if available, otherwise 0 (button stays locked until we know)
+  // 97% of actual video length required
+  const requiredSeconds = actualDuration > 0 ? Math.floor(actualDuration * 0.97) : 0
+  const watchTimerDone = (requiredSeconds > 0 && watchedSeconds >= requiredSeconds) || isComplete
+  const watchProgress = requiredSeconds > 0 ? Math.min((watchedSeconds / requiredSeconds) * 100, 100) : 0
+  const timeRemaining = Math.max(requiredSeconds - watchedSeconds, 0)
   const allComplete = percentage === 100
 
-  // Reset watch state when lesson changes
+  // ── destroyPlayer: set null FIRST to prevent race conditions ──────────────
+  function destroyPlayer() {
+    if (!playerInstanceRef.current) return
+    const player = playerInstanceRef.current
+    playerInstanceRef.current = null // Clear ref BEFORE destroy — prevents races
+    try {
+      if (typeof player.destroy === 'function') player.destroy()
+    } catch (e) {
+      console.warn('Player cleanup error:', e)
+    }
+  }
+
+  // ── Reset watch state when lesson changes ─────────────────────────────────
   useEffect(() => {
     if (!isMountedRef.current) return
     setWatchedSeconds(0)
     setIsPlaying(false)
+    setActualDuration(0)
     watchedRef.current = 0
     clearInterval(watchIntervalRef.current)
-
-    if (playerRef.current) {
-      try { playerRef.current.destroy() } catch (e) {}
-      playerRef.current = null
-    }
+    // Note: destroyPlayer NOT called here — the key={lessonId} on the div
+    // forces React to unmount/remount the DOM node, which is cleaner
   }, [lessonId])
 
-  // Init YouTube player — only when not already complete
+  // ── YouTube player init ───────────────────────────────────────────────────
+  // KEY FIX FOR SLOW LOADING:
+  // We use key={lessonId} on the player div in JSX — this forces React to
+  // create a completely fresh DOM element for each lesson, eliminating
+  // any stale DOM state that caused slow/blank video loading.
   useEffect(() => {
     if (!videoId || isComplete || !lesson) return
 
     const containerId = `yt-player-${lessonId}`
 
-    // Small delay to ensure DOM is ready
+    // 400ms delay — ensures React has fully committed the new DOM node
+    // before YouTube tries to attach to it
     const initTimeout = setTimeout(() => {
       if (!isMountedRef.current) return
-      if (playerRef.current) return
+      if (playerInstanceRef.current) return
+      if (!window.document.getElementById(containerId)) return
 
       loadYouTubeAPI(() => {
         if (!isMountedRef.current) return
-        if (playerRef.current) return
+        if (playerInstanceRef.current) return
+        if (!window.YT?.Player) return
 
         try {
-          playerRef.current = new window.YT.Player(containerId, {
+          playerInstanceRef.current = new window.YT.Player(containerId, {
             videoId,
-            playerVars: { autoplay: 0, rel: 0, modestbranding: 1, playsinline: 1 },
+            playerVars: {
+              autoplay: 0,
+              rel: 0,
+              modestbranding: 1,
+              playsinline: 1,
+              origin: window.location.origin,
+            },
             events: {
-              onReady: () => {
-                if (isMountedRef.current) setIsPlaying(false)
+              onReady: (event) => {
+                if (!isMountedRef.current) return
+                setIsPlaying(false)
+                // Get REAL video duration from YouTube
+                try {
+                  const dur = event.target.getDuration()
+                  if (dur && dur > 0) setActualDuration(dur)
+                } catch (e) {}
               },
               onStateChange: (event) => {
                 if (!isMountedRef.current) return
@@ -134,21 +161,22 @@ export default function LessonPlayerPage() {
                 if (!YT) return
                 setIsPlaying(event.data === YT.PLAYING)
               },
-              onError: () => {
+              onError: (e) => {
+                console.warn('YouTube player error:', e.data)
                 if (isMountedRef.current) setIsPlaying(false)
-              }
+              },
             },
           })
         } catch (e) {
-          console.warn('YouTube player init error:', e)
+          console.warn('YT init error:', e)
         }
       })
-    }, 300)
+    }, 400)
 
     return () => clearTimeout(initTimeout)
   }, [videoId, lessonId, isComplete])
 
-  // Watch time counter — only ticks when actually playing
+  // ── Watch time counter — only ticks when video is ACTUALLY playing ────────
   useEffect(() => {
     clearInterval(watchIntervalRef.current)
     if (isPlaying && !watchTimerDone) {
@@ -161,7 +189,43 @@ export default function LessonPlayerPage() {
     return () => clearInterval(watchIntervalRef.current)
   }, [isPlaying, watchTimerDone])
 
-  // Early returns AFTER all hooks
+  // ── Safe navigation — always cleans up before leaving ────────────────────
+  function safeNavigate(path, actionBeforeNav = null) {
+    clearInterval(watchIntervalRef.current)
+    destroyPlayer()
+    setTimeout(() => {
+      if (!isMountedRef.current) return
+      if (actionBeforeNav) actionBeforeNav()
+      navigate(path)
+    }, 100)
+  }
+
+  // ── Action handlers ───────────────────────────────────────────────────────
+  function handleMarkComplete() {
+    if (!watchTimerDone) return
+    clearInterval(watchIntervalRef.current)
+    destroyPlayer()
+    setTimeout(() => {
+      if (isMountedRef.current) markComplete(lessonId)
+    }, 100)
+  }
+
+  function handleNext() {
+    if (!watchTimerDone || !nextLesson) return
+    safeNavigate(`/course/${courseId}/lesson/${nextLesson.id}`, () => markComplete(lessonId))
+  }
+
+  function handlePrev() {
+    if (!prevLesson) return
+    safeNavigate(`/course/${courseId}/lesson/${prevLesson.id}`)
+  }
+
+  function handleSidebarNav(targetLessonId) {
+    if (targetLessonId === lessonId) return
+    safeNavigate(`/course/${courseId}/lesson/${targetLessonId}`)
+  }
+
+  // ── Early returns (after ALL hooks) ──────────────────────────────────────
   if (!course) return (
     <div className="min-h-screen bg-navy-950 flex items-center justify-center">
       <Link to="/catalog" className="btn-primary">Back to Catalog</Link>
@@ -193,32 +257,17 @@ export default function LessonPlayerPage() {
         <p className="text-slate-400 text-sm mb-6">
           Finish <span className="text-white font-medium">"{prevLesson?.title}"</span> to unlock this lesson.
         </p>
-        <button onClick={() => navigate(`/course/${courseId}/lesson/${prevLesson.id}`)}
-          className="btn-primary inline-flex items-center gap-2">
+        <button onClick={handlePrev} className="btn-primary inline-flex items-center gap-2">
           <ChevronLeft size={16} /> Go to Previous Lesson
         </button>
       </div>
     </div>
   )
 
-  function handleMarkComplete() {
-    if (!watchTimerDone) return
-    clearInterval(watchIntervalRef.current)
-    markComplete(lessonId)
-  }
-
-  function handleNext() {
-    if (!watchTimerDone || !nextLesson) return
-    clearInterval(watchIntervalRef.current)
-    if (playerRef.current) {
-      try { playerRef.current.pauseVideo() } catch (e) {}
-    }
-    markComplete(lessonId)
-    navigate(`/course/${courseId}/lesson/${nextLesson.id}`)
-  }
-
+  // ── Render ────────────────────────────────────────────────────────────────
   return (
     <div className="h-screen bg-navy-950 flex flex-col overflow-hidden">
+
       {/* Top bar */}
       <div className="h-14 bg-navy-900/80 backdrop-blur-xl border-b border-white/5 flex items-center px-4 gap-4 flex-shrink-0 z-10">
         <Link to={`/course/${courseId}`} className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
@@ -234,13 +283,21 @@ export default function LessonPlayerPage() {
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Video area */}
+
+        {/* Video + Controls */}
         <div className="flex-1 flex flex-col overflow-hidden">
-          {/* Player */}
+
+          {/* ─── THE KEY FIX FOR SLOW LOADING ───────────────────────────────
+              key={lessonId} forces React to FULLY UNMOUNT and REMOUNT this div
+              on every lesson change. This gives YouTube a completely fresh DOM
+              node to attach to — eliminating the blank/slow video issue entirely.
+              Without this, React reuses the same DOM node and YouTube gets confused.
+          ─────────────────────────────────────────────────────────────────── */}
           <div className="relative bg-black" style={{ paddingTop: '56.25%' }}>
             {isComplete ? (
+              // Already completed — standard iframe, no tracking needed
               <iframe
-                key={`complete-${lessonId}`}
+                key={`done-${lessonId}`}
                 src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
                 title={lesson.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -248,9 +305,10 @@ export default function LessonPlayerPage() {
                 className="absolute inset-0 w-full h-full"
               />
             ) : (
+              // KEY={lessonId} — fresh DOM node per lesson, fixes slow loading
               <div
+                key={lessonId}
                 id={`yt-player-${lessonId}`}
-                ref={playerRef}
                 className="absolute inset-0 w-full h-full bg-black"
               />
             )}
@@ -265,7 +323,8 @@ export default function LessonPlayerPage() {
                   <h1 className="font-display text-2xl font-bold text-white">{lesson.title}</h1>
                 </div>
 
-                <div className="flex flex-col items-end gap-2 flex-shrink-0 min-w-[200px]">
+                {/* Mark complete + watch tracker */}
+                <div className="flex flex-col items-end gap-2 flex-shrink-0 min-w-[210px]">
                   <button
                     onClick={handleMarkComplete}
                     disabled={!watchTimerDone}
@@ -283,12 +342,15 @@ export default function LessonPlayerPage() {
                     <div className="w-full">
                       <div className="flex items-center justify-between mb-1.5">
                         <span className="flex items-center gap-1 text-xs text-slate-500">
-                          {isPlaying
-                            ? <><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse inline-block" /> Tracking watch time</>
-                            : <><PlayCircle size={11} /> Play video to track</>}
+                          {actualDuration === 0
+                            ? <><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse inline-block" /> Loading video...</>
+                            : isPlaying
+                              ? <><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse inline-block" /> Tracking watch time</>
+                              : <><PlayCircle size={11} /> Play video to track</>
+                          }
                         </span>
                         <span className={`text-xs font-medium ${watchTimerDone ? 'text-emerald-400' : 'text-electric-400'}`}>
-                          {watchTimerDone ? '✓ Done' : `${formatTime(timeRemaining)} left`}
+                          {actualDuration === 0 ? '—' : watchTimerDone ? '✓ Done' : `${formatTime(timeRemaining)} left`}
                         </span>
                       </div>
                       <div className="h-1.5 bg-navy-800 rounded-full overflow-hidden">
@@ -297,38 +359,49 @@ export default function LessonPlayerPage() {
                           style={{ width: `${watchProgress}%` }}
                         />
                       </div>
-                      <p className="text-xs text-slate-600 mt-1">
-                        {Math.round(watchProgress)}% watched · {formatTime(watchedSeconds)} / {formatTime(requiredSeconds)} required
-                      </p>
+                      {actualDuration > 0 && (
+                        <p className="text-xs text-slate-600 mt-1">
+                          {Math.round(watchProgress)}% watched · {formatTime(watchedSeconds)} / {formatTime(requiredSeconds)} required (97% of video)
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* Nav buttons */}
+              {/* Navigation buttons */}
               <div className="flex items-center gap-3 mt-6">
                 <button
-                  onClick={() => prevLesson && navigate(`/course/${courseId}/lesson/${prevLesson.id}`)}
+                  onClick={handlePrev}
                   disabled={!prevLesson}
                   className="btn-secondary flex items-center gap-2 text-sm disabled:opacity-30 disabled:cursor-not-allowed">
                   <ChevronLeft size={16} /> Previous
                 </button>
 
                 {nextLesson ? (
-                  <button onClick={handleNext} disabled={!watchTimerDone}
-                    title={!watchTimerDone ? 'Watch at least 70% first' : ''}
+                  <button
+                    onClick={handleNext}
+                    disabled={!watchTimerDone}
+                    title={!watchTimerDone ? 'Watch 97% of this lesson first' : ''}
                     className={`flex items-center gap-2 text-sm px-5 py-2.5 rounded-xl font-medium transition-all
-                      ${watchTimerDone ? 'btn-primary' : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed opacity-60'}`}>
+                      ${watchTimerDone
+                        ? 'btn-primary'
+                        : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed opacity-60'}`}>
                     Next Lesson <ChevronRight size={16} />
                   </button>
                 ) : !isComplete ? (
-                  <button onClick={handleMarkComplete} disabled={!watchTimerDone}
+                  <button
+                    onClick={handleMarkComplete}
+                    disabled={!watchTimerDone}
                     className={`flex items-center gap-2 text-sm px-5 py-2.5 rounded-xl font-medium transition-all
-                      ${watchTimerDone ? 'btn-primary bg-emerald-600 hover:bg-emerald-500' : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed opacity-60'}`}>
+                      ${watchTimerDone
+                        ? 'btn-primary bg-emerald-600 hover:bg-emerald-500'
+                        : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed opacity-60'}`}>
                     <Award size={16} /> {watchTimerDone ? 'Complete Course' : 'Watch to Unlock'}
                   </button>
                 ) : (
-                  <Link to={`/certificate/${courseId}`}
+                  <Link
+                    to={`/certificate/${courseId}`}
                     className="btn-primary flex items-center gap-2 text-sm bg-emerald-600 hover:bg-emerald-500">
                     <Award size={16} /> View Certificate
                   </Link>
@@ -354,15 +427,11 @@ export default function LessonPlayerPage() {
                 const locked = (!enrolled && !l.free) || seqLocked
 
                 return (
-                  <button key={l.id}
-                    onClick={() => {
-                      if (locked) return
-                      if (playerRef.current) {
-                        try { playerRef.current.pauseVideo() } catch (e) {}
-                      }
-                      navigate(`/course/${courseId}/lesson/${l.id}`)
-                    }}
+                  <button
+                    key={l.id}
+                    onClick={() => { if (!locked) handleSidebarNav(l.id) }}
                     disabled={locked}
+                    title={seqLocked ? 'Complete previous lesson first' : ''}
                     className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all
                       ${active ? 'bg-electric-500/10 border-r-2 border-electric-500' : 'hover:bg-white/5'}
                       ${locked ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}>
