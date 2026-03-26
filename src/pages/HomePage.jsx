@@ -152,11 +152,28 @@ export default function HomePage() {
             <span className="font-display font-semibold text-white text-sm">Kay<span className="text-gradient">Academy</span></span>
           </div>
           <p className="text-slate-600 text-xs">© 2026 KayAcademy. Built for African professionals.</p>
-          <div className="flex gap-6 text-xs text-slate-600">
-            <span className="hover:text-slate-400 cursor-pointer transition-colors">Terms</span>
-            <span className="hover:text-slate-400 cursor-pointer transition-colors">Privacy</span>
-            <span className="hover:text-slate-400 cursor-pointer transition-colors">Contact</span>
+          <div className="flex gap-6 text-xs text-slate-500">
+            <button onClick={() => alert('Terms of Service\n\nBy using KayAcademy, you agree to use the platform for personal learning purposes only. All course content is provided for educational use. KayAcademy reserves the right to update these terms at any time.')} className="hover:text-slate-300 transition-colors">Terms</button>
+            <button onClick={() => alert('Privacy Policy\n\nKayAcademy collects only the information necessary to provide our service — your email, name, and learning progress. We never sell your data. All data is stored securely via Supabase with Row Level Security enabled.')} className="hover:text-slate-300 transition-colors">Privacy</button>
+            <a
+              href="https://digital-business-card-beta-opal.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-electric-400 transition-colors"
+              title="Built by Rico Kay — Frontend Engineer">
+              Contact
+            </a>
           </div>
+        </div>
+        <div className="max-w-7xl mx-auto mt-4 pt-4 border-t border-white/5 text-center">
+          <p className="text-xs text-slate-700">
+            Designed & built by{' '}
+            <a href="https://digital-business-card-beta-opal.vercel.app/" target="_blank" rel="noopener noreferrer"
+              className="text-slate-500 hover:text-electric-400 transition-colors font-medium">
+              Rico Kay
+            </a>
+            {' '}— Frontend Engineer passionate about accessible education for African professionals.
+          </p>
         </div>
       </footer>
     </div>

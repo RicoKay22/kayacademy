@@ -1,19 +1,27 @@
 import { createContext, useContext, useEffect, useReducer } from 'react'
 import { useAuthContext } from './AuthContext'
 import { supabase } from '../lib/supabase'
+import { COURSES } from '../data/courses'
 
 const AppContext = createContext(null)
 
 const initialState = {
-  enrollments: [],     // [courseId, ...]
-  progress: {},        // { courseId: { completedLessons: [lessonId, ...] } }
+  enrollments: [],
+  progress: {},
+  certificates: {}, // { courseId: { issued_at: '2026-03-23T...' } }
   loadingData: true,
 }
 
 function appReducer(state, action) {
   switch (action.type) {
     case 'SET_DATA':
-      return { ...state, enrollments: action.enrollments, progress: action.progress, loadingData: false }
+      return {
+        ...state,
+        enrollments: action.enrollments,
+        progress: action.progress,
+        certificates: action.certificates,
+        loadingData: false,
+      }
 
     case 'ENROLL':
       return { ...state, enrollments: [...state.enrollments, action.courseId] }
@@ -32,6 +40,15 @@ function appReducer(state, action) {
       }
     }
 
+    case 'ISSUE_CERTIFICATE':
+      return {
+        ...state,
+        certificates: {
+          ...state.certificates,
+          [action.courseId]: { issued_at: action.issued_at },
+        },
+      }
+
     case 'RESET':
       return { ...initialState, loadingData: false }
 
@@ -44,7 +61,6 @@ export function AppProvider({ children }) {
   const { user } = useAuthContext()
   const [state, dispatch] = useReducer(appReducer, initialState)
 
-  // Load user data from Supabase when user logs in
   useEffect(() => {
     if (!user) {
       dispatch({ type: 'RESET' })
@@ -55,9 +71,10 @@ export function AppProvider({ children }) {
 
   async function loadUserData(userId) {
     try {
-      const [{ data: enrollData }, { data: progressData }] = await Promise.all([
+      const [{ data: enrollData }, { data: progressData }, { data: certData }] = await Promise.all([
         supabase.from('enrollments').select('course_id').eq('user_id', userId),
         supabase.from('progress').select('course_id, lesson_id').eq('user_id', userId),
+        supabase.from('certificates').select('course_id, issued_at').eq('user_id', userId),
       ])
 
       const enrollments = enrollData?.map((e) => e.course_id) ?? []
@@ -68,10 +85,15 @@ export function AppProvider({ children }) {
         progress[course_id].completedLessons.push(lesson_id)
       })
 
-      dispatch({ type: 'SET_DATA', enrollments, progress })
+      const certificates = {}
+      certData?.forEach(({ course_id, issued_at }) => {
+        certificates[course_id] = { issued_at }
+      })
+
+      dispatch({ type: 'SET_DATA', enrollments, progress, certificates })
     } catch (err) {
       console.error('Error loading user data:', err)
-      dispatch({ type: 'SET_DATA', enrollments: [], progress: {} })
+      dispatch({ type: 'SET_DATA', enrollments: [], progress: {}, certificates: {} })
     }
   }
 
@@ -79,7 +101,6 @@ export function AppProvider({ children }) {
     if (!user || state.enrollments.includes(courseId)) return
     dispatch({ type: 'ENROLL', courseId })
     await supabase.from('enrollments').insert({ user_id: user.id, course_id: courseId })
-    // Update last_active
     await supabase.from('activity').upsert({ user_id: user.id, last_active_at: new Date().toISOString() })
   }
 
@@ -88,6 +109,30 @@ export function AppProvider({ children }) {
     dispatch({ type: 'COMPLETE_LESSON', courseId, lessonId })
     await supabase.from('progress').upsert({ user_id: user.id, course_id: courseId, lesson_id: lessonId })
     await supabase.from('activity').upsert({ user_id: user.id, last_active_at: new Date().toISOString() })
+
+    // Check if this lesson completion finishes the course
+    const course = COURSES.find(c => c.id === courseId)
+    if (!course) return
+
+    const currentCompleted = state.progress[courseId]?.completedLessons ?? []
+    const allLessonIds = course.lessons.map(l => l.id)
+    const newCompleted = [...new Set([...currentCompleted, lessonId])]
+    const isNowComplete = allLessonIds.every(id => newCompleted.includes(id))
+
+    if (isNowComplete && !state.certificates[courseId]) {
+      // Issue certificate with today's date — stored permanently in Supabase
+      const issuedAt = new Date().toISOString()
+      const certCode = `KA-${courseId.toUpperCase().replace(/-/g, '').slice(0, 8)}-${user.id.slice(0, 8).toUpperCase()}`
+
+      dispatch({ type: 'ISSUE_CERTIFICATE', courseId, issued_at: issuedAt })
+
+      await supabase.from('certificates').upsert({
+        user_id: user.id,
+        course_id: courseId,
+        issued_at: issuedAt,
+        certificate_code: certCode,
+      })
+    }
   }
 
   function getProgress(courseId, totalLessons) {
@@ -103,7 +148,11 @@ export function AppProvider({ children }) {
     return state.progress[courseId]?.completedLessons?.includes(lessonId) ?? false
   }
 
-  const value = { ...state, enroll, completeLesson, getProgress, isEnrolled, isLessonComplete }
+  function getCertificate(courseId) {
+    return state.certificates[courseId] ?? null
+  }
+
+  const value = { ...state, enroll, completeLesson, getProgress, isEnrolled, isLessonComplete, getCertificate }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }

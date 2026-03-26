@@ -10,8 +10,9 @@ export default function ForgotPasswordPage() {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    await resetPassword(email)
-    setSent(true)
+    const result = await resetPassword(email)
+    // Only show success screen if email was actually found
+    if (result?.exists) setSent(true)
   }
 
   return (
@@ -27,7 +28,7 @@ export default function ForgotPasswordPage() {
             <span className="font-display font-semibold text-white text-xl">Kay<span className="text-gradient">Academy</span></span>
           </Link>
           <h1 className="font-display text-3xl font-bold text-white mb-2">Reset your password</h1>
-          <p className="text-slate-400 text-sm">We'll send a reset link to your email</p>
+          <p className="text-slate-400 text-sm">We'll send a reset link to your registered email</p>
         </div>
 
         <div className="glass p-8">
@@ -38,7 +39,7 @@ export default function ForgotPasswordPage() {
               </div>
               <h3 className="font-display text-xl font-bold text-white mb-2">Check your inbox</h3>
               <p className="text-slate-400 text-sm mb-6">
-                We sent a password reset link to <span className="text-white font-medium">{email}</span>. 
+                We sent a password reset link to <span className="text-white font-medium">{email}</span>.
                 Check your spam folder if you don't see it.
               </p>
               <Link to="/login" className="btn-primary inline-flex items-center gap-2">
@@ -54,12 +55,15 @@ export default function ForgotPasswordPage() {
                   <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                     placeholder="you@example.com" required className="input-field pl-11" />
                 </div>
+                <p className="text-xs text-slate-600 mt-2">
+                  Enter the email address you used to create your KayAcademy account.
+                </p>
               </div>
 
               <button type="submit" disabled={loading}
                 className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-60">
                 {loading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : null}
-                {loading ? 'Sending...' : 'Send reset link'}
+                {loading ? 'Checking...' : 'Send reset link'}
               </button>
 
               <Link to="/login" className="flex items-center justify-center gap-2 text-sm text-slate-500 hover:text-slate-300 transition-colors">

@@ -8,7 +8,7 @@ import { Download, ArrowLeft, Award } from 'lucide-react'
 export default function CertificatePage() {
   const { courseId } = useParams()
   const { user } = useAuthContext()
-  const { isEnrolled, getProgress } = useAppContext()
+  const { isEnrolled, getProgress, getCertificate } = useAppContext()
   const certRef = useRef(null)
   const course = getCourseById(courseId)
 
@@ -17,7 +17,13 @@ export default function CertificatePage() {
   const isComplete = progress === 100
 
   const studentName = user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Student'
-  const completionDate = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  
+  // Use the STORED completion date from Supabase — never changes after first issue
+  const certificate = getCertificate(courseId)
+  const completionDate = certificate?.issued_at
+    ? new Date(certificate.issued_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+    : new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+
   const certId = `KA-${(courseId ?? '').toUpperCase().replace(/-/g, '').slice(0, 8)}-${(user?.id ?? '').slice(0, 8).toUpperCase()}`
 
   // Calculate real cumulative duration from actual lesson durations

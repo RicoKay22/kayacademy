@@ -6,7 +6,7 @@ import { useAppContext } from '../store/AppContext'
 import { useProgress } from '../hooks/useProgress'
 import { ProgressBar } from '../components/ui/ProgressBar'
 
-// ─── HELPERS ─────────────────────────────────────────────────────────────────
+// ─── HELPERS 
 
 function formatTime(seconds) {
   if (!seconds || isNaN(seconds)) return '0:00'
@@ -39,7 +39,7 @@ function loadYouTubeAPI(callback) {
   }
 }
 
-// ─── COMPONENT ───
+// ─── COMPONENT 
 
 export default function LessonPlayerPage() {
   const { courseId, lessonId } = useParams()
@@ -49,15 +49,21 @@ export default function LessonPlayerPage() {
   const { percentage, completedCount, markComplete } = useProgress(courseId, course?.lessons ?? [])
 
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [watchedSeconds, setWatchedSeconds] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [actualDuration, setActualDuration] = useState(0) // real YouTube duration in seconds
+  const [actualDuration, setActualDuration] = useState(0)
 
   // Refs — never cause re-renders
   const playerInstanceRef = useRef(null)
   const watchIntervalRef = useRef(null)
   const watchedRef = useRef(0)
   const isMountedRef = useRef(true)
+
+  // ── localStorage key for this lesson's watch time ─────────────────────────
+  const storageKey = `ka_watch_${courseId}_${lessonId}`
+
+  // ── Load saved watch time from localStorage on lesson load ────────────────
+  const savedSeconds = parseInt(localStorage.getItem(storageKey) ?? '0', 10) || 0
+  const [watchedSeconds, setWatchedSeconds] = useState(savedSeconds)
 
   // ── Lifecycle: track mount state, cleanup on unmount ──────────────────────
   useEffect(() => {
@@ -67,6 +73,23 @@ export default function LessonPlayerPage() {
       clearInterval(watchIntervalRef.current)
       destroyPlayer()
     }
+  }, [])
+
+  // ── Page Visibility API — pause timer when user switches tabs ─────────────
+  useEffect(() => {
+    function handleVisibilityChange() {
+      if (document.hidden) {
+        // Tab hidden — pause the interval immediately
+        clearInterval(watchIntervalRef.current)
+        setIsPlaying(false)
+        // Also pause the YouTube player
+        if (playerInstanceRef.current) {
+          try { playerInstanceRef.current.pauseVideo() } catch (e) {}
+        }
+      }
+    }
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => document.removeEventListener('visibilitychange', handleVisibilityChange)
   }, [])
 
   // ── Derived values ────────────────────────────────────────────────────────
@@ -104,13 +127,13 @@ export default function LessonPlayerPage() {
   // ── Reset watch state when lesson changes ─────────────────────────────────
   useEffect(() => {
     if (!isMountedRef.current) return
-    setWatchedSeconds(0)
+    // Restore saved watch time for this specific lesson
+    const saved = parseInt(localStorage.getItem(storageKey) ?? '0', 10) || 0
+    setWatchedSeconds(saved)
+    watchedRef.current = saved
     setIsPlaying(false)
     setActualDuration(0)
-    watchedRef.current = 0
     clearInterval(watchIntervalRef.current)
-    // Note: destroyPlayer NOT called here — the key={lessonId} on the div
-    // forces React to unmount/remount the DOM node, which is cleaner
   }, [lessonId])
 
   // ── YouTube player init ───────────────────────────────────────────────────
@@ -184,6 +207,8 @@ export default function LessonPlayerPage() {
         if (!isMountedRef.current) { clearInterval(watchIntervalRef.current); return }
         watchedRef.current += 1
         setWatchedSeconds(watchedRef.current)
+        // Save progress to localStorage so it persists on refresh/navigation
+        localStorage.setItem(storageKey, String(watchedRef.current))
       }, 1000)
     }
     return () => clearInterval(watchIntervalRef.current)
@@ -205,6 +230,7 @@ export default function LessonPlayerPage() {
     if (!watchTimerDone) return
     clearInterval(watchIntervalRef.current)
     destroyPlayer()
+    localStorage.removeItem(storageKey) // Clean up — no longer needed
     setTimeout(() => {
       if (isMountedRef.current) markComplete(lessonId)
     }, 100)
@@ -212,6 +238,7 @@ export default function LessonPlayerPage() {
 
   function handleNext() {
     if (!watchTimerDone || !nextLesson) return
+    localStorage.removeItem(storageKey) // Clean up current lesson
     safeNavigate(`/course/${courseId}/lesson/${nextLesson.id}`, () => markComplete(lessonId))
   }
 
