@@ -55,11 +55,13 @@ export default function LessonPlayerPage() {
   // Refs — never cause re-renders
   const playerInstanceRef = useRef(null)
   const watchIntervalRef = useRef(null)
+  const positionIntervalRef = useRef(null) // saves video position every 5s
   const watchedRef = useRef(0)
   const isMountedRef = useRef(true)
 
-  // ── localStorage key for this lesson's watch time ─────────────────────────
-  const storageKey = `ka_watch_${courseId}_${lessonId}`
+  // ── localStorage keys 
+  const storageKey = `ka_watch_${courseId}_${lessonId}`      // watch time in seconds
+  const positionKey = `ka_pos_${courseId}_${lessonId}`       // video position in seconds
 
   // ── Load saved watch time from localStorage on lesson load ────────────────
   const savedSeconds = parseInt(localStorage.getItem(storageKey) ?? '0', 10) || 0
@@ -71,18 +73,18 @@ export default function LessonPlayerPage() {
     return () => {
       isMountedRef.current = false
       clearInterval(watchIntervalRef.current)
+      clearInterval(positionIntervalRef.current)
       destroyPlayer()
     }
   }, [])
 
-  // ── Page Visibility API — pause timer when user switches tabs ─────────────
+  // ── Page Visibility API — pause timer AND video when user switches tabs ────
   useEffect(() => {
     function handleVisibilityChange() {
       if (document.hidden) {
-        // Tab hidden — pause the interval immediately
         clearInterval(watchIntervalRef.current)
+        clearInterval(positionIntervalRef.current)
         setIsPlaying(false)
-        // Also pause the YouTube player
         if (playerInstanceRef.current) {
           try { playerInstanceRef.current.pauseVideo() } catch (e) {}
         }
@@ -177,6 +179,22 @@ export default function LessonPlayerPage() {
                   const dur = event.target.getDuration()
                   if (dur && dur > 0) setActualDuration(dur)
                 } catch (e) {}
+                // Seek to saved video position so user resumes where they left off
+                try {
+                  const savedPos = parseFloat(localStorage.getItem(positionKey) ?? '0') || 0
+                  if (savedPos > 5) {
+                    event.target.seekTo(savedPos, true)
+                  }
+                } catch (e) {}
+                // Save video position every 5 seconds while on this page
+                clearInterval(positionIntervalRef.current)
+                positionIntervalRef.current = setInterval(() => {
+                  if (!isMountedRef.current) { clearInterval(positionIntervalRef.current); return }
+                  try {
+                    const pos = playerInstanceRef.current?.getCurrentTime?.()
+                    if (pos && pos > 0) localStorage.setItem(positionKey, String(pos))
+                  } catch (e) {}
+                }, 5000)
               },
               onStateChange: (event) => {
                 if (!isMountedRef.current) return
@@ -217,6 +235,7 @@ export default function LessonPlayerPage() {
   // ── Safe navigation — always cleans up before leaving ────────────────────
   function safeNavigate(path, actionBeforeNav = null) {
     clearInterval(watchIntervalRef.current)
+    clearInterval(positionIntervalRef.current)
     destroyPlayer()
     setTimeout(() => {
       if (!isMountedRef.current) return
@@ -229,8 +248,10 @@ export default function LessonPlayerPage() {
   function handleMarkComplete() {
     if (!watchTimerDone) return
     clearInterval(watchIntervalRef.current)
+    clearInterval(positionIntervalRef.current)
     destroyPlayer()
-    localStorage.removeItem(storageKey) // Clean up — no longer needed
+    localStorage.removeItem(storageKey)
+    localStorage.removeItem(positionKey)
     setTimeout(() => {
       if (isMountedRef.current) markComplete(lessonId)
     }, 100)
@@ -238,7 +259,8 @@ export default function LessonPlayerPage() {
 
   function handleNext() {
     if (!watchTimerDone || !nextLesson) return
-    localStorage.removeItem(storageKey) // Clean up current lesson
+    localStorage.removeItem(storageKey)
+    localStorage.removeItem(positionKey)
     safeNavigate(`/course/${courseId}/lesson/${nextLesson.id}`, () => markComplete(lessonId))
   }
 

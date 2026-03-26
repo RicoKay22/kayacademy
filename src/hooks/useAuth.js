@@ -67,48 +67,43 @@ export function useAuth() {
     }
   }
 
-  // Check if email is registered by attempting OTP with shouldCreateUser: false
-  // If user doesn't exist, Supabase returns an error
   async function resetPassword(email) {
     setLoading(true)
     try {
-      // First check if email is registered using signInWithOtp
-      // shouldCreateUser: false means it will error if user doesn't exist
-      const { error: checkError } = await supabase.auth.signInWithOtp({
+      // RELIABLE EMAIL CHECK:
+      // Try signing in with a dummy password.
+      // "Invalid login credentials" = email exists, wrong password ✅
+      // "Email not confirmed" = email exists but unverified ✅
+      // Anything else = email not registered ❌
+      const { error: checkError } = await supabase.auth.signInWithPassword({
         email,
-        options: { shouldCreateUser: false },
+        password: `__KA_CHECK_${Date.now()}__`, // intentionally wrong password
       })
 
-      // If error contains "user not found" or similar — email not registered
-      if (checkError) {
-        const msg = checkError.message?.toLowerCase() ?? ''
-        if (
-          msg.includes('user not found') ||
-          msg.includes('no user') ||
-          msg.includes('not found') ||
-          msg.includes('signup disabled') ||
-          msg.includes('email not confirmed') === false && msg.includes('invalid')
-        ) {
-          toast.error('No account found with this email. Please use the email you signed up with.')
-          setLoading(false)
-          return { exists: false }
-        }
+      const errMsg = checkError?.message?.toLowerCase() ?? ''
+
+      const emailExists =
+        errMsg.includes('invalid login credentials') ||
+        errMsg.includes('invalid credentials') ||
+        errMsg.includes('email not confirmed') ||
+        errMsg.includes('wrong password') ||
+        errMsg.includes('password') // any password-related error means email IS found
+
+      if (!emailExists) {
+        toast.error('No account found with this email. Please use the email you signed up with.')
+        setLoading(false)
+        return { exists: false }
       }
 
-      // Email exists — send actual password reset
+      // Email is registered — send the actual reset link
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${window.location.origin}/reset-password`,
       })
       if (error) throw error
       toast.success('Password reset email sent!')
       return { exists: true }
+
     } catch (error) {
-      // If the error is specifically about user not existing
-      const msg = error.message?.toLowerCase() ?? ''
-      if (msg.includes('user') && (msg.includes('not found') || msg.includes('no user'))) {
-        toast.error('No account found with this email. Please use the email you signed up with.')
-        return { exists: false }
-      }
       toast.error(error.message || 'Could not send reset email.')
       return { exists: false }
     } finally {
