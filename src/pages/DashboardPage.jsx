@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, BookOpen, Award, TrendingUp, Clock } from 'lucide-react'
+import { ArrowRight, BookOpen, Award, TrendingUp, Clock, Compass } from 'lucide-react'
 import { useAuthContext } from '../store/AuthContext'
 import { useAppContext } from '../store/AppContext'
-import { COURSES } from '../data/courses'
+import { COURSES, getCategoryById } from '../data/courses'
 import { CourseCard } from '../components/course/CourseCard'
 import { ProgressBar } from '../components/ui/ProgressBar'
 
@@ -19,20 +19,53 @@ export default function DashboardPage() {
   const notStarted = enrolledCourses.filter(c => getProgress(c.id, c.lessons.length) === 0)
 
   const name = user?.user_metadata?.full_name?.split(' ')[0] || 'Learner'
+  const interests = user?.user_metadata?.interests ?? []
+
   const totalLessonsCompleted = enrolledCourses.reduce((acc, c) => {
     return acc + c.lessons.filter(l => isLessonComplete(c.id, l.id)).length
   }, 0)
+
+  // Recommended: based on interests, exclude already enrolled
+  const recommended = COURSES.filter(c =>
+    !enrollments.includes(c.id) &&
+    (interests.length === 0 || interests.includes(c.category))
+  ).slice(0, 4)
+
+  // Fallback if no interests or no matches — show top rated
+  const suggestedCourses = recommended.length > 0
+    ? recommended
+    : COURSES.filter(c => !enrollments.includes(c.id))
+        .sort((a, b) => b.rating - a.rating)
+        .slice(0, 4)
 
   return (
     <div className="min-h-screen bg-navy-950 pt-24 px-6 pb-16 page-enter">
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="mb-10">
-          <h1 className="font-display text-4xl font-bold text-white mb-1">
-            Welcome back, <span className="text-gradient">{name}</span> 👋
-          </h1>
-          <p className="text-slate-400">Keep the momentum going. You're doing great.</p>
+        <div className="mb-10 flex items-start justify-between">
+          <div>
+            <h1 className="font-display text-4xl font-bold text-white mb-1">
+              Welcome back, <span className="text-gradient">{name}</span> 👋
+            </h1>
+            <p className="text-slate-400">Keep the momentum going. You're doing great.</p>
+          </div>
+          {/* Show interests badges if set */}
+          {interests.length > 0 && (
+            <div className="hidden md:flex items-center gap-2 flex-wrap justify-end">
+              {interests.map(id => {
+                const cat = getCategoryById(id)
+                return cat ? (
+                  <span key={id} className="badge bg-electric-500/10 text-electric-400 border border-electric-500/20 text-xs">
+                    {cat.icon} {cat.label}
+                  </span>
+                ) : null
+              })}
+              <Link to="/onboarding" className="text-xs text-slate-500 hover:text-electric-400 transition-colors ml-1">
+                Edit
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Stats */}
@@ -53,12 +86,14 @@ export default function DashboardPage() {
 
         {enrollments.length === 0 ? (
           /* Empty state */
-          <div className="text-center py-20 glass">
+          <div className="text-center py-20 glass mb-12">
             <div className="w-16 h-16 rounded-full bg-electric-500/10 flex items-center justify-center mx-auto mb-4">
               <BookOpen size={28} className="text-electric-400" />
             </div>
             <h3 className="font-display text-2xl font-bold text-white mb-2">Start your learning journey</h3>
-            <p className="text-slate-400 mb-6 max-w-sm mx-auto">You haven't enrolled in any courses yet. Browse the catalog and find something that excites you.</p>
+            <p className="text-slate-400 mb-6 max-w-sm mx-auto">
+              You haven't enrolled in any courses yet. Browse the catalog and find something that excites you.
+            </p>
             <Link to="/catalog" className="btn-primary inline-flex items-center gap-2">
               Browse Courses <ArrowRight size={16} />
             </Link>
@@ -68,9 +103,7 @@ export default function DashboardPage() {
             {/* Continue learning */}
             {inProgress.length > 0 && (
               <section>
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="font-display text-2xl font-bold text-white">Continue learning</h2>
-                </div>
+                <h2 className="font-display text-2xl font-bold text-white mb-6">Continue learning</h2>
                 <div className="grid gap-4">
                   {inProgress.map(course => {
                     const pct = getProgress(course.id, course.lessons.length)
@@ -84,7 +117,8 @@ export default function DashboardPage() {
                           <p className="text-xs text-slate-500 mb-2">Next: {nextLesson?.title}</p>
                           <ProgressBar percentage={pct} showLabel />
                         </div>
-                        <Link to={`/course/${course.id}/lesson/${nextLesson?.id}`}
+                        <Link
+                          to={`/course/${course.id}/lesson/${nextLesson?.id ?? course.lessons[0].id}`}
                           className="btn-primary text-sm py-2 px-4 flex-shrink-0 flex items-center gap-2">
                           Continue <ArrowRight size={14} />
                         </Link>
@@ -115,6 +149,31 @@ export default function DashboardPage() {
               </section>
             )}
           </div>
+        )}
+
+        {/* Recommended courses based on interests */}
+        {suggestedCourses.length > 0 && (
+          <section className="mt-16">
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <h2 className="font-display text-2xl font-bold text-white mb-1 flex items-center gap-2">
+                  <Compass size={22} className="text-electric-400" />
+                  {interests.length > 0 ? 'Recommended for you' : 'Explore more courses'}
+                </h2>
+                <p className="text-slate-500 text-sm">
+                  {interests.length > 0
+                    ? 'Based on your learning interests'
+                    : 'Top-rated courses across all disciplines'}
+                </p>
+              </div>
+              <Link to="/catalog" className="text-electric-400 hover:text-electric-300 text-sm flex items-center gap-1 transition-colors">
+                See all <ArrowRight size={14} />
+              </Link>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {suggestedCourses.map(c => <CourseCard key={c.id} course={c} />)}
+            </div>
+          </section>
         )}
       </div>
     </div>

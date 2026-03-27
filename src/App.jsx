@@ -18,6 +18,7 @@ import CourseDetailPage from './pages/CourseDetailPage'
 import LessonPlayerPage from './pages/LessonPlayerPage'
 import CertificatePage from './pages/CertificatePage'
 import BookmarksPage from './pages/BookmarksPage'
+import OnboardingPage from './pages/OnboardingPage'
 
 function MainLayout() {
   return (
@@ -72,6 +73,9 @@ export default function App() {
                 } />
                 <Route path="/bookmarks" element={
                   <ProtectedRoute><BookmarksPage /></ProtectedRoute>
+                } />
+                <Route path="/onboarding" element={
+                  <ProtectedRoute><OnboardingPage /></ProtectedRoute>
                 } />
               </Route>
 
