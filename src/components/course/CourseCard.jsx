@@ -1,15 +1,25 @@
 import { Link } from 'react-router-dom'
-import { Star, Users, Clock, Lock } from 'lucide-react'
+import { Star, Users, Clock, Lock, Bookmark } from 'lucide-react'
 import { Badge } from '../ui/Badge'
 import { ProgressBar } from '../ui/ProgressBar'
 import { useAppContext } from '../../store/AppContext'
+import { useAuthContext } from '../../store/AuthContext'
 import { getCategoryById } from '../../data/courses'
 
 export function CourseCard({ course, showProgress = false }) {
-  const { isEnrolled, getProgress } = useAppContext()
+  const { isEnrolled, getProgress, isBookmarked, toggleBookmark } = useAppContext()
+  const { user } = useAuthContext()
   const enrolled = isEnrolled(course.id)
   const progress = getProgress(course.id, course.lessons.length)
   const category = getCategoryById(course.category)
+  const bookmarked = isBookmarked(course.id)
+
+  function handleBookmark(e) {
+    e.preventDefault()
+    e.stopPropagation()
+    if (!user) return
+    toggleBookmark(course.id)
+  }
 
   return (
     <Link to={`/course/${course.id}`} className="card group hover:border-electric-500/20 transition-all duration-300 hover:shadow-xl hover:shadow-electric-500/5 hover:-translate-y-0.5 flex flex-col">
@@ -21,7 +31,7 @@ export function CourseCard({ course, showProgress = false }) {
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-navy-900 via-transparent to-transparent" />
-        
+
         {/* Category badge */}
         <div className="absolute top-3 left-3">
           <span className="badge bg-black/50 backdrop-blur-sm text-white border border-white/10 text-xs">
@@ -29,9 +39,23 @@ export function CourseCard({ course, showProgress = false }) {
           </span>
         </div>
 
+        {/* Bookmark button */}
+        {user && (
+          <button
+            onClick={handleBookmark}
+            className={`absolute top-3 right-3 w-8 h-8 rounded-lg flex items-center justify-center transition-all duration-200
+              ${bookmarked
+                ? 'bg-electric-500 text-white shadow-lg shadow-electric-500/30'
+                : 'bg-black/50 backdrop-blur-sm text-white/70 hover:text-white hover:bg-black/70'
+              }`}
+          >
+            <Bookmark size={14} className={bookmarked ? 'fill-white' : ''} />
+          </button>
+        )}
+
         {/* Enrolled indicator */}
         {enrolled && (
-          <div className="absolute top-3 right-3 badge bg-electric-500/90 text-white text-xs">
+          <div className="absolute bottom-3 right-3 badge bg-electric-500/90 text-white text-xs">
             Enrolled
           </div>
         )}

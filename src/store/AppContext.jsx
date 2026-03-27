@@ -8,7 +8,8 @@ const AppContext = createContext(null)
 const initialState = {
   enrollments: [],
   progress: {},
-  certificates: {}, // { courseId: { issued_at: '2026-03-23T...' } }
+  certificates: {},
+  bookmarks: [],      // [courseId, ...]
   loadingData: true,
 }
 
@@ -20,8 +21,19 @@ function appReducer(state, action) {
         enrollments: action.enrollments,
         progress: action.progress,
         certificates: action.certificates,
+        bookmarks: action.bookmarks,
         loadingData: false,
       }
+
+    case 'TOGGLE_BOOKMARK': {
+      const exists = state.bookmarks.includes(action.courseId)
+      return {
+        ...state,
+        bookmarks: exists
+          ? state.bookmarks.filter(id => id !== action.courseId)
+          : [...state.bookmarks, action.courseId],
+      }
+    }
 
     case 'ENROLL':
       return { ...state, enrollments: [...state.enrollments, action.courseId] }
@@ -71,10 +83,11 @@ export function AppProvider({ children }) {
 
   async function loadUserData(userId) {
     try {
-      const [{ data: enrollData }, { data: progressData }, { data: certData }] = await Promise.all([
+      const [{ data: enrollData }, { data: progressData }, { data: certData }, { data: bookmarkData }] = await Promise.all([
         supabase.from('enrollments').select('course_id').eq('user_id', userId),
         supabase.from('progress').select('course_id, lesson_id').eq('user_id', userId),
         supabase.from('certificates').select('course_id, issued_at').eq('user_id', userId),
+        supabase.from('bookmarks').select('course_id').eq('user_id', userId),
       ])
 
       const enrollments = enrollData?.map((e) => e.course_id) ?? []
@@ -90,7 +103,9 @@ export function AppProvider({ children }) {
         certificates[course_id] = { issued_at }
       })
 
-      dispatch({ type: 'SET_DATA', enrollments, progress, certificates })
+      const bookmarks = bookmarkData?.map(b => b.course_id) ?? []
+
+      dispatch({ type: 'SET_DATA', enrollments, progress, certificates, bookmarks })
     } catch (err) {
       console.error('Error loading user data:', err)
       dispatch({ type: 'SET_DATA', enrollments: [], progress: {}, certificates: {} })
@@ -148,11 +163,26 @@ export function AppProvider({ children }) {
     return state.progress[courseId]?.completedLessons?.includes(lessonId) ?? false
   }
 
+  async function toggleBookmark(courseId) {
+    if (!user) return
+    const isBookmarked = state.bookmarks.includes(courseId)
+    dispatch({ type: 'TOGGLE_BOOKMARK', courseId })
+    if (isBookmarked) {
+      await supabase.from('bookmarks').delete().eq('user_id', user.id).eq('course_id', courseId)
+    } else {
+      await supabase.from('bookmarks').insert({ user_id: user.id, course_id: courseId })
+    }
+  }
+
+  function isBookmarked(courseId) {
+    return state.bookmarks.includes(courseId)
+  }
+
   function getCertificate(courseId) {
     return state.certificates[courseId] ?? null
   }
 
-  const value = { ...state, enroll, completeLesson, getProgress, isEnrolled, isLessonComplete, getCertificate }
+  const value = { ...state, enroll, completeLesson, getProgress, isEnrolled, isLessonComplete, getCertificate, toggleBookmark, isBookmarked }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }
