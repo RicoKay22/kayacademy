@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './store/AuthContext'
 import { AppProvider } from './store/AppContext'
 import { ThemeProvider } from './store/ThemeContext'
+import { NotificationProvider } from './store/NotificationContext'
 import { ProtectedRoute } from './routes/ProtectedRoute'
 import { Navbar } from './components/layout/Navbar'
 
@@ -39,6 +40,7 @@ export default function App() {
       <ThemeProvider>
         <AuthProvider>
           <AppProvider>
+            <NotificationProvider>
             <Toaster
               position="top-right"
               toastOptions={{
@@ -93,7 +95,8 @@ export default function App() {
                 </div>
               } />
             </Routes>
-          </AppProvider>
+            </NotificationProvider>
+        </AppProvider>
         </AuthProvider>
       </ThemeProvider>
     </BrowserRouter>

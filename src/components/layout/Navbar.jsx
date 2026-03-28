@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../../store/AuthContext'
 import { useAuth } from '../../hooks/useAuth'
 import { useTheme } from '../../store/ThemeContext'
+import { NotificationBell } from '../ui/NotificationBell'
 import { BookOpen, LogOut, LogIn, Sun, Moon, Bookmark, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
@@ -48,6 +49,9 @@ export function Navbar() {
               : <Moon size={17} className="text-slate-600 hover:text-electric-400 transition-colors" />
             }
           </button>
+
+          {/* Notification bell — only for logged in users */}
+          {user && <NotificationBell />}
 
           {/* Desktop auth */}
           <div className="hidden md:flex items-center gap-2">

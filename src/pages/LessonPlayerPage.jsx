@@ -1,12 +1,14 @@
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
-import { CheckCircle, ChevronLeft, ChevronRight, List, X, Lock, Award, PlayCircle } from 'lucide-react'
+import { CheckCircle, ChevronLeft, ChevronRight, List, X, Lock, Award, PlayCircle, FileText } from 'lucide-react'
 import { getCourseById } from '../data/courses'
 import { useAppContext } from '../store/AppContext'
 import { useProgress } from '../hooks/useProgress'
+import { useNotifications } from '../store/NotificationContext'
 import { ProgressBar } from '../components/ui/ProgressBar'
+import { NotesPanel } from '../components/lesson/NotesPanel'
 
-// ─── HELPERS 
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
 
 function formatTime(seconds) {
   if (!seconds || isNaN(seconds)) return '0:00'
@@ -39,7 +41,7 @@ function loadYouTubeAPI(callback) {
   }
 }
 
-// ─── COMPONENT 
+// ─── COMPONENT ───────────────────────────────────────────────────────────────
 
 export default function LessonPlayerPage() {
   const { courseId, lessonId } = useParams()
@@ -47,8 +49,10 @@ export default function LessonPlayerPage() {
   const course = getCourseById(courseId)
   const { isEnrolled, isLessonComplete } = useAppContext()
   const { percentage, completedCount, markComplete } = useProgress(courseId, course?.lessons ?? [])
+  const { addNotification } = useNotifications()
 
   const [sidebarOpen, setSidebarOpen] = useState(true)
+  const [sidebarTab, setSidebarTab] = useState('lessons') // 'lessons' | 'notes'
   const [isPlaying, setIsPlaying] = useState(false)
   const [actualDuration, setActualDuration] = useState(0)
 
@@ -59,7 +63,7 @@ export default function LessonPlayerPage() {
   const watchedRef = useRef(0)
   const isMountedRef = useRef(true)
 
-  // ── localStorage keys 
+  // ── localStorage keys ─────────────────────────────────────────────────────
   const storageKey = `ka_watch_${courseId}_${lessonId}`      // watch time in seconds
   const positionKey = `ka_pos_${courseId}_${lessonId}`       // video position in seconds
 
@@ -253,7 +257,7 @@ export default function LessonPlayerPage() {
     localStorage.removeItem(storageKey)
     localStorage.removeItem(positionKey)
     setTimeout(() => {
-      if (isMountedRef.current) markComplete(lessonId)
+      if (isMountedRef.current) markComplete(lessonId, addNotification)
     }, 100)
   }
 
@@ -261,7 +265,7 @@ export default function LessonPlayerPage() {
     if (!watchTimerDone || !nextLesson) return
     localStorage.removeItem(storageKey)
     localStorage.removeItem(positionKey)
-    safeNavigate(`/course/${courseId}/lesson/${nextLesson.id}`, () => markComplete(lessonId))
+    safeNavigate(`/course/${courseId}/lesson/${nextLesson.id}`, () => markComplete(lessonId, addNotification))
   }
 
   function handlePrev() {
@@ -463,41 +467,76 @@ export default function LessonPlayerPage() {
         {/* Sidebar */}
         {sidebarOpen && (
           <div className="w-72 border-l border-white/5 flex flex-col bg-navy-900/50 flex-shrink-0">
-            <div className="p-4 border-b border-white/5">
-              <h3 className="font-display font-semibold text-white text-sm mb-2">Course Content</h3>
-              <ProgressBar percentage={percentage} showLabel size="sm" />
+            {/* Tab switcher */}
+            <div className="flex border-b border-white/5 flex-shrink-0">
+              <button
+                onClick={() => setSidebarTab('lessons')}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-medium transition-all
+                  ${sidebarTab === 'lessons'
+                    ? 'text-white border-b-2 border-electric-500'
+                    : 'text-slate-500 hover:text-slate-300'}`}>
+                <List size={13} /> Lessons
+              </button>
+              <button
+                onClick={() => setSidebarTab('notes')}
+                className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-medium transition-all
+                  ${sidebarTab === 'notes'
+                    ? 'text-white border-b-2 border-electric-500'
+                    : 'text-slate-500 hover:text-slate-300'}`}>
+                <FileText size={13} /> Notes
+              </button>
             </div>
-            <div className="overflow-y-auto flex-1 lesson-scroll">
-              {course.lessons.map((l, idx) => {
-                const done = isLessonComplete(courseId, l.id)
-                const active = l.id === lessonId
-                const prevDone = idx === 0 || isLessonComplete(courseId, course.lessons[idx - 1]?.id)
-                const seqLocked = !prevDone && !done
-                const locked = (!enrolled && !l.free) || seqLocked
 
-                return (
-                  <button
-                    key={l.id}
-                    onClick={() => { if (!locked) handleSidebarNav(l.id) }}
-                    disabled={locked}
-                    title={seqLocked ? 'Complete previous lesson first' : ''}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all
-                      ${active ? 'bg-electric-500/10 border-r-2 border-electric-500' : 'hover:bg-white/5'}
-                      ${locked ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}>
-                    <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs
-                      ${done ? 'bg-emerald-500/20 text-emerald-400' : active ? 'bg-electric-500 text-white' : 'bg-navy-800 text-slate-600'}`}>
-                      {done ? <CheckCircle size={12} /> : locked ? <Lock size={10} /> : idx + 1}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className={`truncate text-xs ${active ? 'text-electric-400 font-medium' : done ? 'text-emerald-400' : 'text-slate-400'}`}>
-                        {l.title}
-                      </p>
-                      <p className="text-xs text-slate-600">{l.duration}</p>
-                    </div>
-                  </button>
-                )
-              })}
-            </div>
+            {/* Lessons tab */}
+            {sidebarTab === 'lessons' && (
+              <>
+                <div className="p-4 border-b border-white/5 flex-shrink-0">
+                  <ProgressBar percentage={percentage} showLabel size="sm" />
+                </div>
+                <div className="overflow-y-auto flex-1 lesson-scroll">
+                  {course.lessons.map((l, idx) => {
+                    const done = isLessonComplete(courseId, l.id)
+                    const active = l.id === lessonId
+                    const prevDone = idx === 0 || isLessonComplete(courseId, course.lessons[idx - 1]?.id)
+                    const seqLocked = !prevDone && !done
+                    const locked = (!enrolled && !l.free) || seqLocked
+
+                    return (
+                      <button
+                        key={l.id}
+                        onClick={() => { if (!locked) handleSidebarNav(l.id) }}
+                        disabled={locked}
+                        title={seqLocked ? 'Complete previous lesson first' : ''}
+                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all
+                          ${active ? 'bg-electric-500/10 border-r-2 border-electric-500' : 'hover:bg-white/5'}
+                          ${locked ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}>
+                        <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs
+                          ${done ? 'bg-emerald-500/20 text-emerald-400' : active ? 'bg-electric-500 text-white' : 'bg-navy-800 text-slate-600'}`}>
+                          {done ? <CheckCircle size={12} /> : locked ? <Lock size={10} /> : idx + 1}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`truncate text-xs ${active ? 'text-electric-400 font-medium' : done ? 'text-emerald-400' : 'text-slate-400'}`}>
+                            {l.title}
+                          </p>
+                          <p className="text-xs text-slate-600">{l.duration}</p>
+                        </div>
+                      </button>
+                    )
+                  })}
+                </div>
+              </>
+            )}
+
+            {/* Notes tab */}
+            {sidebarTab === 'notes' && (
+              <div className="flex-1 overflow-hidden">
+                <NotesPanel
+                  courseId={courseId}
+                  lessonId={lessonId}
+                  lessonTitle={lesson?.title ?? ''}
+                />
+              </div>
+            )}
           </div>
         )}
       </div>

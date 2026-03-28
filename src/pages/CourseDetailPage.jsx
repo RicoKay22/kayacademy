@@ -4,6 +4,7 @@ import { getCourseById, getCategoryById } from '../data/courses'
 import { useAuthContext } from '../store/AuthContext'
 import { useAppContext } from '../store/AppContext'
 import { useProgress } from '../hooks/useProgress'
+import { useNotifications } from '../store/NotificationContext'
 import { Badge } from '../components/ui/Badge'
 import { ProgressBar } from '../components/ui/ProgressBar'
 
@@ -14,6 +15,7 @@ export default function CourseDetailPage() {
   const category = getCategoryById(course?.category)
   const { user } = useAuthContext()
   const { enroll, isEnrolled, isLessonComplete } = useAppContext()
+  const { addNotification } = useNotifications()
   const { percentage, completedCount } = useProgress(courseId, course?.lessons ?? [])
 
   if (!course) return (
@@ -29,7 +31,7 @@ export default function CourseDetailPage() {
 
   function handleEnroll() {
     if (!user) { navigate('/login'); return }
-    enroll(course.id)
+    enroll(course.id, addNotification)
   }
 
   function handleStartLesson(lesson) {

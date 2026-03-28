@@ -9,7 +9,7 @@ const initialState = {
   enrollments: [],
   progress: {},
   certificates: {},
-  bookmarks: [],      // [courseId, ...]
+  bookmarks: [],
   loadingData: true,
 }
 
@@ -25,24 +25,13 @@ function appReducer(state, action) {
         loadingData: false,
       }
 
-    case 'TOGGLE_BOOKMARK': {
-      const exists = state.bookmarks.includes(action.courseId)
-      return {
-        ...state,
-        bookmarks: exists
-          ? state.bookmarks.filter(id => id !== action.courseId)
-          : [...state.bookmarks, action.courseId],
-      }
-    }
-
     case 'ENROLL':
       return { ...state, enrollments: [...state.enrollments, action.courseId] }
 
     case 'COMPLETE_LESSON': {
       const { courseId, lessonId } = action
       const existing = state.progress[courseId] ?? { completedLessons: [] }
-      const alreadyDone = existing.completedLessons.includes(lessonId)
-      if (alreadyDone) return state
+      if (existing.completedLessons.includes(lessonId)) return state
       return {
         ...state,
         progress: {
@@ -61,6 +50,16 @@ function appReducer(state, action) {
         },
       }
 
+    case 'TOGGLE_BOOKMARK': {
+      const exists = state.bookmarks.includes(action.courseId)
+      return {
+        ...state,
+        bookmarks: exists
+          ? state.bookmarks.filter(id => id !== action.courseId)
+          : [...state.bookmarks, action.courseId],
+      }
+    }
+
     case 'RESET':
       return { ...initialState, loadingData: false }
 
@@ -74,23 +73,25 @@ export function AppProvider({ children }) {
   const [state, dispatch] = useReducer(appReducer, initialState)
 
   useEffect(() => {
-    if (!user) {
-      dispatch({ type: 'RESET' })
-      return
-    }
+    if (!user) { dispatch({ type: 'RESET' }); return }
     loadUserData(user.id)
   }, [user])
 
   async function loadUserData(userId) {
     try {
-      const [{ data: enrollData }, { data: progressData }, { data: certData }, { data: bookmarkData }] = await Promise.all([
+      const [
+        { data: enrollData },
+        { data: progressData },
+        { data: certData },
+        { data: bookmarkData },
+      ] = await Promise.all([
         supabase.from('enrollments').select('course_id').eq('user_id', userId),
         supabase.from('progress').select('course_id, lesson_id').eq('user_id', userId),
         supabase.from('certificates').select('course_id, issued_at').eq('user_id', userId),
         supabase.from('bookmarks').select('course_id').eq('user_id', userId),
       ])
 
-      const enrollments = enrollData?.map((e) => e.course_id) ?? []
+      const enrollments = enrollData?.map(e => e.course_id) ?? []
 
       const progress = {}
       progressData?.forEach(({ course_id, lesson_id }) => {
@@ -108,34 +109,63 @@ export function AppProvider({ children }) {
       dispatch({ type: 'SET_DATA', enrollments, progress, certificates, bookmarks })
     } catch (err) {
       console.error('Error loading user data:', err)
-      dispatch({ type: 'SET_DATA', enrollments: [], progress: {}, certificates: {} })
+      dispatch({ type: 'SET_DATA', enrollments: [], progress: {}, certificates: {}, bookmarks: [] })
     }
   }
 
-  async function enroll(courseId) {
+  // ── enroll ── accepts optional addNotification from NotificationContext
+  async function enroll(courseId, addNotification) {
     if (!user || state.enrollments.includes(courseId)) return
+    const course = COURSES.find(c => c.id === courseId)
     dispatch({ type: 'ENROLL', courseId })
     await supabase.from('enrollments').insert({ user_id: user.id, course_id: courseId })
     await supabase.from('activity').upsert({ user_id: user.id, last_active_at: new Date().toISOString() })
+
+    if (addNotification && course) {
+      addNotification({
+        title: 'Enrolled successfully! 🎉',
+        message: `You're now enrolled in "${course.title}". Start learning whenever you're ready.`,
+        type: 'success',
+        icon: '📚',
+      })
+    }
   }
 
-  async function completeLesson(courseId, lessonId) {
+  // ── completeLesson ── accepts optional addNotification
+  async function completeLesson(courseId, lessonId, addNotification) {
     if (!user) return
     dispatch({ type: 'COMPLETE_LESSON', courseId, lessonId })
     await supabase.from('progress').upsert({ user_id: user.id, course_id: courseId, lesson_id: lessonId })
     await supabase.from('activity').upsert({ user_id: user.id, last_active_at: new Date().toISOString() })
 
-    // Check if this lesson completion finishes the course
     const course = COURSES.find(c => c.id === courseId)
     if (!course) return
 
     const currentCompleted = state.progress[courseId]?.completedLessons ?? []
     const allLessonIds = course.lessons.map(l => l.id)
     const newCompleted = [...new Set([...currentCompleted, lessonId])]
+    const pct = Math.round((newCompleted.length / allLessonIds.length) * 100)
     const isNowComplete = allLessonIds.every(id => newCompleted.includes(id))
 
+    // Progress milestone notifications
+    if (addNotification) {
+      if (pct === 50) {
+        addNotification({
+          title: 'Halfway there! 🔥',
+          message: `You're 50% through "${course.title}". Keep going!`,
+          type: 'info', icon: '⚡',
+        })
+      } else if (pct === 80) {
+        addNotification({
+          title: 'Almost done! 💪',
+          message: `You're 80% through "${course.title}". The finish line is close!`,
+          type: 'info', icon: '🏁',
+        })
+      }
+    }
+
+    // Issue certificate on course completion
     if (isNowComplete && !state.certificates[courseId]) {
-      // Issue certificate with today's date — stored permanently in Supabase
       const issuedAt = new Date().toISOString()
       const certCode = `KA-${courseId.toUpperCase().replace(/-/g, '').slice(0, 8)}-${user.id.slice(0, 8).toUpperCase()}`
 
@@ -147,6 +177,14 @@ export function AppProvider({ children }) {
         issued_at: issuedAt,
         certificate_code: certCode,
       })
+
+      if (addNotification) {
+        addNotification({
+          title: 'Course completed! 🎓',
+          message: `Congratulations! You've completed "${course.title}". Your certificate is ready.`,
+          type: 'success', icon: '🏆',
+        })
+      }
     }
   }
 
@@ -155,34 +193,30 @@ export function AppProvider({ children }) {
     return totalLessons > 0 ? Math.round((done / totalLessons) * 100) : 0
   }
 
-  function isEnrolled(courseId) {
-    return state.enrollments.includes(courseId)
-  }
-
+  function isEnrolled(courseId) { return state.enrollments.includes(courseId) }
   function isLessonComplete(courseId, lessonId) {
     return state.progress[courseId]?.completedLessons?.includes(lessonId) ?? false
   }
+  function getCertificate(courseId) { return state.certificates[courseId] ?? null }
+  function isBookmarked(courseId) { return state.bookmarks.includes(courseId) }
 
   async function toggleBookmark(courseId) {
     if (!user) return
-    const isBookmarked = state.bookmarks.includes(courseId)
+    const bookmarked = state.bookmarks.includes(courseId)
     dispatch({ type: 'TOGGLE_BOOKMARK', courseId })
-    if (isBookmarked) {
+    if (bookmarked) {
       await supabase.from('bookmarks').delete().eq('user_id', user.id).eq('course_id', courseId)
     } else {
       await supabase.from('bookmarks').insert({ user_id: user.id, course_id: courseId })
     }
   }
 
-  function isBookmarked(courseId) {
-    return state.bookmarks.includes(courseId)
+  const value = {
+    ...state,
+    enroll, completeLesson, getProgress,
+    isEnrolled, isLessonComplete, getCertificate,
+    toggleBookmark, isBookmarked,
   }
-
-  function getCertificate(courseId) {
-    return state.certificates[courseId] ?? null
-  }
-
-  const value = { ...state, enroll, completeLesson, getProgress, isEnrolled, isLessonComplete, getCertificate, toggleBookmark, isBookmarked }
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>
 }

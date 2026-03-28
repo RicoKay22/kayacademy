@@ -7,11 +7,11 @@ export function useProgress(courseId, lessons = []) {
   const totalCount = lessons.length
   const percentage = getProgress(courseId, totalCount)
   const isComplete = totalCount > 0 && completedCount === totalCount
-
   const nextLesson = lessons.find((l) => !isLessonComplete(courseId, l.id))
 
-  function markComplete(lessonId) {
-    completeLesson(courseId, lessonId)
+  // addNotification is optional — passed from pages that have access to it
+  function markComplete(lessonId, addNotification) {
+    completeLesson(courseId, lessonId, addNotification)
   }
 
   return {
