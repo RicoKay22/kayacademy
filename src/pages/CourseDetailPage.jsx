@@ -7,6 +7,7 @@ import { useProgress } from '../hooks/useProgress'
 import { useNotifications } from '../store/NotificationContext'
 import { Badge } from '../components/ui/Badge'
 import { ProgressBar } from '../components/ui/ProgressBar'
+import { CourseDetailSkeleton } from '../components/ui/Skeleton'
 
 export default function CourseDetailPage() {
   const { courseId } = useParams()
@@ -14,9 +15,11 @@ export default function CourseDetailPage() {
   const course = getCourseById(courseId)
   const category = getCategoryById(course?.category)
   const { user } = useAuthContext()
-  const { enroll, isEnrolled, isLessonComplete } = useAppContext()
+  const { enroll, isEnrolled, isLessonComplete, loadingData } = useAppContext()
   const { addNotification } = useNotifications()
   const { percentage, completedCount } = useProgress(courseId, course?.lessons ?? [])
+
+  if (loadingData) return <CourseDetailSkeleton />
 
   if (!course) return (
     <div className="min-h-screen bg-navy-950 pt-24 flex items-center justify-center">

@@ -178,3 +178,77 @@
 .light .bg-electric-500\/10 { background-color: rgba(30,144,255,0.08) !important; }
 .light .bg-electric-500\/5 { background-color: rgba(30,144,255,0.05) !important; }
 .light .bg-navy-800\/50 { background-color: rgba(241,245,249,0.8) !important; }
+
+/* ─── MOBILE RESPONSIVE FIXES ───────────────────────────────────────────── */
+
+/* Prevent horizontal overflow globally */
+html, body { overflow-x: hidden; }
+
+/* Hero text scaling */
+@media (max-width: 640px) {
+  .hero-title { font-size: 2.5rem !important; line-height: 1.1 !important; }
+
+  /* Stats grid — 2 cols on mobile */
+  .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Course card grid — 1 col on small mobile */
+  .course-grid-sm { grid-template-columns: 1fr !important; }
+
+  /* Lesson player — hide sidebar by default on mobile */
+  .lesson-sidebar-mobile { display: none; }
+
+  /* Certificate page — reduce padding */
+  .certificate-content { padding: 24px 20px !important; }
+
+  /* Auth pages — reduce padding */
+  .auth-card { padding: 24px !important; }
+
+  /* Dashboard continue learning — stack vertically */
+  .continue-card { flex-direction: column !important; }
+  .continue-card img { width: 100% !important; height: 140px !important; }
+}
+
+/* Tablet fixes */
+@media (max-width: 768px) {
+  /* Navbar — hide center nav links */
+  .nav-center { display: none !important; }
+
+  /* Catalog filter pills — wrap properly */
+  .catalog-filters { flex-wrap: wrap !important; gap: 8px !important; }
+
+  /* Course detail — stack enrollment card below */
+  .course-detail-layout { flex-direction: column !important; }
+  .course-enrollment-card { width: 100% !important; position: static !important; }
+
+  /* Dashboard stats — 2 cols */
+  .dashboard-stats { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Homepage categories — 2 cols */
+  .category-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Onboarding grid — 2 cols */
+  .onboarding-grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Lesson player top bar text truncate */
+  .lesson-topbar-title { max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
+
+/* Fix touch targets on mobile */
+@media (max-width: 640px) {
+  button, a {
+    min-height: 40px;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 12px 20px !important;
+  }
+}
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  outline: 2px solid #1E90FF;
+  outline-offset: 2px;
+}

@@ -5,10 +5,27 @@ import { useAppContext } from '../store/AppContext'
 import { COURSES, getCategoryById } from '../data/courses'
 import { CourseCard } from '../components/course/CourseCard'
 import { ProgressBar } from '../components/ui/ProgressBar'
+import { DashboardStatsSkeleton, CourseCardSkeletonGrid } from '../components/ui/Skeleton'
 
 export default function DashboardPage() {
   const { user } = useAuthContext()
-  const { enrollments, getProgress, isLessonComplete } = useAppContext()
+  const { enrollments, getProgress, isLessonComplete, loadingData } = useAppContext()
+
+  // Show skeleton while data loads
+  if (loadingData) {
+    return (
+      <div className="min-h-screen bg-navy-950 pt-24 px-6 pb-16 page-enter">
+        <div className="max-w-7xl mx-auto">
+          <div className="mb-10 space-y-2">
+            <div className="h-10 w-72 bg-navy-800 rounded-xl animate-pulse" />
+            <div className="h-5 w-48 bg-navy-800 rounded-xl animate-pulse" />
+          </div>
+          <DashboardStatsSkeleton />
+          <CourseCardSkeletonGrid count={4} />
+        </div>
+      </div>
+    )
+  }
 
   const enrolledCourses = COURSES.filter(c => enrollments.includes(c.id))
   const inProgress = enrolledCourses.filter(c => {
