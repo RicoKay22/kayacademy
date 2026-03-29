@@ -48,12 +48,20 @@ export default function DashboardPage() {
     (interests.length === 0 || interests.includes(c.category))
   ).slice(0, 4)
 
-  // Fallback if no interests or no matches — show top rated
-  const suggestedCourses = recommended.length > 0
-    ? recommended
-    : COURSES.filter(c => !enrollments.includes(c.id))
-        .sort((a, b) => b.rating - a.rating)
-        .slice(0, 4)
+  // If all interest-based courses are enrolled, show other unenrolled courses
+  const unenrolledAll = COURSES.filter(c => !enrollments.includes(c.id))
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 4)
+
+  // Always show something — interest-based first, then top rated fallback
+  const suggestedCourses = recommended.length > 0 ? recommended : unenrolledAll
+
+  // Section label depends on context
+  const recommendedLabel = recommended.length > 0
+    ? 'Recommended for you'
+    : unenrolledAll.length > 0
+      ? 'Explore more courses'
+      : null
 
   return (
     <div className="min-h-screen bg-navy-950 pt-24 px-6 pb-16 page-enter">
@@ -126,17 +134,19 @@ export default function DashboardPage() {
                     const pct = getProgress(course.id, course.lessons.length)
                     const nextLesson = course.lessons.find(l => !isLessonComplete(course.id, l.id))
                     return (
-                      <div key={course.id} className="glass p-5 flex items-center gap-5 hover:border-electric-500/20 transition-all">
-                        <img src={course.thumbnail} alt={course.title}
-                          className="w-20 h-14 object-cover rounded-lg flex-shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-display font-semibold text-white truncate mb-1">{course.title}</h3>
-                          <p className="text-xs text-slate-500 mb-2">Next: {nextLesson?.title}</p>
-                          <ProgressBar percentage={pct} showLabel />
+                      <div key={course.id} className="glass p-4 hover:border-electric-500/20 transition-all">
+                        <div className="flex items-center gap-3 mb-3">
+                          <img src={course.thumbnail} alt={course.title}
+                            className="w-14 h-10 sm:w-20 sm:h-14 object-cover rounded-lg flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <h3 className="font-display font-semibold text-white text-sm truncate">{course.title}</h3>
+                            <p className="text-xs text-slate-500 truncate">Next: {nextLesson?.title}</p>
+                          </div>
                         </div>
+                        <ProgressBar percentage={pct} showLabel />
                         <Link
                           to={`/course/${course.id}/lesson/${nextLesson?.id ?? course.lessons[0].id}`}
-                          className="btn-primary text-sm py-2 px-4 flex-shrink-0 flex items-center gap-2">
+                          className="btn-primary text-sm mt-3 flex items-center justify-center gap-2 w-full">
                           Continue <ArrowRight size={14} />
                         </Link>
                       </div>
@@ -168,14 +178,14 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Recommended courses based on interests */}
-        {suggestedCourses.length > 0 && (
+        {/* Recommended courses — always show if any unenrolled exist */}
+        {recommendedLabel && suggestedCourses.length > 0 && (
           <section className="mt-16">
             <div className="flex items-end justify-between mb-6">
               <div>
                 <h2 className="font-display text-2xl font-bold text-white mb-1 flex items-center gap-2">
                   <Compass size={22} className="text-electric-400" />
-                  {interests.length > 0 ? 'Recommended for you' : 'Explore more courses'}
+                  {recommendedLabel}
                 </h2>
                 <p className="text-slate-500 text-sm">
                   {interests.length > 0

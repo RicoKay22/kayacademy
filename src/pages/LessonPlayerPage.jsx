@@ -322,33 +322,30 @@ export default function LessonPlayerPage() {
     <div className="h-screen bg-navy-950 flex flex-col overflow-hidden">
 
       {/* Top bar */}
-      <div className="h-14 bg-navy-900/80 backdrop-blur-xl border-b border-white/5 flex items-center px-4 gap-4 flex-shrink-0 z-10">
-        <Link to={`/course/${courseId}`} className="flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors">
-          <ChevronLeft size={16} /> {course.title}
+      <div className="h-14 bg-navy-900/80 backdrop-blur-xl border-b border-white/5 flex items-center px-3 gap-2 flex-shrink-0 z-10">
+        <Link to={`/course/${courseId}`} className="flex items-center gap-1 text-sm text-slate-400 hover:text-white transition-colors flex-shrink-0">
+          <ChevronLeft size={16} />
+          <span className="hidden sm:inline truncate max-w-[200px]">{course.title}</span>
         </Link>
-        <div className="flex-1 hidden md:block">
+        <div className="flex-1">
           <ProgressBar percentage={percentage} />
         </div>
-        <span className="text-xs text-slate-500 hidden md:block">{completedCount}/{course.lessons.length} lessons</span>
-        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="btn-ghost p-2 ml-auto md:ml-0">
+        <span className="text-xs text-slate-500 flex-shrink-0">{completedCount}/{course.lessons.length}</span>
+        <button onClick={() => setSidebarOpen(!sidebarOpen)} className="btn-ghost p-2 flex-shrink-0">
           {sidebarOpen ? <X size={18} /> : <List size={18} />}
         </button>
       </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      {/* Mobile: stack vertically. Desktop: side by side */}
+      <div className="flex flex-col md:flex-row flex-1 overflow-hidden">
 
-        {/* Video + Controls */}
-        <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Left: Video + Controls */}
+        <div className="flex flex-col overflow-hidden flex-1 min-h-0">
 
-          {/* ─── THE KEY FIX FOR SLOW LOADING ───────────────────────────────
-              key={lessonId} forces React to FULLY UNMOUNT and REMOUNT this div
-              on every lesson change. This gives YouTube a completely fresh DOM
-              node to attach to — eliminating the blank/slow video issue entirely.
-              Without this, React reuses the same DOM node and YouTube gets confused.
-          ─────────────────────────────────────────────────────────────────── */}
-          <div className="relative bg-black" style={{ paddingTop: '56.25%' }}>
+          {/* Video — fixed height on mobile so controls are always visible */}
+          <div className="relative bg-black flex-shrink-0"
+            style={{ paddingTop: 'min(56.25%, 42vh)' }}>
             {isComplete ? (
-              // Already completed — standard iframe, no tracking needed
               <iframe
                 key={`done-${lessonId}`}
                 src={`https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`}
@@ -358,7 +355,6 @@ export default function LessonPlayerPage() {
                 className="absolute inset-0 w-full h-full"
               />
             ) : (
-              // KEY={lessonId} — fresh DOM node per lesson, fixes slow loading
               <div
                 key={lessonId}
                 id={`yt-player-${lessonId}`}
@@ -367,111 +363,115 @@ export default function LessonPlayerPage() {
             )}
           </div>
 
-          {/* Controls */}
-          <div className="p-6 flex-1 overflow-y-auto">
-            <div className="max-w-3xl">
-              <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
-                <div>
-                  <p className="text-xs text-slate-500 mb-1">Lesson {lessonIndex + 1} of {course.lessons.length}</p>
-                  <h1 className="font-display text-2xl font-bold text-white">{lesson.title}</h1>
-                </div>
+          {/* Controls — scrollable on mobile */}
+          <div className="flex-1 overflow-y-auto p-3 sm:p-6">
+            <div className="max-w-3xl mx-auto">
+              {/* Lesson title */}
+              <div className="mb-3">
+                <p className="text-xs text-slate-500 mb-0.5">Lesson {lessonIndex + 1} of {course.lessons.length}</p>
+                <h1 className="font-display text-lg sm:text-2xl font-bold text-white leading-tight">{lesson.title}</h1>
+              </div>
 
-                {/* Mark complete + watch tracker */}
-                <div className="flex flex-col items-end gap-2 flex-shrink-0 min-w-[210px]">
+              {/* Watch tracker + Mark complete */}
+              <div className="flex flex-col gap-2 mb-4">
+                {/* Watch progress bar */}
+                {!isComplete && (
+                  <div className="w-full">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="flex items-center gap-1 text-xs text-slate-500">
+                        {actualDuration === 0
+                          ? <><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse inline-block" /> Loading...</>
+                          : isPlaying
+                            ? <><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse inline-block" /> Tracking</>
+                            : <><PlayCircle size={11} /> Play to track</>
+                        }
+                      </span>
+                      <span className={`text-xs font-medium ${watchTimerDone ? 'text-emerald-400' : 'text-electric-400'}`}>
+                        {actualDuration === 0 ? '—' : watchTimerDone ? '✓ Done' : `${formatTime(timeRemaining)} left`}
+                      </span>
+                    </div>
+                    <div className="h-1.5 bg-navy-800 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-1000 ${watchTimerDone ? 'bg-emerald-500' : 'bg-electric-500'}`}
+                        style={{ width: `${watchProgress}%` }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Action buttons row */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {/* Previous */}
+                  <button
+                    onClick={handlePrev}
+                    disabled={!prevLesson}
+                    className="btn-secondary flex items-center gap-1 text-sm py-2 px-3 disabled:opacity-30 disabled:cursor-not-allowed">
+                    <ChevronLeft size={15} /> Prev
+                  </button>
+
+                  {/* Mark complete */}
                   <button
                     onClick={handleMarkComplete}
                     disabled={!watchTimerDone}
-                    className={`w-full flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-medium text-sm transition-all
+                    className={`flex items-center gap-1.5 text-sm py-2 px-3 rounded-xl font-medium transition-all flex-1 justify-center
                       ${isComplete
                         ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20 cursor-default'
                         : watchTimerDone
                           ? 'btn-primary'
                           : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed'}`}>
-                    <CheckCircle size={16} />
-                    {isComplete ? '✓ Lesson Complete' : watchTimerDone ? 'Mark Complete' : 'Watch to Unlock'}
+                    <CheckCircle size={15} />
+                    <span className="truncate">
+                      {isComplete ? '✓ Complete' : watchTimerDone ? 'Mark Complete' : 'Watch to Unlock'}
+                    </span>
                   </button>
 
-                  {!isComplete && (
-                    <div className="w-full">
-                      <div className="flex items-center justify-between mb-1.5">
-                        <span className="flex items-center gap-1 text-xs text-slate-500">
-                          {actualDuration === 0
-                            ? <><span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse inline-block" /> Loading video...</>
-                            : isPlaying
-                              ? <><span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse inline-block" /> Tracking watch time</>
-                              : <><PlayCircle size={11} /> Play video to track</>
-                          }
-                        </span>
-                        <span className={`text-xs font-medium ${watchTimerDone ? 'text-emerald-400' : 'text-electric-400'}`}>
-                          {actualDuration === 0 ? '—' : watchTimerDone ? '✓ Done' : `${formatTime(timeRemaining)} left`}
-                        </span>
-                      </div>
-                      <div className="h-1.5 bg-navy-800 rounded-full overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all duration-1000 ${watchTimerDone ? 'bg-emerald-500' : 'bg-electric-500'}`}
-                          style={{ width: `${watchProgress}%` }}
-                        />
-                      </div>
-                      {actualDuration > 0 && (
-                        <p className="text-xs text-slate-600 mt-1">
-                          {Math.round(watchProgress)}% watched · {formatTime(watchedSeconds)} / {formatTime(requiredSeconds)} required (97% of video)
-                        </p>
-                      )}
-                    </div>
+                  {/* Next / Certificate */}
+                  {nextLesson ? (
+                    <button
+                      onClick={handleNext}
+                      disabled={!watchTimerDone}
+                      className={`flex items-center gap-1 text-sm py-2 px-3 rounded-xl font-medium transition-all
+                        ${watchTimerDone
+                          ? 'btn-primary'
+                          : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed opacity-60'}`}>
+                      Next <ChevronRight size={15} />
+                    </button>
+                  ) : !isComplete ? (
+                    <button
+                      onClick={handleMarkComplete}
+                      disabled={!watchTimerDone}
+                      className={`flex items-center gap-1 text-sm py-2 px-3 rounded-xl font-medium transition-all
+                        ${watchTimerDone
+                          ? 'btn-primary bg-emerald-600 hover:bg-emerald-500'
+                          : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed opacity-60'}`}>
+                      <Award size={15} /> Finish
+                    </button>
+                  ) : (
+                    <Link
+                      to={`/certificate/${courseId}`}
+                      className="btn-primary flex items-center gap-1 text-sm py-2 px-3 bg-emerald-600 hover:bg-emerald-500">
+                      <Award size={15} /> Certificate
+                    </Link>
                   )}
                 </div>
-              </div>
-
-              {/* Navigation buttons */}
-              <div className="flex items-center gap-3 mt-6">
-                <button
-                  onClick={handlePrev}
-                  disabled={!prevLesson}
-                  className="btn-secondary flex items-center gap-2 text-sm disabled:opacity-30 disabled:cursor-not-allowed">
-                  <ChevronLeft size={16} /> Previous
-                </button>
-
-                {nextLesson ? (
-                  <button
-                    onClick={handleNext}
-                    disabled={!watchTimerDone}
-                    title={!watchTimerDone ? 'Watch 97% of this lesson first' : ''}
-                    className={`flex items-center gap-2 text-sm px-5 py-2.5 rounded-xl font-medium transition-all
-                      ${watchTimerDone
-                        ? 'btn-primary'
-                        : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed opacity-60'}`}>
-                    Next Lesson <ChevronRight size={16} />
-                  </button>
-                ) : !isComplete ? (
-                  <button
-                    onClick={handleMarkComplete}
-                    disabled={!watchTimerDone}
-                    className={`flex items-center gap-2 text-sm px-5 py-2.5 rounded-xl font-medium transition-all
-                      ${watchTimerDone
-                        ? 'btn-primary bg-emerald-600 hover:bg-emerald-500'
-                        : 'bg-navy-800 text-slate-500 border border-white/10 cursor-not-allowed opacity-60'}`}>
-                    <Award size={16} /> {watchTimerDone ? 'Complete Course' : 'Watch to Unlock'}
-                  </button>
-                ) : (
-                  <Link
-                    to={`/certificate/${courseId}`}
-                    className="btn-primary flex items-center gap-2 text-sm bg-emerald-600 hover:bg-emerald-500">
-                    <Award size={16} /> View Certificate
-                  </Link>
-                )}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Sidebar */}
+        {/* Sidebar — full width bottom sheet on mobile, fixed side panel on desktop */}
         {sidebarOpen && (
-          <div className="w-72 border-l border-white/5 flex flex-col bg-navy-900/50 flex-shrink-0">
+          <div className={`
+            border-white/5 flex flex-col bg-navy-900/80
+            md:w-72 md:border-l md:flex-shrink-0
+            border-t md:border-t-0
+            h-48 md:h-auto flex-shrink-0
+          `}>
             {/* Tab switcher */}
             <div className="flex border-b border-white/5 flex-shrink-0">
               <button
                 onClick={() => setSidebarTab('lessons')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-medium transition-all
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-all
                   ${sidebarTab === 'lessons'
                     ? 'text-white border-b-2 border-electric-500'
                     : 'text-slate-500 hover:text-slate-300'}`}>
@@ -479,7 +479,7 @@ export default function LessonPlayerPage() {
               </button>
               <button
                 onClick={() => setSidebarTab('notes')}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-medium transition-all
+                className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-all
                   ${sidebarTab === 'notes'
                     ? 'text-white border-b-2 border-electric-500'
                     : 'text-slate-500 hover:text-slate-300'}`}>
@@ -490,7 +490,7 @@ export default function LessonPlayerPage() {
             {/* Lessons tab */}
             {sidebarTab === 'lessons' && (
               <>
-                <div className="p-4 border-b border-white/5 flex-shrink-0">
+                <div className="px-3 py-2 border-b border-white/5 flex-shrink-0">
                   <ProgressBar percentage={percentage} showLabel size="sm" />
                 </div>
                 <div className="overflow-y-auto flex-1 lesson-scroll">
@@ -506,13 +506,12 @@ export default function LessonPlayerPage() {
                         key={l.id}
                         onClick={() => { if (!locked) handleSidebarNav(l.id) }}
                         disabled={locked}
-                        title={seqLocked ? 'Complete previous lesson first' : ''}
-                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-all
+                        className={`w-full flex items-center gap-2 px-3 py-2.5 text-left transition-all
                           ${active ? 'bg-electric-500/10 border-r-2 border-electric-500' : 'hover:bg-white/5'}
                           ${locked ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}`}>
                         <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 text-xs
                           ${done ? 'bg-emerald-500/20 text-emerald-400' : active ? 'bg-electric-500 text-white' : 'bg-navy-800 text-slate-600'}`}>
-                          {done ? <CheckCircle size={12} /> : locked ? <Lock size={10} /> : idx + 1}
+                          {done ? <CheckCircle size={11} /> : locked ? <Lock size={9} /> : idx + 1}
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className={`truncate text-xs ${active ? 'text-electric-400 font-medium' : done ? 'text-emerald-400' : 'text-slate-400'}`}>

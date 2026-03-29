@@ -97,85 +97,85 @@ export default function CertificatePage() {
           ))}
 
           {/* Certificate content */}
-          <div style={{ padding: '48px 80px', textAlign: 'center', position: 'relative', zIndex: 1 }}>
+          <div style={{ padding: 'clamp(24px, 5vw, 48px) clamp(20px, 8vw, 80px)', textAlign: 'center', position: 'relative', zIndex: 1 }}>
             {/* Logo */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '32px' }}>
-              <div style={{ width: 40, height: 40, borderRadius: 10, background: '#1E90FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="20" height="20" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', marginBottom: '24px' }}>
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: '#1E90FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="18" height="18" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
                 </svg>
               </div>
-              <span style={{ fontFamily: 'Clash Display, sans-serif', fontWeight: 700, fontSize: 22, color: '#0a1628' }}>
+              <span style={{ fontFamily: 'Clash Display, sans-serif', fontWeight: 700, fontSize: 'clamp(16px, 4vw, 22px)', color: '#0a1628' }}>
                 Kay<span style={{ color: '#1E90FF' }}>Academy</span>
               </span>
             </div>
 
             {/* Header text */}
-            <p style={{ fontSize: 13, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 8 }}>
+            <p style={{ fontSize: 'clamp(10px, 2.5vw, 13px)', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 8 }}>
               Certificate of Completion
             </p>
-            <p style={{ fontSize: 15, color: '#64748b', marginBottom: 28 }}>
+            <p style={{ fontSize: 'clamp(13px, 3vw, 15px)', color: '#64748b', marginBottom: 20 }}>
               This is to certify that
             </p>
 
             {/* Name */}
-            <div style={{ borderBottom: '2px solid #1E90FF', paddingBottom: 12, marginBottom: 28, display: 'inline-block', minWidth: 340 }}>
-              <p style={{ fontFamily: 'Clash Display, sans-serif', fontSize: 42, fontWeight: 700, color: '#0a1628', lineHeight: 1.1 }}>
+            <div style={{ borderBottom: '2px solid #1E90FF', paddingBottom: 12, marginBottom: 20, display: 'inline-block', minWidth: 'min(340px, 80%)' }}>
+              <p style={{ fontFamily: 'Clash Display, sans-serif', fontSize: 'clamp(28px, 7vw, 42px)', fontWeight: 700, color: '#0a1628', lineHeight: 1.1 }}>
                 {studentName}
               </p>
             </div>
 
-            <p style={{ fontSize: 15, color: '#64748b', marginBottom: 12 }}>
+            <p style={{ fontSize: 'clamp(12px, 3vw, 15px)', color: '#64748b', marginBottom: 12 }}>
               has successfully completed the course
             </p>
 
             {/* Course title */}
-            <p style={{ fontFamily: 'Clash Display, sans-serif', fontSize: 24, fontWeight: 700, color: '#0a1628', marginBottom: 32, maxWidth: 500, margin: '0 auto 32px' }}>
+            <p style={{ fontFamily: 'Clash Display, sans-serif', fontSize: 'clamp(16px, 4vw, 24px)', fontWeight: 700, color: '#0a1628', margin: '0 auto 24px' }}>
               {course.title}
             </p>
 
             {/* Meta */}
-            <div style={{ display: 'flex', justifyContent: 'center', gap: 48, marginBottom: 40 }}>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(16px, 5vw, 48px)', marginBottom: 28, flexWrap: 'wrap' }}>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>Instructor</p>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#0a1628' }}>{course.instructor}</p>
+                <p style={{ fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>Instructor</p>
+                <p style={{ fontSize: 'clamp(12px, 3vw, 14px)', fontWeight: 600, color: '#0a1628' }}>{course.instructor}</p>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>Duration</p>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#0a1628' }}>{courseDuration}</p>
+                <p style={{ fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>Duration</p>
+                <p style={{ fontSize: 'clamp(12px, 3vw, 14px)', fontWeight: 600, color: '#0a1628' }}>{courseDuration}</p>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>Issued</p>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#0a1628' }}>{completionDate}</p>
+                <p style={{ fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#94a3b8', marginBottom: 4 }}>Issued</p>
+                <p style={{ fontSize: 'clamp(12px, 3vw, 14px)', fontWeight: 600, color: '#0a1628' }}>{completionDate}</p>
               </div>
             </div>
 
             {/* Signatures row */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #e2e8f0', paddingTop: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderTop: '1px solid #e2e8f0', paddingTop: 20, gap: 8 }}>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ fontFamily: 'Clash Display, sans-serif', fontSize: 20, fontWeight: 700, color: '#1E90FF', marginBottom: 4 }}>KayAcademy</p>
-                <div style={{ width: 120, height: '1px', background: '#e2e8f0', margin: '0 auto 4px' }} />
-                <p style={{ fontSize: 11, color: '#94a3b8' }}>Platform Signature</p>
+                <p style={{ fontFamily: 'Clash Display, sans-serif', fontSize: 'clamp(14px, 3vw, 20px)', fontWeight: 700, color: '#1E90FF', marginBottom: 4 }}>KayAcademy</p>
+                <div style={{ width: 80, height: '1px', background: '#e2e8f0', margin: '0 auto 4px' }} />
+                <p style={{ fontSize: 10, color: '#94a3b8' }}>Platform Signature</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{
-                  width: 64, height: 64, borderRadius: '50%',
+                  width: 48, height: 48, borderRadius: '50%',
                   background: 'linear-gradient(135deg, #1E90FF, #38bdf8)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  margin: '0 auto 8px',
+                  margin: '0 auto 6px',
                 }}>
-                  <svg width="28" height="28" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
+                  <svg width="22" height="22" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
                     <polyline points="22,4 12,14.01 9,11.01"/>
                   </svg>
                 </div>
-                <p style={{ fontSize: 11, color: '#94a3b8' }}>Verified Completion</p>
+                <p style={{ fontSize: 10, color: '#94a3b8' }}>Verified Completion</p>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <p style={{ fontFamily: 'monospace', fontSize: 11, color: '#94a3b8', marginBottom: 4 }}>Certificate ID</p>
-                <p style={{ fontFamily: 'monospace', fontSize: 12, fontWeight: 700, color: '#475569' }}>{certId}</p>
-                <div style={{ width: 120, height: '1px', background: '#e2e8f0', margin: '4px auto 0' }} />
+                <p style={{ fontFamily: 'monospace', fontSize: 10, color: '#94a3b8', marginBottom: 4 }}>Certificate ID</p>
+                <p style={{ fontFamily: 'monospace', fontSize: 'clamp(9px, 2vw, 12px)', fontWeight: 700, color: '#475569', wordBreak: 'break-all' }}>{certId}</p>
+                <div style={{ width: 80, height: '1px', background: '#e2e8f0', margin: '4px auto 0' }} />
               </div>
             </div>
           </div>
