@@ -1,19 +1,26 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, BookOpen, Users, Award, TrendingUp, Star } from 'lucide-react'
-import { CATEGORIES, COURSES } from '../data/courses'
+import { CATEGORIES, COURSES, PLATFORM_STATS } from '../data/courses'
 import { CourseCard } from '../components/course/CourseCard'
 import { useAuthContext } from '../store/AuthContext'
 
-const STATS = [
-  { icon: BookOpen, value: '14+', label: 'Courses' },
-  { icon: Users, value: '85K+', label: 'Learners' },
-  { icon: Award, value: '7', label: 'Disciplines' },
-  { icon: TrendingUp, value: '94%', label: 'Completion Rate' },
-]
+// Stats auto-calculated from courses data — updates whenever courses are added
+function formatStudents(n) {
+  if (n >= 1000000) return `${(n / 1000000).toFixed(1)}M+`
+  if (n >= 1000) return `${Math.floor(n / 1000)}K+`
+  return `${n}+`
+}
 
 export default function HomePage() {
   const { user } = useAuthContext()
   const featuredCourses = COURSES.slice(0, 4)
+
+  const STATS = [
+    { icon: BookOpen, value: `${PLATFORM_STATS.courseCount}+`, label: 'Courses' },
+    { icon: Users, value: formatStudents(PLATFORM_STATS.totalStudents), label: 'Learners' },
+    { icon: Award, value: `${PLATFORM_STATS.disciplineCount}`, label: 'Disciplines' },
+    { icon: TrendingUp, value: '94%', label: 'Completion Rate' },
+  ]
 
   return (
     <div className="min-h-screen bg-navy-950 page-enter">

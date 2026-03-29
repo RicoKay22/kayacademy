@@ -17,6 +17,20 @@ function formatTime(seconds) {
   return `${m}:${s.toString().padStart(2, '0')}`
 }
 
+// Parse "12:30" or "1:06" → total seconds
+function parseDurationStr(str) {
+  if (!str) return 0
+  const parts = str.split(':').map(Number)
+  if (parts.length === 2) return parts[0] * 60 + parts[1]
+  if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2]
+  return 0
+}
+
+// Check if a YouTube URL is a timestamp chapter (has ?start= param)
+function isTimestampChapter(url) {
+  return url?.includes('?start=') || url?.includes('&start=')
+}
+
 function getYouTubeId(url) {
   const match = url?.match(/embed\/([^?&]+)/)
   return match ? match[1] : null
@@ -74,8 +88,21 @@ export default function LessonPlayerPage() {
   // ── Lifecycle: track mount state, cleanup on unmount ──────────────────────
   useEffect(() => {
     isMountedRef.current = true
+
+    // Handle browser back/forward button — clean up player before navigation
+    function handlePopState() {
+      clearInterval(watchIntervalRef.current)
+      clearInterval(positionIntervalRef.current)
+      if (playerInstanceRef.current) {
+        try { playerInstanceRef.current.pauseVideo() } catch (e) {}
+      }
+      destroyPlayer()
+    }
+    window.addEventListener('popstate', handlePopState)
+
     return () => {
       isMountedRef.current = false
+      window.removeEventListener('popstate', handlePopState)
       clearInterval(watchIntervalRef.current)
       clearInterval(positionIntervalRef.current)
       destroyPlayer()
@@ -109,10 +136,18 @@ export default function LessonPlayerPage() {
   const isSequentialLocked = !prevLessonDone && !isComplete
   const isEnrollLocked = !enrolled && !lesson?.free
   const videoId = getYouTubeId(lesson?.videoUrl)
+  const isChapter = isTimestampChapter(lesson?.videoUrl)
 
-  // Use real YouTube duration if available, otherwise 0 (button stays locked until we know)
-  // 97% of actual video length required
-  const requiredSeconds = actualDuration > 0 ? Math.floor(actualDuration * 0.97) : 0
+  // For timestamp chapters (like the Claude Code course), YouTube's getDuration()
+  // returns the FULL video length (11+ hours), not the chapter length.
+  // In that case we use the lesson's own duration field from courses.js instead.
+  // For regular videos, we use the real YouTube duration once the player loads.
+  const lessonDurationSeconds = parseDurationStr(lesson?.duration)
+  const effectiveDuration = isChapter
+    ? lessonDurationSeconds                              // use our defined duration
+    : actualDuration > 0 ? actualDuration : 0            // use YouTube API duration
+
+  const requiredSeconds = effectiveDuration > 0 ? Math.floor(effectiveDuration * 0.97) : 0
   const watchTimerDone = (requiredSeconds > 0 && watchedSeconds >= requiredSeconds) || isComplete
   const watchProgress = requiredSeconds > 0 ? Math.min((watchedSeconds / requiredSeconds) * 100, 100) : 0
   const timeRemaining = Math.max(requiredSeconds - watchedSeconds, 0)
@@ -178,11 +213,14 @@ export default function LessonPlayerPage() {
               onReady: (event) => {
                 if (!isMountedRef.current) return
                 setIsPlaying(false)
-                // Get REAL video duration from YouTube
-                try {
-                  const dur = event.target.getDuration()
-                  if (dur && dur > 0) setActualDuration(dur)
-                } catch (e) {}
+                // For timestamp chapters, skip getDuration — it returns full video length
+                // For regular videos, get the real duration
+                if (!isChapter) {
+                  try {
+                    const dur = event.target.getDuration()
+                    if (dur && dur > 0) setActualDuration(dur)
+                  } catch (e) {}
+                }
                 // Seek to saved video position so user resumes where they left off
                 try {
                   const savedPos = parseFloat(localStorage.getItem(positionKey) ?? '0') || 0
