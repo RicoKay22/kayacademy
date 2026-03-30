@@ -160,15 +160,20 @@ export default function CertificatePage() {
               </div>
               <div style={{ textAlign: 'center' }}>
                 <div style={{
-                  width: 48, height: 48, borderRadius: '50%',
-                  background: 'linear-gradient(135deg, #1E90FF, #38bdf8)',
+                  width: 52, height: 52, borderRadius: '50%',
+                  background: '#1E90FF',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   margin: '0 auto 6px',
+                  WebkitPrintColorAdjust: 'exact',
+                  printColorAdjust: 'exact',
                 }}>
-                  <svg width="22" height="22" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22,4 12,14.01 9,11.01"/>
-                  </svg>
+                  <span style={{
+                    color: 'white',
+                    fontSize: 26,
+                    fontWeight: 900,
+                    lineHeight: 1,
+                    fontFamily: 'Arial, sans-serif',
+                  }}>✓</span>
                 </div>
                 <p style={{ fontSize: 10, color: '#94a3b8' }}>Verified Completion</p>
               </div>

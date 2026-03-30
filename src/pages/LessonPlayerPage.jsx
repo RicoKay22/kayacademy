@@ -31,6 +31,12 @@ function isTimestampChapter(url) {
   return url?.includes('?start=') || url?.includes('&start=')
 }
 
+// Extract start time in seconds from URL — e.g. ?start=66 → 66
+function getStartSeconds(url) {
+  const match = url?.match(/[?&]start=(\d+)/)
+  return match ? parseInt(match[1], 10) : 0
+}
+
 function getYouTubeId(url) {
   const match = url?.match(/embed\/([^?&]+)/)
   return match ? match[1] : null
@@ -200,6 +206,7 @@ export default function LessonPlayerPage() {
         if (!window.YT?.Player) return
 
         try {
+          const startSeconds = getStartSeconds(lesson?.videoUrl)
           playerInstanceRef.current = new window.YT.Player(containerId, {
             videoId,
             playerVars: {
@@ -208,6 +215,7 @@ export default function LessonPlayerPage() {
               modestbranding: 1,
               playsinline: 1,
               origin: window.location.origin,
+              ...(startSeconds > 0 && { start: startSeconds }), // ← KEY FIX: tells API where to begin
             },
             events: {
               onReady: (event) => {
@@ -222,9 +230,11 @@ export default function LessonPlayerPage() {
                   } catch (e) {}
                 }
                 // Seek to saved video position so user resumes where they left off
+                // For chapter videos, only seek if savedPos is AFTER the chapter start
                 try {
                   const savedPos = parseFloat(localStorage.getItem(positionKey) ?? '0') || 0
-                  if (savedPos > 5) {
+                  const chapterStart = getStartSeconds(lesson?.videoUrl)
+                  if (savedPos > 5 && savedPos > chapterStart) {
                     event.target.seekTo(savedPos, true)
                   }
                 } catch (e) {}
