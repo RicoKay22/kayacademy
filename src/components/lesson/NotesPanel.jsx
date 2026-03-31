@@ -1,47 +1,10 @@
 import { FileText, Check, Loader } from 'lucide-react'
 import { useNotes } from '../../hooks/useNotes'
 import { useAuthContext } from '../../store/AuthContext'
-import { useEffect, useRef, useState } from 'react'
-
-// Detects keyboard height using visualViewport API
-// Returns the height in px that the keyboard is taking up (0 if not open)
-function useKeyboardHeight() {
-  const [keyboardHeight, setKeyboardHeight] = useState(0)
-
-  useEffect(() => {
-    if (!window.visualViewport) return
-
-    function update() {
-      const viewport = window.visualViewport
-      const keyboardH = window.innerHeight - viewport.height - viewport.offsetTop
-      setKeyboardHeight(Math.max(0, keyboardH))
-    }
-
-    window.visualViewport.addEventListener('resize', update)
-    window.visualViewport.addEventListener('scroll', update)
-    return () => {
-      window.visualViewport.removeEventListener('resize', update)
-      window.visualViewport.removeEventListener('scroll', update)
-    }
-  }, [])
-
-  return keyboardHeight
-}
 
 export function NotesPanel({ courseId, lessonId, lessonTitle }) {
   const { user } = useAuthContext()
   const { content, handleChange, saving, saved } = useNotes(courseId, lessonId)
-  const keyboardHeight = useKeyboardHeight()
-  const textareaRef = useRef(null)
-
-  // When keyboard opens, ensure textarea is visible by scrolling it into view
-  useEffect(() => {
-    if (keyboardHeight > 0 && textareaRef.current) {
-      setTimeout(() => {
-        textareaRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-      }, 100)
-    }
-  }, [keyboardHeight])
 
   if (!user) {
     return (
@@ -52,10 +15,6 @@ export function NotesPanel({ courseId, lessonId, lessonTitle }) {
     )
   }
 
-  // On mobile when keyboard is open: give notes a fixed minimum height
-  // so user can see at least 6-7 lines without the video scrolling away
-  const minTextareaHeight = keyboardHeight > 0 ? '140px' : '80px'
-
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
@@ -65,11 +24,11 @@ export function NotesPanel({ courseId, lessonId, lessonTitle }) {
           <span className="font-display font-semibold text-white text-sm">My Notes</span>
         </div>
         <div className="flex items-center gap-1.5 text-xs">
-          {saving ? (
-            <><Loader size={11} className="text-slate-500 animate-spin" /><span className="text-slate-500">Saving...</span></>
-          ) : saved && content ? (
-            <><Check size={11} className="text-emerald-400" /><span className="text-emerald-400">Saved</span></>
-          ) : null}
+          {saving
+            ? <><Loader size={11} className="text-slate-500 animate-spin" /><span className="text-slate-500">Saving...</span></>
+            : saved && content
+              ? <><Check size={11} className="text-emerald-400" /><span className="text-emerald-400">Saved</span></>
+              : null}
         </div>
       </div>
 
@@ -80,18 +39,16 @@ export function NotesPanel({ courseId, lessonId, lessonTitle }) {
         </p>
       </div>
 
-      {/* Textarea — scrollable, keyboard-aware */}
-      <div className="flex-1 overflow-y-auto p-3">
+      {/* Textarea — fills remaining space, scrolls internally */}
+      <div className="flex-1 overflow-y-auto min-h-0 p-3">
         <textarea
-          ref={textareaRef}
           value={content}
           onChange={(e) => handleChange(e.target.value)}
           placeholder={'Take notes...\n\nSaves automatically as you type.'}
-          className="w-full resize-none bg-transparent text-slate-300 placeholder-slate-600 text-sm leading-relaxed focus:outline-none"
+          className="w-full h-full resize-none bg-transparent text-slate-300 placeholder-slate-600 text-sm leading-relaxed focus:outline-none"
           style={{
             fontFamily: 'Plus Jakarta Sans, sans-serif',
-            minHeight: minTextareaHeight,
-            height: keyboardHeight > 0 ? `${Math.max(140, window.innerHeight * 0.25)}px` : '100%',
+            minHeight: '80px',
           }}
         />
       </div>
