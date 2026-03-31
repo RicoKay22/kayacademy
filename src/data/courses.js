@@ -7,6 +7,7 @@ export const CATEGORIES = [
   { id: 'creative', label: 'Creative Arts', icon: '🎨', color: 'from-yellow-500 to-orange-500' },
   { id: 'health', label: 'Health Sciences', icon: '🩺', color: 'from-red-500 to-pink-500' },
   { id: 'civil', label: 'Civil Engineering', icon: '🏗️', color: 'from-stone-500 to-slate-500' },
+  { id: 'agriculture', label: 'Agriculture', icon: '🌾', color: 'from-green-500 to-lime-500' },
 ]
 
 export const COURSES = [
@@ -238,6 +239,52 @@ export const COURSES = [
       { id: 'c32', title: 'Agent Skills & Dynamic Content', duration: '30:39', videoUrl: 'https://www.youtube.com/embed/brLhhkUqcn4?start=37626', free: false },
       { id: 'c33', title: 'MCP with Claude Code', duration: '20:03', videoUrl: 'https://www.youtube.com/embed/brLhhkUqcn4?start=41226', free: false },
       { id: 'c34', title: 'Sub-agents & Multi-Agent Teams', duration: '45:44', videoUrl: 'https://www.youtube.com/embed/brLhhkUqcn4?start=41570', free: false },
+    ],
+  },
+
+  // ─── AGRICULTURE ───
+  {
+    id: 'foundations-of-crop-production',
+    title: 'Foundations of Crop Production',
+    instructor: 'AgriStudy',
+    category: 'agriculture',
+    level: 'Beginner',
+    duration: '5h 10m',
+    rating: 4.6,
+    students: 3800,
+    thumbnail: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&q=80',
+    description: 'A practical introduction to crop farming — covering soil science, seed selection, irrigation, fertilization, and pest control. Designed for African farming contexts and students pursuing agronomy or rural development.',
+    tags: ['Agronomy', 'Soil Science', 'Crop Farming', 'Africa'],
+    lessons: [
+      { id: 'ag1', title: 'Introduction to Agronomy & Crop Systems', duration: '14:22', videoUrl: 'https://www.youtube.com/embed/PbYMVBBMOio', free: true },
+      { id: 'ag2', title: 'Soil Composition, Types & Fertility', duration: '18:40', videoUrl: 'https://www.youtube.com/embed/zeyNNMkZk0k', free: true },
+      { id: 'ag3', title: 'Seed Selection & Planting Methods', duration: '16:15', videoUrl: 'https://www.youtube.com/embed/LAI3zugHH-4', free: false },
+      { id: 'ag4', title: 'Water Management & Irrigation Systems', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/nVjXUEJBNhs', free: false },
+      { id: 'ag5', title: 'Fertilizers, Nutrients & Soil Health', duration: '19:05', videoUrl: 'https://www.youtube.com/embed/7L6W5r6KHkE', free: false },
+      { id: 'ag6', title: 'Pest & Disease Management', duration: '17:50', videoUrl: 'https://www.youtube.com/embed/uj5bTxeAHkA', free: false },
+      { id: 'ag7', title: 'Harvesting, Storage & Post-Harvest Losses', duration: '21:10', videoUrl: 'https://www.youtube.com/embed/6K1WLi8zbuo', free: false },
+    ],
+  },
+  
+  {
+    id: 'agritech-smart-farming-africa',
+    title: 'AgriTech: Smart Farming for Africa',
+    instructor: 'FAO / CGIAR',
+    category: 'agriculture',
+    level: 'Intermediate',
+    duration: '4h 55m',
+    rating: 4.7,
+    students: 2900,
+    thumbnail: 'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=600&q=80',
+    description: 'How technology is transforming agriculture across Africa — precision farming, drone monitoring, IoT soil sensors, mobile advisory tools, and data-driven crop decisions to improve yields and reduce waste.',
+    tags: ['AgriTech', 'Precision Farming', 'Drones', 'Africa', 'IoT'],
+    lessons: [
+      { id: 'at1', title: 'What is Precision Agriculture?', duration: '13:45', videoUrl: 'https://www.youtube.com/embed/Qmla9NLFBvU', free: true },
+      { id: 'at2', title: 'GPS, GIS & Remote Sensing in Farming', duration: '17:20', videoUrl: 'https://www.youtube.com/embed/p5ELTFkTb5A', free: true },
+      { id: 'at3', title: 'Drone Technology for Crop Monitoring', duration: '19:00', videoUrl: 'https://www.youtube.com/embed/WGzYPJqvdHo', free: false },
+      { id: 'at4', title: 'IoT Sensors & Real-Time Soil Data', duration: '16:30', videoUrl: 'https://www.youtube.com/embed/dFMO-sDMd6Y', free: false },
+      { id: 'at5', title: 'Mobile Apps Transforming African Farmers', duration: '14:55', videoUrl: 'https://www.youtube.com/embed/xwp3qkRDz3k', free: false },
+      { id: 'at6', title: 'Data-Driven Decisions: From Field to Market', duration: '18:40', videoUrl: 'https://www.youtube.com/embed/8oRFO7-Drw0', free: false },
     ],
   },
 ]
