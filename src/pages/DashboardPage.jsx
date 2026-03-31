@@ -134,7 +134,7 @@ export default function DashboardPage() {
                     const pct = getProgress(course.id, course.lessons.length)
                     const nextLesson = course.lessons.find(l => !isLessonComplete(course.id, l.id))
                     return (
-                      <div key={course.id} className="glass p-4 hover:border-electric-500/20 transition-all">
+                      <div key={course.id} className="glass p-4 hover:border-electric-500/20 transition-all overflow-hidden">
                         <div className="flex items-center gap-3 mb-3">
                           <img src={course.thumbnail} alt={course.title}
                             className="w-14 h-10 sm:w-20 sm:h-14 object-cover rounded-lg flex-shrink-0" />
@@ -143,7 +143,12 @@ export default function DashboardPage() {
                             <p className="text-xs text-slate-500 truncate">Next: {nextLesson?.title}</p>
                           </div>
                         </div>
-                        <ProgressBar percentage={pct} showLabel />
+                        {/* Progress label + % rendered directly here — not inside ProgressBar — to prevent mobile % cutoff */}
+                        <div className="flex items-center justify-between mb-1.5">
+                          <span className="text-xs text-slate-400">Progress</span>
+                          <span className="text-xs font-semibold text-electric-400 tabular-nums">{pct}%</span>
+                        </div>
+                        <ProgressBar percentage={pct} />
                         <Link
                           to={`/course/${course.id}/lesson/${nextLesson?.id ?? course.lessons[0].id}`}
                           className="btn-primary text-sm mt-3 flex items-center justify-center gap-2 w-full">
