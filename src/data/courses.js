@@ -11,190 +11,462 @@ export const CATEGORIES = [
 ]
 
 export const COURSES = [
-  // ─── TECHNOLOGY ───
+
+  // ════════════════════════════════════════════════════════════════════
+  // 🗺️  FRONTEND ENGINEER LEARNING PATH  (Technology Category)
+  //
+  //  STAGE 1 ── HTML FOUNDATIONS
+  //    1. HTML5: Learn from Scratch               (freeCodeCamp / Dave Gray)
+  //  STAGE 2 ── HTML & CSS
+  //    2. HTML & CSS: Beginner to Pro – Part 1    (SuperSimpleDev)
+  //    3. HTML & CSS: Complete Handbook – Part 2  (Bro Code)
+  //  STAGE 3 ── JAVASCRIPT BASICS
+  //    4. JavaScript Basics: Start Here           (freeCodeCamp / Beau Carnes)
+  //    5. JavaScript Fundamentals with Projects   (freeCodeCamp / StevenCodeCraft)
+  //  STAGE 4 ── JAVASCRIPT INTERMEDIATE TO PRO
+  //    6. JavaScript: Intermediate Crash Course   (Clever Programmer)
+  //    7. JavaScript: Full Course Beginner to Pro (SuperSimpleDev) — ID preserved
+  //  STAGE 5 ── JAVASCRIPT PROJECTS AND FULL STACK
+  //    8.  Build 15 Real Projects                 (Codesistency)
+  //    9.  Build 20 Projects 2026                 (JavaScript King)
+  //    10. Build 19 Web Dev Projects              (freeCodeCamp / Codesistency)
+  //    11. Full Stack JavaScript Mastery          (HuXn WebDev)
+  //  STAGE 6 ── REACT
+  //    12. React: Quick Start Part 1 of 3         (Traversy Media) — ID preserved
+  //    13. React: Full Beginners Course Part 2    (freeCodeCamp / Scrimba)
+  //    14. React: Beginner to Pro React 19 Part 3 (SuperSimpleDev)
+  //  STAGE 7 ── AI AND AGENTIC CODING
+  //    15. Claude Code: Agentic Workflows         (ExamPro / freeCodeCamp) — ID preserved
+  // ════════════════════════════════════════════════════════════════════
+
+ 
+  
+  // ─── Technology ──────────
+  {
+    id: 'html-full-beginner',
+    title: 'HTML5: Learn from Scratch',
+    instructor: 'freeCodeCamp / Dave Gray',
+    category: 'technology',
+    level: 'Beginner',
+    duration: '4h 07m',
+    rating: 4.8,
+    students: 9800,
+    thumbnail: 'https://img.youtube.com/vi/kUMe1FH4CHE/maxresdefault.jpg',
+    description: 'The perfect starting point for your frontend journey. Learn HTML5 from the ground up — elements, forms, semantic structure, tables, links, and images. Complete this before moving to CSS.\n\n📂 Course code: https://github.com/gitdagray/html_course',
+    tags: ['HTML', 'HTML5', 'Web Dev', 'Beginner', 'Frontend'],
+    lessons: [
+      { id: 'html1_1', title: 'Intro & Getting Started with HTML', duration: '20:13', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=0', free: true },
+      { id: 'html1_2', title: 'Head Element & Metadata', duration: '8:49', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=1213', free: true },
+      { id: 'html1_3', title: 'Text Basics: Headings, Paragraphs & Formatting', duration: '20:43', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=1742', free: false },
+      { id: 'html1_4', title: 'List Types: Ordered, Unordered & Nested', duration: '10:10', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=2985', free: false },
+      { id: 'html1_5', title: 'Links: Anchors, Navigation & Relative Paths', duration: '30:43', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=3595', free: false },
+      { id: 'html1_6', title: 'Images: Embedding, Attributes & Accessibility', duration: '30:20', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=5438', free: false },
+      { id: 'html1_7', title: 'Semantic HTML: Article, Section, Nav & More', duration: '23:55', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=7258', free: false },
+      { id: 'html1_8', title: 'Tables: Structure, Headers & Accessibility', duration: '15:49', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=8693', free: false },
+      { id: 'html1_9', title: 'Forms & Inputs: All Input Types', duration: '44:34', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=9642', free: false },
+      { id: 'html1_10', title: 'Final HTML Project: Build a Real Page', duration: '29:00', videoUrl: 'https://www.youtube.com/embed/kUMe1FH4CHE?start=12316', free: false },
+    ],
+  },
+
+  {
+    id: 'css-zero-to-hero',
+    title: '[CSS Deep Dive] CSS Tutorial — Zero to Hero (Complete Course)',
+    instructor: 'freeCodeCamp / Jad Khalili',
+    category: 'technology',
+    level: 'Beginner',
+    duration: '6h 13m',
+    rating: 4.7,
+    students: 62000,
+    thumbnail: 'https://img.youtube.com/vi/1Rs2ND1ryYc/maxresdefault.jpg',
+    description: 'A comprehensive CSS course that covers everything from absolute basics to advanced techniques. You will learn coloring, text manipulation, the box model, Flexbox, Grid, transitions, transformations, and custom keyframe animations — finishing with a real website transformation challenge.\n\n💻 Source Code: https://github.com/Video-Lab/css-course-content\n🎓 Interactive CSS practice: https://scrimba.com/freeCodeCamp-CSS',
+    tags: ['CSS', 'Flexbox', 'Grid', 'Animations', 'Transitions', 'Selectors', 'Web Development'],
+    lessons: [
+      { id: 'czh1', title: 'Intro, Setup & What is CSS?', duration: '22:12', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=0', free: true },
+      { id: 'czh2', title: 'Selectors — Classes, IDs, Pseudo & Advanced Selectors', duration: '37:18', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=1332', free: true },
+      { id: 'czh3', title: 'Colors — Text, Backgrounds, Images & Gradients', duration: '1:17:37', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=4657', free: false },
+      { id: 'czh4', title: 'Units, Text Manipulation & Font Families', duration: '39:52', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=7452', free: false },
+      { id: 'czh5', title: 'Including External Fonts with Google Fonts', duration: '5:53', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=9794', free: false },
+      { id: 'czh6', title: 'The CSS Box Model — Borders, Margin & Padding', duration: '26:10', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=10147', free: false },
+      { id: 'czh7', title: 'Float, Display Types & Overflow', duration: '1:00:26', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=11717', free: false },
+      { id: 'czh8', title: 'Flexbox — Container, Direction, Alignment & Item Control', duration: '40:29', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=12467', free: false },
+      { id: 'czh9', title: 'CSS Grid — Templates, Justify, Align, Gaps & Grid Areas', duration: '35:28', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=14896', free: false },
+      { id: 'czh10', title: 'Transitions, Transformations & Keyframe Animations', duration: '53:41', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=17078', free: false },
+      { id: 'czh11', title: 'Website Transformation Challenge + Solution', duration: '34:46', videoUrl: 'https://www.youtube.com/embed/1Rs2ND1ryYc?start=20089', free: false },
+    ],
+  },
+
+
+  {
+    id: 'html-css-bro-code',
+    title: 'HTML & CSS: Complete Handbook  — (Part 1)',
+    instructor: 'Bro Code',
+    category: 'technology',
+    level: 'Beginner',
+    duration: '3h 55m',
+    rating: 4.7,
+    students: 11200,
+    thumbnail: 'https://img.youtube.com/vi/HGTJBPNC-Gw/maxresdefault.jpg',
+    description: 'A fast-paced but thorough HTML & CSS reference course. Great as a second pass after Part 1, or as a standalone visual-learner alternative. Covers everything from hyperlinks and forms through flexbox and CSS animations.',
+    tags: ['HTML', 'CSS', 'Flexbox', 'CSS Animations', 'Web Dev', 'Frontend'],
+    lessons: [
+      { id: 'hcss2_1', title: 'Introduction to HTML: Basics & Setup', duration: '11:07', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=0', free: true },
+      { id: 'hcss2_2', title: 'HTML: Hyperlinks, Images, Audio & Video', duration: '22:46', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=667', free: true },
+      { id: 'hcss2_3', title: 'HTML: Text Formatting, Lists, Tables & Buttons', duration: '25:34', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=2059', free: false },
+      { id: 'hcss2_4', title: 'HTML: Forms, Headers & Footers', duration: '28:09', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=3253', free: false },
+      { id: 'hcss2_5', title: 'Introduction to CSS: Colors, Fonts & Borders', duration: '21:28', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=4642', free: false },
+      { id: 'hcss2_6', title: 'CSS: Margins, Float, Overflow & Display', duration: '28:29', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=5470', free: false },
+      { id: 'hcss2_7', title: 'CSS: Positions, Background Images & Pseudo-Classes', duration: '38:22', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=7208', free: false },
+      { id: 'hcss2_8', title: 'CSS: Dropdowns, Navigation & Website Layout', duration: '23:22', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=10304', free: false },
+      { id: 'hcss2_9', title: 'CSS: Flexbox, Transformations & Animations', duration: '28:35', videoUrl: 'https://www.youtube.com/embed/HGTJBPNC-Gw?start=12503', free: false },
+    ],
+  },
+
+   {
+    id: 'html-css-web-dev-bootcamp',
+    title: '[HTML Part 2 ] Web Development with HTML & CSS — Complete Bootcamp',
+    instructor: 'freeCodeCamp / Aakash N S',
+    category: 'technology',
+    level: 'Intermediate',
+    duration: '19h 01m',
+    rating: 4.8,
+    students: 18000,
+    thumbnail: 'https://img.youtube.com/vi/dX8396ZmSPk/maxresdefault.jpg',
+    description: 'A complete web development bootcamp going from HTML & CSS basics through Git, GitHub, Vercel deployment, mobile-first responsive design, the Bootstrap CSS framework, and the Express web framework. The course ends with building and deploying your own personal portfolio website to the cloud.\n\n📁 Lesson 1 Code: https://jovian.com/sydney/html-and-css-basics\n📁 Lesson 2 Code: https://jovian.com/aakashns/advanced-html-and-css\n📁 Assignment 1: https://jovian.com/aakashns/design-mockup-to-webpage\n📁 Lesson 3 Code: https://jovian.com/sydney/version-control-and-deployment\n📁 Lesson 4 Code: https://jovian.com/aakashns/responsive-design-and-flexbox\n📁 Assignment 2: https://jovian.com/aakashns/mobile-first-responsive-web-design\n📁 Lesson 5 Code: https://jovian.com/aakashns/bootstrap-css-framework\n📁 Assignment 3: https://jovian.com/aakashns/build-a-scientific-calculator\n📁 Lesson 6 Code: https://jovian.com/sydney/express-web-application-framework\n📁 Final Project: https://jovian.com/aakashns/build-your-personal-website',
+    tags: ['HTML', 'CSS', 'Bootstrap', 'Flexbox', 'Git', 'Vercel', 'Express', 'Responsive Design', 'Deployment'],
+    lessons: [
+      { id: 'hwb1', title: 'Intro & Course Overview', duration: '0:34', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=0', free: true },
+      { id: 'hwb2', title: 'Lesson 1 — HTML & CSS Basics', duration: '2:13:41', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=34', free: true },
+      { id: 'hwb3', title: 'Lesson 2 — Advanced HTML & CSS', duration: '2:28:09', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=8055', free: false },
+      { id: 'hwb4', title: 'Assignment 1 — Design Mockup to Web Page', duration: '2:05:35', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=16944', free: false },
+      { id: 'hwb5', title: 'Lesson 3 — Version Control & Cloud Deployment (Git & Vercel)', duration: '2:11:43', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=24479', free: false },
+      { id: 'hwb6', title: 'Lesson 4 — Responsive Design & CSS Flexbox', duration: '2:32:42', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=32382', free: false },
+      { id: 'hwb7', title: 'Assignment 2 — Mobile-First Responsive Website', duration: '59:19', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=41544', free: false },
+      { id: 'hwb8', title: 'Lesson 5 — Bootstrap CSS Framework', duration: '2:25:08', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=45103', free: false },
+      { id: 'hwb9', title: 'Assignment 3 — Build a Scientific Calculator', duration: '1:37:43', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=53811', free: false },
+      { id: 'hwb10', title: 'Lesson 6 — Express Web Application Framework', duration: '1:55:47', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=59674', free: false },
+      { id: 'hwb11', title: 'Final Project — Build & Deploy Your Personal Portfolio Website', duration: '30:14', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=66621', free: false },
+      { id: 'hwb12', title: 'Course Recap', duration: '5:00', videoUrl: 'https://www.youtube.com/embed/dX8396ZmSPk?start=68435', free: false },
+    ],
+  },
+
+  {
+    id: 'javascript-basics-fcc',
+    title: 'JavaScript Basics: Start Here — (Part 1)',
+    instructor: 'freeCodeCamp / Beau Carnes',
+    category: 'technology',
+    level: 'Beginner',
+    duration: '3h 26m',
+    rating: 4.8,
+    students: 28400,
+    thumbnail: 'https://img.youtube.com/vi/PkZNo7MFNFg/maxresdefault.jpg',
+    description: 'The classic 134-part JavaScript tutorial for absolute beginners. Follows the freeCodeCamp JS curriculum. No prior experience needed — covers variables, functions, arrays, objects, loops, and ES6.\n\n📂 Basic JS: https://learn.freecodecamp.org/javascript-algorithms-and-data-structures/basic-javascript\n📂 ES6 JS: https://learn.freecodecamp.org/javascript-algorithms-and-data-structures/es6',
+    tags: ['JavaScript', 'ES6', 'Beginner', 'Variables', 'Functions', 'Frontend'],
+    lessons: [
+      { id: 'jsfcc_1', title: 'Intro, Running JavaScript & Variables', duration: '14:05', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=0', free: true },
+      { id: 'jsfcc_2', title: 'Basic Math, Increment/Decrement & Decimals', duration: '7:14', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=845', free: true },
+      { id: 'jsfcc_3', title: 'Strings, Bracket Notation & String Methods', duration: '19:25', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=1279', free: false },
+      { id: 'jsfcc_4', title: 'Arrays: push, pop, shift, unshift & Nesting', duration: '10:57', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=2444', free: false },
+      { id: 'jsfcc_5', title: 'Functions, Scope & Return Values', duration: '26:29', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=3101', free: false },
+      { id: 'jsfcc_6', title: 'Booleans, If-Statements & Equality Operators', duration: '22:46', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=4121', free: false },
+      { id: 'jsfcc_7', title: 'Switch Statements & JavaScript Objects', duration: '22:56', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=5535', free: false },
+      { id: 'jsfcc_8', title: 'Loops: While, For & Nested Loops', duration: '18:07', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=7815', free: false },
+      { id: 'jsfcc_9', title: 'ES6: Rest, Spread & Destructuring', duration: '8:55', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=10384', free: false },
+      { id: 'jsfcc_10', title: 'ES6: Template Literals, Classes & Import/Export', duration: '9:41', videoUrl: 'https://www.youtube.com/embed/PkZNo7MFNFg?start=11199', free: false },
+    ],
+  },
+
+  
+  {
+    id: 'javascript-beginners-fcc',
+    title: 'JavaScript Fundamentals with Projects — (Part 2)',
+    instructor: 'freeCodeCamp / StevenCodeCraft',
+    category: 'technology',
+    level: 'Beginner',
+    duration: '3h 33m',
+    rating: 4.7,
+    students: 4100,
+    thumbnail: 'https://img.youtube.com/vi/Zi-Q0t4gMC8/maxresdefault.jpg',
+    description: 'A structured JS course with quiz sections and exercises. Perfect follow-up after Part 1 — dives much deeper into objects, arrays, and functions with real code exercises throughout.\n\n📂 Course code: https://github.com/stevenGarciaDev/javascript-for-beginners-course',
+    tags: ['JavaScript', 'Objects', 'Arrays', 'Functions', 'Exercises', 'Beginner'],
+    lessons: [
+      { id: 'jsbc_1', title: 'Intro & Setting Up the Dev Environment', duration: '7:46', videoUrl: 'https://www.youtube.com/embed/Zi-Q0t4gMC8?start=0', free: true },
+      { id: 'jsbc_2', title: 'Variables: let, const, Primitive Types & Objects', duration: '24:45', videoUrl: 'https://www.youtube.com/embed/Zi-Q0t4gMC8?start=466', free: true },
+      { id: 'jsbc_3', title: 'Operators: Arithmetic, Comparison, Logical & Ternary', duration: '23:45', videoUrl: 'https://www.youtube.com/embed/Zi-Q0t4gMC8?start=1951', free: false },
+      { id: 'jsbc_4', title: 'Control Flow: If-Else, Switch, For & While Loops', duration: '39:24', videoUrl: 'https://www.youtube.com/embed/Zi-Q0t4gMC8?start=3391', free: false },
+      { id: 'jsbc_5', title: 'JavaScript Objects: Factory, Constructor & Prototype', duration: '38:08', videoUrl: 'https://www.youtube.com/embed/Zi-Q0t4gMC8?start=5755', free: false },
+      { id: 'jsbc_6', title: 'JavaScript Arrays: Methods, Sorting & Filtering', duration: '47:18', videoUrl: 'https://www.youtube.com/embed/Zi-Q0t4gMC8?start=8043', free: false },
+      { id: 'jsbc_7', title: 'Functions: Declarations, Scope, Closures & This', duration: '30:00', videoUrl: 'https://www.youtube.com/embed/Zi-Q0t4gMC8?start=10881', free: false },
+    ],
+  },
+
+  
+  {
+    id: 'javascript-intermediate-cp',
+    title: 'JavaScript: Intermediate Crash Course (12 Hours) — (Part 1)',
+    instructor: 'Clever Programmer',
+    category: 'technology',
+    level: 'Intermediate',
+    duration: '12h 00m',
+    rating: 4.8,
+    students: 7300,
+    thumbnail: 'https://img.youtube.com/vi/lI1ae4REbFM/maxresdefault.jpg',
+    description: 'Bridge the gap between basics and real-world JS. Build actual portfolio projects: Weather App, Tip Calculator, Rock Paper Scissors, Superhero App, Fighting Game, and a Netflix Clone. Covers DOM, APIs, Async/Await, and OOP.',
+    tags: ['JavaScript', 'DOM', 'APIs', 'Async/Await', 'OOP', 'Projects', 'Portfolio'],
+    lessons: [
+      { id: 'jscp_1', title: 'Setup & JavaScript 101 — Quick Foundations Review', duration: '15:38', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=0', free: true },
+      { id: 'jscp_2', title: 'Build a Beginner Weather App from Scratch', duration: '18:05', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=1359', free: true },
+      { id: 'jscp_3', title: 'Arrays & Objects Deep Dive + Build a Tip Calculator', duration: '53:20', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=4282', free: false },
+      { id: 'jscp_4', title: 'For Loops & Array Practice Exercises', duration: '74:33', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=6304', free: false },
+      { id: 'jscp_5', title: 'Array Methods: map, filter & reduce', duration: '41:00', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=10862', free: false },
+      { id: 'jscp_6', title: 'DOM Manipulation for Beginners', duration: '40:29', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=13322', free: false },
+      { id: 'jscp_7', title: 'APIs in JavaScript & Build a Superhero App', duration: '107:07', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=22338', free: false },
+      { id: 'jscp_8', title: 'Async Programming: Promises, Async/Await & Fetch', duration: '47:21', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=27598', free: false },
+      { id: 'jscp_9', title: 'Classes & Object-Oriented Programming (OOP)', duration: '80:04', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=32099', free: false },
+      { id: 'jscp_10', title: 'Portfolio Project: Build a Netflix Clone with JavaScript', duration: '47:00', videoUrl: 'https://www.youtube.com/embed/lI1ae4REbFM?start=42592', free: false },
+    ],
+  },
+
+  
+ {
+    id: 'javascript-masterclass',
+    title: 'JavaScript Masterclass — Complete 52-Hour Course',
+    instructor: 'School4U / Manas Kumar Lal',
+    category: 'technology',
+    level: 'Intermediate',
+    duration: '52h 00m',
+    rating: 4.7,
+    students: 3200,
+    thumbnail: 'https://img.youtube.com/vi/SYHihBqrDLo/maxresdefault.jpg',
+    description: 'The most comprehensive free JavaScript course available — 52 hours of structured content covering every concept from variables and operators all the way through DOM manipulation, 5 mini projects, OOP, APIs, async programming, modules, and more. Includes quiz sections and practice questions throughout.\n\n📒 Full Course Notes: https://drive.google.com/file/d/15gdkzuNsGRsioS-YMDsGDKHSTLEqAUf/view\n💻 Source Code: https://github.com/GitSchool4U/Premium-JavaScript',
+    tags: ['JavaScript', 'DOM', 'OOP', 'Async/Await', 'APIs', 'Functional Programming', 'Modules', 'LocalStorage'],
+    lessons: [
+      { id: 's4u1', title: 'Introduction to the Course', duration: '5:22', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=0', free: true },
+      { id: 's4u2', title: 'JavaScript Introduction — How It Works', duration: '41:27', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=322', free: true },
+      { id: 's4u3', title: 'Variables in JavaScript — var, let & const', duration: '1:37:45', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=2809', free: false },
+      { id: 's4u4', title: 'Operators — Arithmetic, Comparison & Logical', duration: '2:58:51', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=8674', free: false },
+      { id: 's4u5', title: 'Conditional & Decision Making Statements', duration: '1:42:07', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=19405', free: false },
+      { id: 's4u6', title: 'Looping Statements — for, while & do-while', duration: '1:02:27', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=25532', free: false },
+      { id: 's4u7', title: 'Number Knock Game + Text-Based Game Project', duration: '42:10', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=29279', free: false },
+      { id: 's4u8', title: 'Functions & Methods', duration: '58:50', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=31809', free: false },
+      { id: 's4u9', title: 'Strings, Arrays & Objects Deep Dive', duration: '4:58:32', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=35339', free: false },
+      { id: 's4u10', title: 'Complete DOM Manipulation', duration: '5:00:00', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=53251', free: false },
+      { id: 's4u11', title: '5 Mini Projects in JavaScript', duration: '4:28:33', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=71251', free: false },
+      { id: 's4u12', title: 'Event Lifecycle & Number, Math, Date & Time', duration: '9:12:00', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=87364', free: false },
+      { id: 's4u13', title: 'Practice Questions & Programming Paradigms', duration: '5:23:40', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=108199', free: false },
+      { id: 's4u14', title: 'Functional Programming in JavaScript', duration: '3:19:39', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=131239', free: false },
+      { id: 's4u15', title: 'Object-Oriented Programming (OOP) in JavaScript', duration: '3:10:36', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=143218', free: false },
+      { id: 's4u16', title: 'APIs, JSON & Async Programming (Promises, Async/Await)', duration: '4:55:40', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=154654', free: false },
+      { id: 's4u17', title: 'LocalStorage, Rest/Spread, Destructuring & Modules', duration: '3:11:17', videoUrl: 'https://www.youtube.com/embed/SYHihBqrDLo?start=177674', free: false },
+    ],
+  },
+
+  
+  {
+    id: 'javascript-projects-15',
+    title: 'Build 15 Real Projects: HTML, CSS & JS — (Part 1)',
+    instructor: 'Codesistency',
+    category: 'technology',
+    level: 'Intermediate',
+    duration: '9h 46m',
+    rating: 4.8,
+    students: 3200,
+    thumbnail: 'https://img.youtube.com/vi/kAiX0itnonM/maxresdefault.jpg',
+    description: 'Stop tutorial hell — start building. 15 complete standalone projects: Quiz Game, Color Palette Generator, Drag & Drop Board, Expense Tracker, Bookmark Saver, Form Validator, Password Generator, Todo App, Recipe Finder API, GitHub Finder API & more.\n\n📂 Source code: https://github.com/burakorkmez/html-css-js-projects',
+    tags: ['JavaScript', 'HTML', 'CSS', 'Projects', 'Portfolio', 'DOM', 'APIs'],
+    lessons: [
+      { id: 'jsp15_1', title: 'Project 1: Interactive Quiz Game', duration: '58:28', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=233', free: true },
+      { id: 'jsp15_2', title: 'Project 2: Random Color Palette Generator', duration: '40:25', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=3741', free: true },
+      { id: 'jsp15_3', title: 'Project 3: Drag & Drop Kanban Board', duration: '23:32', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=6166', free: false },
+      { id: 'jsp15_4', title: 'Project 4: Expense Tracker with LocalStorage', duration: '55:15', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=7578', free: false },
+      { id: 'jsp15_5', title: 'Projects 5–6: Bookmark Saver & Form Validator', duration: '45:55', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=10893', free: false },
+      { id: 'jsp15_6', title: 'Project 7: Password Generator with Strength Meter', duration: '53:49', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=14189', free: false },
+      { id: 'jsp15_7', title: 'Project 8: Functional Todo App with Filtering', duration: '58:19', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=17678', free: false },
+      { id: 'jsp15_8', title: 'Projects 9–11: Contact Form, Pricing Cards & Team Section', duration: '61:13', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=21197', free: false },
+      { id: 'jsp15_9', title: 'Projects 12–13: Recipe Finder & Currency Converter (APIs)', duration: '51:37', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=27110', free: false },
+      { id: 'jsp15_10', title: 'Projects 14–16: GitHub Finder, Custom 404 & Newsletter UI', duration: '47:00', videoUrl: 'https://www.youtube.com/embed/kAiX0itnonM?start=31713', free: false },
+    ],
+  },
+
+  {
+    id: 'javascript-projects-20',
+    title: 'Build 20 Projects: HTML, CSS & JS (2026) — (Part 2)',
+    instructor: 'JavaScript King',
+    category: 'technology',
+    level: 'Intermediate',
+    duration: '11h 23m',
+    rating: 4.7,
+    students: 1800,
+    thumbnail: 'https://img.youtube.com/vi/p5U77bZ0CEQ/maxresdefault.jpg',
+    description: 'The freshest project course (January 2026). 20 standalone modern projects — no copy-paste, every one built from zero: Password Generator, Calculator, BMI Calculator, Analog Clock, Dark Mode Toggle, Rock Paper Scissors, and more.\n\n📂 Source code: https://www.100jsprojects.com',
+    tags: ['JavaScript', 'HTML', 'CSS', 'Projects', 'Portfolio', '2026'],
+    lessons: [
+      { id: 'jsp20_1', title: 'Project 1: Secure Random Password Generator', duration: '45:48', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=104', free: true },
+      { id: 'jsp20_2', title: 'Project 2: Calculator App', duration: '59:40', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=2852', free: true },
+      { id: 'jsp20_3', title: 'Projects 3–4: Currency Converter & Auto Typing Effect', duration: '49:21', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=6432', free: false },
+      { id: 'jsp20_4', title: 'Projects 5–6: Live Countdown Timer & BMI Calculator', duration: '79:23', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=10369', free: false },
+      { id: 'jsp20_5', title: 'Projects 7–8: Realistic Analog Clock & Weight Converter', duration: '40:38', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=15101', free: false },
+      { id: 'jsp20_6', title: 'Projects 9–10: Dark Mode Toggle & Testimonial Slider', duration: '37:17', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=19254', free: false },
+      { id: 'jsp20_7', title: 'Projects 11–13: To-Do List, Age Calculator & Anime Pics', duration: '51:34', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=22513', free: false },
+      { id: 'jsp20_8', title: 'Projects 14–16: Image Slider, Button Ripple & Rock Paper Scissors', duration: '27:00', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=30744', free: false },
+      { id: 'jsp20_9', title: 'Projects 17–20: Scroll Effects, Video BG, Blur Pop-Up & Gallery', duration: '76:35', videoUrl: 'https://www.youtube.com/embed/p5U77bZ0CEQ?start=35460', free: false },
+    ],
+  },
+
+  
+  {
+    id: 'javascript-projects-19',
+    title: 'Build 19 Web Dev Projects: HTML, CSS & JS — (Part 3)',
+    instructor: 'freeCodeCamp / Codesistency',
+    category: 'technology',
+    level: 'Intermediate',
+    duration: '11h 56m',
+    rating: 4.8,
+    students: 2100,
+    thumbnail: 'https://img.youtube.com/vi/BiA08jfr4RU/maxresdefault.jpg',
+    description: 'The newest freeCodeCamp project course (March 2026). 19 complete web dev projects — APIs, LocalStorage, Drag & Drop, GitHub API, and more — all built from scratch with clean source code.\n\n📂 Source code: https://github.com/burakorkmez/html-css-js-projects',
+    tags: ['JavaScript', 'HTML', 'CSS', 'Projects', 'APIs', 'LocalStorage', '2026'],
+    lessons: [
+      { id: 'jsp19_1', title: 'Setup & Project 1: Interactive Quiz Game', duration: '58:27', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=0', free: true },
+      { id: 'jsp19_2', title: 'Project 2: Random Color Palette Generator', duration: '40:25', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=4104', free: true },
+      { id: 'jsp19_3', title: 'Project 3: Kanban Board with Drag & Drop API', duration: '23:31', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=6529', free: false },
+      { id: 'jsp19_4', title: 'Project 4: Expense Tracker with LocalStorage', duration: '55:16', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=7940', free: false },
+      { id: 'jsp19_5', title: 'Projects 5–6: Bookmark Saver & Registration Form Validator', duration: '46:00', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=11256', free: false },
+      { id: 'jsp19_6', title: 'Project 7: Password Generator with Strength Meter', duration: '54:07', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=14552', free: false },
+      { id: 'jsp19_7', title: 'Projects 8–9: Functional Todo App & Contact Form', duration: '56:18', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=18039', free: false },
+      { id: 'jsp19_8', title: 'Projects 10–12: Pricing Cards, Team Section & Recipe Finder API', duration: '67:39', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=23075', free: false },
+      { id: 'jsp19_9', title: 'Projects 13–15: Currency Converter, GitHub API & Custom 404', duration: '54:00', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=30559', free: false },
+      { id: 'jsp19_10', title: 'Projects 16–19: Newsletter, Coming Soon, Contact Page & Scroll Indicator', duration: '67:38', videoUrl: 'https://www.youtube.com/embed/BiA08jfr4RU?start=35531', free: false },
+    ],
+  },
+
+  {
+    id: 'javascript-fullstack-huxn',
+    title: 'Full Stack JavaScript: React, Node.js & MongoDB',
+    instructor: 'HuXn WebDev',
+    category: 'technology',
+    level: 'Advanced',
+    duration: '15h 32m',
+    rating: 4.8,
+    students: 6800,
+    thumbnail: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=600&q=80',
+    description: 'Go from JavaScript fundamentals all the way to full stack. Covers JS from scratch, GSAP animations, OOP, Async JS, and backend development with Node.js, Express, MongoDB & Mongoose. 100+ hands-on coding challenges.\n\n📂 Source code: https://github.com/HuXn-WebDev/Zero-To-FullStack-Hero',
+    tags: ['JavaScript', 'Node.js', 'Express', 'MongoDB', 'GSAP', 'OOP', 'Full Stack', 'Advanced'],
+    lessons: [
+      { id: 'jshx_1', title: 'JS Overview, Dev Setup & Mastering Variables', duration: '47:31', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=541', free: true },
+      { id: 'jshx_2', title: 'Numbers, Booleans, Strings & Comparison Operators', duration: '64:40', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=1842', free: true },
+      { id: 'jshx_3', title: 'Conditionals, Switch Statements & Loops', duration: '62:37', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=4803', free: false },
+      { id: 'jshx_4', title: 'Arrays, Objects & Functions Deep Dive', duration: '43:48', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=9630', free: false },
+      { id: 'jshx_5', title: 'ES6+: Callbacks, Spread, Destructuring, Template Strings & Arrow Functions', duration: '95:56', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=15214', free: false },
+      { id: 'jshx_6', title: 'forEach, map, filter, reduce, Maps & Sets', duration: '71:29', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=22476', free: false },
+      { id: 'jshx_7', title: 'DOM Manipulation: Access, Modify, Create & Events', duration: '76:00', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=27610', free: false },
+      { id: 'jshx_8', title: 'GSAP Animations: Tweens, Timelines & Staggering', duration: '49:43', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=37688', free: false },
+      { id: 'jshx_9', title: 'OOP: Prototypes, Inheritance & Classes', duration: '72:38', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=41323', free: false },
+      { id: 'jshx_10', title: 'Async JS: Callback Hell, Promises, Async/Await & Fetching APIs', duration: '79:07', videoUrl: 'https://www.youtube.com/embed/H3XIJYEPdus?start=51379', free: false },
+    ],
+  },
+
+ 
   {
     id: 'react-fundamentals',
-    title: 'React Fundamentals: Build Real Apps',
+    title: 'React: Quick Start – Build a Real App — (Part 1 )',
     instructor: 'Traversy Media',
     category: 'technology',
     level: 'Beginner',
-    duration: '6h 30m',
+    duration: '2h 45m',
     rating: 4.8,
     students: 12400,
-    thumbnail: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=600&q=80',
-    description: 'Master the core concepts of React — components, hooks, state, and routing — by building real-world applications from scratch.',
-    tags: ['React', 'JavaScript', 'Frontend'],
+    thumbnail: 'https://img.youtube.com/vi/LDB4uaJ87e0/maxresdefault.jpg',
+    description: 'The fastest way into React. In under 3 hours, go from zero React knowledge to a deployed job listings app — covering components, props, state, hooks, React Router v6, and data fetching.',
+    tags: ['React', 'JavaScript', 'Frontend', 'Vite', 'React Router', 'Hooks', 'Beginner'],
     lessons: [
-      { id: 'r1', title: 'What is React & Why It Matters', duration: '12:30', videoUrl: 'https://www.youtube.com/embed/w7ejDZ8SWv8', free: true },
-      { id: 'r2', title: 'JSX & Components Deep Dive', duration: '18:45', videoUrl: 'https://www.youtube.com/embed/SqcY0GlETPk', free: true },
-      { id: 'r3', title: 'useState & useEffect Hooks', duration: '22:10', videoUrl: 'https://www.youtube.com/embed/O6P86uwfdR0', free: false },
-      { id: 'r4', title: 'Props, Context & State Lifting', duration: '19:55', videoUrl: 'https://www.youtube.com/embed/35lXWvCuM8o', free: false },
-      { id: 'r5', title: 'React Router v6 Complete Guide', duration: '25:20', videoUrl: 'https://www.youtube.com/embed/Ul3y1LXxzdU', free: false },
-      { id: 'r6', title: 'Fetching Data & Async Patterns', duration: '20:15', videoUrl: 'https://www.youtube.com/embed/T3Px88x_PsA', free: false },
-      { id: 'r7', title: 'Custom Hooks: Write Reusable Logic', duration: '17:40', videoUrl: 'https://www.youtube.com/embed/6ThXsUwLWvc', free: false },
-      { id: 'r8', title: 'Deploying React Apps to Vercel', duration: '14:00', videoUrl: 'https://www.youtube.com/embed/ysEN5RaKOlA', free: false },
+      { id: 'r1', title: 'What is React & Why It Matters', duration: '14:00', videoUrl: 'https://www.youtube.com/embed/LDB4uaJ87e0?start=0', free: true },
+      { id: 'r2', title: 'Setup with Vite, Tailwind & Project Structure', duration: '19:00', videoUrl: 'https://www.youtube.com/embed/LDB4uaJ87e0?start=840', free: true },
+      { id: 'r3', title: 'JSX, Components & Props', duration: '23:00', videoUrl: 'https://www.youtube.com/embed/LDB4uaJ87e0?start=1980', free: false },
+      { id: 'r4', title: 'useState Hook & Event Handling', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/LDB4uaJ87e0?start=3360', free: false },
+      { id: 'r5', title: 'React Router v6: Routes & Navigation', duration: '26:00', videoUrl: 'https://www.youtube.com/embed/LDB4uaJ87e0?start=4560', free: false },
+      { id: 'r6', title: 'useEffect & Data Fetching', duration: '22:00', videoUrl: 'https://www.youtube.com/embed/LDB4uaJ87e0?start=6120', free: false },
+      { id: 'r7', title: 'Forms, POST Requests & CRUD Operations', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/LDB4uaJ87e0?start=7440', free: false },
+      { id: 'r8', title: 'Deploying React Apps to Vercel', duration: '15:00', videoUrl: 'https://www.youtube.com/embed/LDB4uaJ87e0?start=8640', free: false },
     ],
   },
+
+
   {
-    id: 'javascript-advanced',
-    title: 'JavaScript: The Advanced Concepts',
-    instructor: 'Andrei Neagoie',
+    id: 'react-beginners-fcc',
+    title: 'React JS: Full Beginner\'s Course with 6 Projects — (Part 2 )',
+    instructor: 'freeCodeCamp / Scrimba',
+    category: 'technology',
+    level: 'Beginner',
+    duration: '15h 33m',
+    rating: 4.9,
+    students: 7600,
+    thumbnail: 'https://img.youtube.com/vi/x4rFhThSX04/maxresdefault.jpg',
+    description: 'The most interactive React beginner course. 170+ coding challenges and 6 real projects: ReactFacts, Travel Journal, Chef Claude AI App, Meme Generator, Tenzies Game, and Assembly Endgame. You build everything yourself.\n\n📂 Course code: https://github.com/scrimba/learn-react',
+    tags: ['React', 'JavaScript', 'Projects', 'Hooks', 'State', 'Interactive', 'Beginner'],
+    lessons: [
+      { id: 'rfcc_1', title: 'Section 1: React Basics — JSX, Components & Styling', duration: '137:59', videoUrl: 'https://www.youtube.com/embed/x4rFhThSX04?start=0', free: true },
+      { id: 'rfcc_2', title: 'Section 2: Travel Journal Project — Props & Mapping Data', duration: '135:03', videoUrl: 'https://www.youtube.com/embed/x4rFhThSX04?start=8279', free: true },
+      { id: 'rfcc_3', title: 'Section 3: Chef Claude AI App — State, Events & Forms', duration: '310:53', videoUrl: 'https://www.youtube.com/embed/x4rFhThSX04?start=16382', free: false },
+      { id: 'rfcc_4', title: 'Section 4: Meme Generator — useEffect & Controlled Components', duration: '117:19', videoUrl: 'https://www.youtube.com/embed/x4rFhThSX04?start=35035', free: false },
+      { id: 'rfcc_5', title: 'Section 5: Tenzies Game — Complex State & Lazy Initialization', duration: '89:59', videoUrl: 'https://www.youtube.com/embed/x4rFhThSX04?start=42074', free: false },
+      { id: 'rfcc_6', title: 'Section 6: Assembly Endgame — Full Hangman-Style Game', duration: '126:59', videoUrl: 'https://www.youtube.com/embed/x4rFhThSX04?start=47473', free: false },
+      { id: 'rfcc_7', title: 'Bonus: React Dev Tools & VS Code Extensions', duration: '41:00', videoUrl: 'https://www.youtube.com/embed/x4rFhThSX04?start=55092', free: false },
+    ],
+  },
+
+  
+ {
+    id: 'react-dave-gray',
+    title: 'React JS Full Course  (Hooks, CRUD, Router, Redux) [ Part 3 ]',
+    instructor: 'Dave Gray',
+    category: 'technology',
+    level: 'Intermediate',
+    duration: '8h 34m',
+    rating: 4.8,
+    students: 28000,
+    thumbnail: 'https://img.youtube.com/vi/RVFAyFWO4go/maxresdefault.jpg',
+    description: 'A complete React JS course with 23 clearly structured chapters. Covers modern React with functional components and hooks — useState, useEffect, useContext, custom hooks — plus React Router, JSON Server, Fetch API, CRUD operations, Axios, Context API, Redux, and finally building and deploying your React apps.\n\n💻 All Resources & Source Code: https://github.com/gitdagray/react_resources\n📬 Course Updates: https://courses.davegray.codes/',
+    tags: ['React', 'Hooks', 'React Router', 'CRUD', 'Axios', 'Context API', 'Redux', 'Deployment'],
+    lessons: [
+      { id: 'dgr1', title: 'Chapters 1–3 — Start Here, App & JSX, Functional Components', duration: '25:28', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=0', free: true },
+      { id: 'dgr2', title: 'Chapters 4–6 — CSS Styles, Click Events & useState Hook', duration: '38:32', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=2161', free: true },
+      { id: 'dgr3', title: 'Chapter 7 — Lists & Keys', duration: '32:27', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=3803', free: false },
+      { id: 'dgr4', title: 'Chapter 8 — Props & Prop Drilling', duration: '25:29', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=5750', free: false },
+      { id: 'dgr5', title: 'Chapter 9 — Controlled Component Inputs', duration: '37:06', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=7279', free: false },
+      { id: 'dgr6', title: 'Chapter 10 — Project Challenge', duration: '25:19', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=9505', free: false },
+      { id: 'dgr7', title: 'Chapters 11–13 — useEffect, JSON Server & Fetch API Data', duration: '41:14', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=11024', free: false },
+      { id: 'dgr8', title: 'Chapter 14 & 15 — CRUD Operations & Fetch Data Challenge', duration: '1:18:37', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=13477', free: false },
+      { id: 'dgr9', title: 'Chapters 16 & 17 — React Router & Router Hooks + Links', duration: '1:08:30', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=16990', free: false },
+      { id: 'dgr10', title: 'Chapters 18 & 19 — Flexbox Components & Axios API Requests', duration: '49:13', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=21088', free: false },
+      { id: 'dgr11', title: 'Chapters 20 & 21 — Custom Hooks & Context API + useContext', duration: '1:16:17', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=24047', free: false },
+      { id: 'dgr12', title: 'Chapters 22 & 23 — Easy Peasy Redux & Build + Deploy', duration: '1:17:50', videoUrl: 'https://www.youtube.com/embed/RVFAyFWO4go?start=28570', free: false },
+    ],
+  },
+
+   {
+    id: 'react-clone-projects',
+    title: ' ReactJS — Build 4 Full Clone Apps (Tesla, Disney+, Clubhouse & LinkedIn) [ Part 4 ]',
+    instructor: 'Clever Programmer',
     category: 'technology',
     level: 'Advanced',
-    duration: '9h 15m',
-    rating: 4.9,
-    students: 23100,
-    thumbnail: 'https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=600&q=80',
-    description: 'Closures, prototypes, async/await, event loop, and performance optimization. Understand JavaScript at a deep level.',
-    tags: ['JavaScript', 'ES6+', 'Performance'],
-    lessons: [
-      { id: 'js1', title: 'JavaScript Engine & Runtime', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/KM9coMpy5sQ', free: true },
-      { id: 'js2', title: 'Execution Context & Call Stack', duration: '16:30', videoUrl: 'https://www.youtube.com/embed/iLWTnMzWtj4', free: true },
-      { id: 'js3', title: 'Closures & Scope Chain', duration: '22:45', videoUrl: 'https://www.youtube.com/embed/3a0I8ICR1Vg', free: false },
-      { id: 'js4', title: 'Prototypal Inheritance', duration: '19:20', videoUrl: 'https://www.youtube.com/embed/wstwjQ1yqWQ', free: false },
-      { id: 'js5', title: 'Async JS: Promises & Async/Await', duration: '28:10', videoUrl: 'https://www.youtube.com/embed/DHvZLI7Db8E', free: false },
-      { id: 'js6', title: 'The Event Loop Explained', duration: '15:55', videoUrl: 'https://www.youtube.com/embed/8aGhZQkoFbQ', free: false },
-    ],
-  },
-
-  // ─── ECONOMICS ───
-  {
-    id: 'economics-101',
-    title: 'Microeconomics: Principles & Applications',
-    instructor: 'Khan Academy',
-    category: 'economics',
-    level: 'Beginner',
-    duration: '7h 00m',
-    rating: 4.7,
-    students: 8900,
-    thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80',
-    description: 'Learn supply and demand, market structures, consumer theory, and how economic forces shape everyday decisions.',
-    tags: ['Microeconomics', 'Markets', 'Finance'],
-    lessons: [
-      { id: 'eco1', title: 'What is Economics? Scarcity & Choice', duration: '14:00', videoUrl: 'https://www.youtube.com/embed/3ez10ADR_gM', free: true },
-      { id: 'eco2', title: 'Supply, Demand & Equilibrium', duration: '18:30', videoUrl: 'https://www.youtube.com/embed/g9aDizJpd_s', free: true },
-      { id: 'eco3', title: 'Elasticity: How Markets React', duration: '16:20', videoUrl: 'https://www.youtube.com/embed/8h8EJXSSLR8', free: false },
-      { id: 'eco4', title: 'Consumer & Producer Surplus', duration: '15:45', videoUrl: 'https://www.youtube.com/embed/GgzS04HURtg', free: false },
-      { id: 'eco5', title: 'Market Structures: Perfect vs Monopoly', duration: '21:10', videoUrl: 'https://www.youtube.com/embed/7u-TB63GKNY', free: false },
-      { id: 'eco6', title: 'Game Theory & Strategic Thinking', duration: '19:00', videoUrl: 'https://www.youtube.com/embed/MHS-htjGgSY', free: false },
-    ],
-  },
-
-  // ─── DATA ───
-  {
-    id: 'python-data-science',
-    title: 'Python for Data Science & Analysis',
-    instructor: 'Data School',
-    category: 'data',
-    level: 'Intermediate',
-    duration: '8h 45m',
+    duration: '19h 29m',
     rating: 4.8,
-    students: 15300,
-    thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
-    description: 'From pandas to matplotlib — learn to collect, clean, analyze and visualize data using Python and real-world datasets.',
-    tags: ['Python', 'Pandas', 'Data Viz'],
+    students: 14500,
+    thumbnail: 'https://img.youtube.com/vi/0mVbNp1ol_w/maxresdefault.jpg',
+    description: 'Build 4 real, production-grade clone applications from scratch using React, Styled Components, Redux, Firebase Auth, Firebase Firestore, and Firebase Storage. Projects include a Tesla website clone, Disney+ streaming clone, Clubhouse audio rooms clone, and a LinkedIn clone — every one deployed live.\n\n🔗 Project Files: https://drive.google.com/drive/folders/1iXzMkzX_hM-Z64L_e4f-bLFJWJlPaO5H',
+    tags: ['React', 'Redux', 'Firebase', 'Firestore', 'Authentication', 'Styled Components', 'Clone Projects'],
     lessons: [
-      { id: 'ds1', title: 'Python Basics for Data Work', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/r-uOLxNrNk8', free: true },
-      { id: 'ds2', title: 'NumPy Arrays & Operations', duration: '22:30', videoUrl: 'https://www.youtube.com/embed/QUT1VHiLmmI', free: true },
-      { id: 'ds3', title: 'Pandas DataFrames Deep Dive', duration: '28:00', videoUrl: 'https://www.youtube.com/embed/vmEHCJofslg', free: false },
-      { id: 'ds4', title: 'Data Cleaning & Preprocessing', duration: '24:15', videoUrl: 'https://www.youtube.com/embed/iYie42M1ZyU', free: false },
-      { id: 'ds5', title: 'Visualizing Data with Matplotlib', duration: '19:40', videoUrl: 'https://www.youtube.com/embed/3Xc3CA655Y4', free: false },
-      { id: 'ds6', title: 'Seaborn & Statistical Plots', duration: '17:55', videoUrl: 'https://www.youtube.com/embed/6GUZXDef2U0', free: false },
+      { id: 'cpr1', title: 'Intro & Course Overview', duration: '1:30', videoUrl: 'https://www.youtube.com/embed/0mVbNp1ol_w?start=0', free: true },
+      { id: 'cpr2', title: 'Project 1 — Tesla Clone (React Redux, Styled Components & Animations)', duration: '2:11:52', videoUrl: 'https://www.youtube.com/embed/0mVbNp1ol_w?start=90', free: true },
+      { id: 'cpr3', title: 'Project 2 — Disney+ Clone (Firebase, Auth, Firestore & Real-Time Data)', duration: '5:04:17', videoUrl: 'https://www.youtube.com/embed/0mVbNp1ol_w?start=8242', free: false },
+      { id: 'cpr4', title: 'Project 3 — Clubhouse Clone (React Router, Global Styles & Complex UI)', duration: '4:55:53', videoUrl: 'https://www.youtube.com/embed/0mVbNp1ol_w?start=26499', free: false },
+      { id: 'cpr5', title: 'Project 4 — LinkedIn Clone (Full Firebase Integration, Auth & Professional UI)', duration: '7:07:20', videoUrl: 'https://www.youtube.com/embed/0mVbNp1ol_w?start=44492', free: false },
     ],
   },
-
-  // ─── ENGINEERING ───
-  {
-    id: 'electrical-engineering-basics',
-    title: 'Electrical Engineering Fundamentals',
-    instructor: 'The Organic Chemistry Tutor',
-    category: 'engineering',
-    level: 'Beginner',
-    duration: '5h 30m',
-    rating: 4.6,
-    students: 6700,
-    thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80',
-    description: 'Circuits, Ohm\'s Law, AC/DC analysis, and electrical components — everything you need to start your engineering journey.',
-    tags: ['Circuits', 'Electronics', 'Engineering'],
-    lessons: [
-      { id: 'ee1', title: 'Voltage, Current & Resistance', duration: '18:20', videoUrl: 'https://www.youtube.com/embed/mc979OhitAg', free: true },
-      { id: 'ee2', title: 'Ohm\'s Law & Power', duration: '15:40', videoUrl: 'https://www.youtube.com/embed/HsLLq6Rm5tU', free: true },
-      { id: 'ee3', title: 'Series vs Parallel Circuits', duration: '22:00', videoUrl: 'https://www.youtube.com/embed/YVS6cJJQFVo', free: false },
-      { id: 'ee4', title: 'Kirchhoff\'s Laws', duration: '19:15', videoUrl: 'https://www.youtube.com/embed/ysSSO3UcKW0', free: false },
-      { id: 'ee5', title: 'Capacitors & Inductors', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/X4EUwTwZ110', free: false },
-    ],
-  },
-
-  // ─── CIVIL ───
-  {
-    id: 'civil-engineering-intro',
-    title: 'Introduction to Civil Engineering',
-    instructor: 'Engineer4Free',
-    category: 'civil',
-    level: 'Beginner',
-    duration: '6h 00m',
-    rating: 4.5,
-    students: 4200,
-    thumbnail: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80',
-    description: 'Statics, structural analysis, and the fundamentals behind bridges, buildings, and infrastructure design.',
-    tags: ['Statics', 'Structures', 'Construction'],
-    lessons: [
-      { id: 'ce1', title: 'What Civil Engineers Do', duration: '12:00', videoUrl: 'https://www.youtube.com/embed/FKoFBaHbN2U', free: true },
-      { id: 'ce2', title: 'Forces, Vectors & Free Body Diagrams', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/1qfHbyGMh0c', free: true },
-      { id: 'ce3', title: 'Equilibrium & Trusses', duration: '24:00', videoUrl: 'https://www.youtube.com/embed/SdrjUOnCJwY', free: false },
-      { id: 'ce4', title: 'Beams & Bending Moments', duration: '22:45', videoUrl: 'https://www.youtube.com/embed/f08Y39UiC-o', free: false },
-      { id: 'ce5', title: 'Soil Mechanics Basics', duration: '18:00', videoUrl: 'https://www.youtube.com/embed/5IhagLkV-yg', free: false },
-    ],
-  },
-
-  // ─── TEACHING ───
-  {
-    id: 'teaching-essentials',
-    title: 'The Art of Teaching: Modern Pedagogy',
-    instructor: 'Cult of Pedagogy',
-    category: 'teaching',
-    level: 'Beginner',
-    duration: '4h 45m',
-    rating: 4.7,
-    students: 5100,
-    thumbnail: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80',
-    description: 'Learn evidence-based teaching strategies, classroom management, and how to design engaging learning experiences for any audience.',
-    tags: ['Pedagogy', 'Classroom', 'Curriculum'],
-    lessons: [
-      { id: 'te1', title: 'How People Learn: The Science', duration: '16:00', videoUrl: 'https://www.youtube.com/embed/b7IjSMuBWPg', free: true },
-      { id: 'te2', title: 'Designing Effective Lessons', duration: '18:30', videoUrl: 'https://www.youtube.com/embed/e0O2b5v1RJk', free: true },
-      { id: 'te3', title: 'Classroom Management Strategies', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/hEW3S0LRQak', free: false },
-      { id: 'te4', title: 'Differentiated Instruction', duration: '17:45', videoUrl: 'https://www.youtube.com/embed/ORMOelCMBRQ', free: false },
-      { id: 'te5', title: 'Assessment & Feedback That Works', duration: '19:20', videoUrl: 'https://www.youtube.com/embed/OFpHbVLQPaE', free: false },
-    ],
-  },
-
-  // ─── CREATIVE ───
-  {
-    id: 'ui-ux-design',
-    title: 'UI/UX Design: From Zero to Figma',
-    instructor: 'DesignCourse',
-    category: 'creative',
-    level: 'Beginner',
-    duration: '7h 20m',
-    rating: 4.8,
-    students: 9800,
-    thumbnail: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=600&q=80',
-    description: 'Design principles, typography, color theory, wireframing, and Figma prototyping — everything to start your design career.',
-    tags: ['Figma', 'UX', 'Design'],
-    lessons: [
-      { id: 'ux1', title: 'Design Thinking & Process', duration: '15:00', videoUrl: 'https://www.youtube.com/embed/_r0VX-aU_T8', free: true },
-      { id: 'ux2', title: 'Color Theory for Designers', duration: '18:20', videoUrl: 'https://www.youtube.com/embed/AvgCkHrcj8w', free: true },
-      { id: 'ux3', title: 'Typography That Works', duration: '16:40', videoUrl: 'https://www.youtube.com/embed/QrNi9FmdlxY', free: false },
-      { id: 'ux4', title: 'Figma Basics: Components & Styles', duration: '24:00', videoUrl: 'https://www.youtube.com/embed/FTFaQWZBqQ8', free: false },
-      { id: 'ux5', title: 'Wireframing & Prototyping', duration: '22:30', videoUrl: 'https://www.youtube.com/embed/KdfO_e0yK-g', free: false },
-      { id: 'ux6', title: 'User Research & Testing', duration: '20:10', videoUrl: 'https://www.youtube.com/embed/isAUHhNfLGQ', free: false },
-    ],
-  },
-  // ─── TECHNOLOGY (additional) ───
+  
   {
     id: 'claude-code-agentic-workflows',
-    title: 'Claude Code: Build Agentic Coding Workflows',
+    title: 'Claude Code: Build Agentic Coding Workflows — Stage 7 of 7',
     instructor: 'ExamPro / freeCodeCamp',
     category: 'technology',
     level: 'Intermediate',
@@ -202,8 +474,8 @@ export const COURSES = [
     rating: 4.9,
     students: 8600,
     thumbnail: 'https://img.youtube.com/vi/brLhhkUqcn4/maxresdefault.jpg',
-    description: 'Learn how to use Claude Code to build real-world agentic coding workflows. Covers everything from core concepts to advanced multi-agent systems, MCP integration, sandboxing, and more.\n\nAdditional resources: https://www.exampro.co/exp-claudecode-01',
-    tags: ['AI', 'Agentic Coding', 'Claude', 'Developer Tools'],
+    description: 'Learn to use Claude Code for real-world agentic coding workflows. Covers everything from core concepts to advanced multi-agent systems, MCP integration, sandboxing, and Dev Containers.\n\nAdditional resources: https://www.exampro.co/exp-claudecode-01',
+    tags: ['AI', 'Agentic Coding', 'Claude', 'MCP', 'Developer Tools', 'TypeScript'],
     lessons: [
       { id: 'c1', title: 'Intro & Meet your Instructor', duration: '1:06', videoUrl: 'https://www.youtube.com/embed/brLhhkUqcn4?start=0', free: true },
       { id: 'c2', title: 'Claude Code Essentials & Guest Instructor', duration: '6:23', videoUrl: 'https://www.youtube.com/embed/brLhhkUqcn4?start=66', free: true },
@@ -242,7 +514,150 @@ export const COURSES = [
     ],
   },
 
-  // ─── AGRICULTURE ───
+  // ─── ECONOMICS ──────────────────────────────────────────────────────
+  // ⚠️ VERIFY: Open each embed URL as https://www.youtube.com/embed/VIDEO_ID
+  {
+    id: 'economics-101',
+    title: 'Microeconomics: Principles & Applications',
+    instructor: 'Crash Course',
+    category: 'economics',
+    level: 'Beginner',
+    duration: '7h 00m',
+    rating: 4.7,
+    students: 8900,
+    thumbnail: 'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=600&q=80',
+    description: 'Learn supply and demand, market structures, consumer theory, and how economic forces shape everyday decisions — with Crash Course\'s signature animated explainers.',
+    tags: ['Microeconomics', 'Markets', 'Finance'],
+    lessons: [
+      { id: 'eco1', title: 'What is Economics? Scarcity & Choice', duration: '14:00', videoUrl: 'https://www.youtube.com/embed/3ez10ADR_gM', free: true },
+      { id: 'eco2', title: 'Supply, Demand & Equilibrium', duration: '18:30', videoUrl: 'https://www.youtube.com/embed/g9aDizJpd_s', free: true },
+      { id: 'eco3', title: 'Elasticity: How Markets React', duration: '16:20', videoUrl: 'https://www.youtube.com/embed/8h8EJXSSLR8', free: false },
+      { id: 'eco4', title: 'Consumer & Producer Surplus', duration: '15:45', videoUrl: 'https://www.youtube.com/embed/GgzS04HURtg', free: false },
+      { id: 'eco5', title: 'Market Structures: Perfect vs Monopoly', duration: '21:10', videoUrl: 'https://www.youtube.com/embed/7u-TB63GKNY', free: false },
+      { id: 'eco6', title: 'Game Theory & Strategic Thinking', duration: '19:00', videoUrl: 'https://www.youtube.com/embed/MHS-htjGgSY', free: false },
+    ],
+  },
+
+  // ─── DATA ────────────────────────────────────────────────────────────
+  // ⚠️ VERIFY: All embed URLs need manual browser check
+  {
+    id: 'python-data-science',
+    title: 'Python for Data Science & Analysis',
+    instructor: 'Data School',
+    category: 'data',
+    level: 'Intermediate',
+    duration: '8h 45m',
+    rating: 4.8,
+    students: 15300,
+    thumbnail: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80',
+    description: 'From pandas to matplotlib — learn to collect, clean, analyze and visualize data using Python and real-world datasets.',
+    tags: ['Python', 'Pandas', 'Data Viz', 'NumPy', 'Matplotlib'],
+    lessons: [
+      { id: 'ds1', title: 'Python Basics for Data Work', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/r-uOLxNrNk8', free: true },
+      { id: 'ds2', title: 'NumPy Arrays & Operations', duration: '22:30', videoUrl: 'https://www.youtube.com/embed/QUT1VHiLmmI', free: true },
+      { id: 'ds3', title: 'Pandas DataFrames Deep Dive', duration: '28:00', videoUrl: 'https://www.youtube.com/embed/vmEHCJofslg', free: false },
+      { id: 'ds4', title: 'Data Cleaning & Preprocessing', duration: '24:15', videoUrl: 'https://www.youtube.com/embed/iYie42M1ZyU', free: false },
+      { id: 'ds5', title: 'Visualizing Data with Matplotlib', duration: '19:40', videoUrl: 'https://www.youtube.com/embed/3Xc3CA655Y4', free: false },
+      { id: 'ds6', title: 'Seaborn & Statistical Plots', duration: '17:55', videoUrl: 'https://www.youtube.com/embed/6GUZXDef2U0', free: false },
+    ],
+  },
+
+  // ─── ENGINEERING ─────────────────────────────────────────────────────
+  // ⚠️ VERIFY: All embed URLs need manual browser check
+  {
+    id: 'electrical-engineering-basics',
+    title: 'Electrical Engineering Fundamentals',
+    instructor: 'The Organic Chemistry Tutor',
+    category: 'engineering',
+    level: 'Beginner',
+    duration: '5h 30m',
+    rating: 4.6,
+    students: 6700,
+    thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80',
+    description: 'Circuits, Ohm\'s Law, AC/DC analysis, and electrical components — everything you need to start your engineering journey.',
+    tags: ['Circuits', 'Electronics', 'Engineering'],
+    lessons: [
+      { id: 'ee1', title: 'Voltage, Current & Resistance', duration: '18:20', videoUrl: 'https://www.youtube.com/embed/mc979OhitAg', free: true },
+      { id: 'ee2', title: 'Ohm\'s Law & Power', duration: '15:40', videoUrl: 'https://www.youtube.com/embed/HsLLq6Rm5tU', free: true },
+      { id: 'ee3', title: 'Series vs Parallel Circuits', duration: '22:00', videoUrl: 'https://www.youtube.com/embed/YVS6cJJQFVo', free: false },
+      { id: 'ee4', title: 'Kirchhoff\'s Laws', duration: '19:15', videoUrl: 'https://www.youtube.com/embed/ysSSO3UcKW0', free: false },
+      { id: 'ee5', title: 'Capacitors & Inductors', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/X4EUwTwZ110', free: false },
+    ],
+  },
+
+  // ─── CIVIL ───────────────────────────────────────────────────────────
+  // ⚠️ VERIFY: All embed URLs need manual browser check
+  {
+    id: 'civil-engineering-intro',
+    title: 'Introduction to Civil Engineering',
+    instructor: 'Engineer4Free',
+    category: 'civil',
+    level: 'Beginner',
+    duration: '6h 00m',
+    rating: 4.5,
+    students: 4200,
+    thumbnail: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80',
+    description: 'Statics, structural analysis, and the fundamentals behind bridges, buildings, and infrastructure design.',
+    tags: ['Statics', 'Structures', 'Construction'],
+    lessons: [
+      { id: 'ce1', title: 'What Civil Engineers Do', duration: '12:00', videoUrl: 'https://www.youtube.com/embed/FKoFBaHbN2U', free: true },
+      { id: 'ce2', title: 'Forces, Vectors & Free Body Diagrams', duration: '20:30', videoUrl: 'https://www.youtube.com/embed/1qfHbyGMh0c', free: true },
+      { id: 'ce3', title: 'Equilibrium & Trusses', duration: '24:00', videoUrl: 'https://www.youtube.com/embed/SdrjUOnCJwY', free: false },
+      { id: 'ce4', title: 'Beams & Bending Moments', duration: '22:45', videoUrl: 'https://www.youtube.com/embed/f08Y39UiC-o', free: false },
+      { id: 'ce5', title: 'Soil Mechanics Basics', duration: '18:00', videoUrl: 'https://www.youtube.com/embed/5IhagLkV-yg', free: false },
+    ],
+  },
+
+  // ─── TEACHING ────────────────────────────────────────────────────────
+  // ⚠️ VERIFY: All embed URLs need manual browser check
+  {
+    id: 'teaching-essentials',
+    title: 'The Art of Teaching: Modern Pedagogy',
+    instructor: 'Cult of Pedagogy',
+    category: 'teaching',
+    level: 'Beginner',
+    duration: '4h 45m',
+    rating: 4.7,
+    students: 5100,
+    thumbnail: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80',
+    description: 'Learn evidence-based teaching strategies, classroom management, and how to design engaging learning experiences for any audience.',
+    tags: ['Pedagogy', 'Classroom', 'Curriculum'],
+    lessons: [
+      { id: 'te1', title: 'How People Learn: The Science', duration: '16:00', videoUrl: 'https://www.youtube.com/embed/b7IjSMuBWPg', free: true },
+      { id: 'te2', title: 'Designing Effective Lessons', duration: '18:30', videoUrl: 'https://www.youtube.com/embed/e0O2b5v1RJk', free: true },
+      { id: 'te3', title: 'Classroom Management Strategies', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/hEW3S0LRQak', free: false },
+      { id: 'te4', title: 'Differentiated Instruction', duration: '17:45', videoUrl: 'https://www.youtube.com/embed/ORMOelCMBRQ', free: false },
+      { id: 'te5', title: 'Assessment & Feedback That Works', duration: '19:20', videoUrl: 'https://www.youtube.com/embed/OFpHbVLQPaE', free: false },
+    ],
+  },
+
+  // ─── CREATIVE ────────────────────────────────────────────────────────
+  // CONFIRMED dYtdv--qd_U — DesignCourse 2024
+  {
+    id: 'ui-ux-design',
+    title: 'UI/UX Design: From Zero to Figma',
+    instructor: 'DesignCourse',
+    category: 'creative',
+    level: 'Beginner',
+    duration: '2h 20m',
+    rating: 4.8,
+    students: 9800,
+    thumbnail: 'https://img.youtube.com/vi/dYtdv--qd_U/maxresdefault.jpg',
+    description: 'Design principles, UI fundamentals, and Figma prototyping — build a real landing page from scratch while learning industry-standard design tools and techniques.',
+    tags: ['Figma', 'UX', 'UI Design', 'Prototyping', 'Responsive Design'],
+    lessons: [
+      { id: 'ux1', title: 'Intro to UI/UX & Figma Interface Overview', duration: '8:00', videoUrl: 'https://www.youtube.com/embed/dYtdv--qd_U?start=0', free: true },
+      { id: 'ux2', title: 'Grids, Layout & Core Design Foundations', duration: '15:00', videoUrl: 'https://www.youtube.com/embed/dYtdv--qd_U?start=480', free: true },
+      { id: 'ux3', title: 'Navigation Design, Components & Variants', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/dYtdv--qd_U?start=1380', free: false },
+      { id: 'ux4', title: 'Hero Section, Product Gallery & Footer Design', duration: '22:00', videoUrl: 'https://www.youtube.com/embed/dYtdv--qd_U?start=2580', free: false },
+      { id: 'ux5', title: 'Responsive Design: Tablet & Mobile Layouts', duration: '25:00', videoUrl: 'https://www.youtube.com/embed/dYtdv--qd_U?start=3900', free: false },
+      { id: 'ux6', title: 'Mobile Navigation Prototyping & Website Deployment', duration: '20:00', videoUrl: 'https://www.youtube.com/embed/dYtdv--qd_U?start=5400', free: false },
+    ],
+  },
+
+  // ─── AGRICULTURE ─────────────────────────────────────────────────────
+  // ⚠️ VERIFY ALL: Open each embed URL in browser before going live
+  // Replacements: IITA YouTube / CGIAR YouTube / FAO YouTube channels
   {
     id: 'foundations-of-crop-production',
     title: 'Foundations of Crop Production',
@@ -265,8 +680,7 @@ export const COURSES = [
       { id: 'ag7', title: 'Harvesting, Storage & Post-Harvest Losses', duration: '21:10', videoUrl: 'https://www.youtube.com/embed/6K1WLi8zbuo', free: false },
     ],
   },
-  
-  {
+  {   
     id: 'agritech-smart-farming-africa',
     title: 'AgriTech: Smart Farming for Africa',
     instructor: 'FAO / CGIAR',
@@ -293,9 +707,9 @@ export const getCourseById = (id) => COURSES.find((c) => c.id === id)
 export const getCoursesByCategory = (category) => COURSES.filter((c) => c.category === category)
 export const getCategoryById = (id) => CATEGORIES.find((c) => c.id === id)
 
-// ── Auto-calculated platform stats ─────────────────────────────────────────
+// ── Auto-calculated platform stats ─────────────────────────────────────
 export const PLATFORM_STATS = {
   courseCount: COURSES.length,
   disciplineCount: new Set(COURSES.map(c => c.category)).size,
   totalStudents: COURSES.reduce((acc, c) => acc + (c.students ?? 0), 0),
-}
+}     
